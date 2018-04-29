@@ -1,11 +1,18 @@
+import json
 from flask import Flask
-from wrapper import returnWrapper
+from crp.wrapper import returnWrapper
 
 # 创建服务器
 app = Flask(__name__)
 
 # URL映射
 @app.route("/")
-@app.route("/index")
+@returnWrapper
 def index():
-    return {"name":"lsj"}
+    return {"msg":"服务器运行中..."}
+
+@app.route("/sessionBuild/<code>", methods=['POST', 'GET'])
+@returnWrapper
+def sessionBuild(code):
+    return {"code":code}
+    
