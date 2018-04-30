@@ -1,5 +1,4 @@
-from crp.wrapper import returnWrapper
-from crp.services import sp, urlget
+from crp.services import sp, urlget, returnWrapper
 import json
 
 # 给初始app绑定路由，包括蓝图
@@ -25,6 +24,7 @@ def bindRoutes(app):
         print(respobj)
         if(respobj.get("errcode", None)):
             raise Exception("校验code失败，errcode:"+str(respobj.get("errcode", None)))
+        
         # 建立sessionId并和wxid绑定
         wxid = respobj["openid"]
         sessionId = sp.newSession(wxid)
