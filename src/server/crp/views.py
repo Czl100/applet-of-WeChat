@@ -2,7 +2,6 @@ from crp.wrapper import returnWrapper
 from crp.services import sp, urlget
 import json
 
-
 # 给初始app绑定路由，包括蓝图
 def bindRoutes(app):
     @app.route("/")
@@ -17,8 +16,8 @@ def bindRoutes(app):
         url = 'https://api.weixin.qq.com/sns/jscode2session'
         # 获得wxid
         respstr = urlget(url, {
-            "appid":"wx41264935c14d52e7",
-            "secret":"f5b979faaaa9a2b389ed10e6458b741d",
+            "appid":app.config['APPID'],
+            "secret":app.config['APPSECRET'],
             "js_code":code,
             "grant_type":"authorization_code"
         })
