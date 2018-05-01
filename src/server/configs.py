@@ -1,3 +1,5 @@
+# coding=utf-8
+
 # 配置文件对象的属性名必须大写，否则无法导入
 
 class __BaseConfig__:
@@ -6,10 +8,8 @@ class __BaseConfig__:
 
 class __DevConfig__(__BaseConfig__):
     DEBUG = True
-    DB_HOST = "localhost"
-    DB_USER = "ROOT"
-    DB_PASSWORD = "HELLOworld0"
-
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost:3306/crp"
+    
 class __ProduceConfig__(__BaseConfig__):
     pass
 
