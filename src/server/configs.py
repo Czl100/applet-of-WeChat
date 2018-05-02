@@ -5,6 +5,7 @@
 class __BaseConfig__:
     APPID = "wx41264935c14d52e7"
     APPSECRET = "f5b979faaaa9a2b389ed10e6458b741d"
+    CODE_TO_WXID_URL = "https://api.weixin.qq.com/sns/jscode2session"
 
 class __DevConfig__(__BaseConfig__):
     DEBUG = True

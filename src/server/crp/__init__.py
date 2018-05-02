@@ -5,6 +5,7 @@ from flask import Flask
 from sqlalchemy import create_engine
 import pymysql
 import crp.models
+import crp.views
 
 
 def create_app(config):
@@ -15,10 +16,10 @@ def create_app(config):
     app.config.from_object(config)
 
     # 初始化数据库
-    db = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-    crp.models.Base.metadata.create_all(db)
+    # db = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    # crp.models.Base.metadata.create_all(db)
 
     # URL绑定
-    bindRoutes(app)
+    crp.views.bindRoutes(app)
 
     return app

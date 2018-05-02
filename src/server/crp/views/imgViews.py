@@ -1,0 +1,3 @@
+
+def bindRoutes(app):
+    pass

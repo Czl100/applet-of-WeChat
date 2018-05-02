@@ -20,6 +20,17 @@ class SessionPool:
         sessionId = self.md5.hexdigest()
         self.cache.set(sessionId, {"wxid":wxid})        # 为该会话创建字典
         return sessionId
+    
+    # 删除指定的会话
+    def delSession(self, sessionId):
+        self.cache.delete(sessionId)
+
+    def getSessionData(self, sessionId):
+        dic = None
+        try:
+            dic = self.cache.get(sessionId)
+        finally:
+            return dic
 
     def get(self, sessionId, key):
         dic=self.cache.get(sessionId)
