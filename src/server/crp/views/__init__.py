@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from crp.services import sp, urlget, userWrapper
 from crp.views import sessionViews, imgViews, inviteViews
 from flask import request
