@@ -16,18 +16,22 @@ def urlget(url, kvs=None):
     respstr = urllib.request.urlopen(urlinstance, timeout=2).read().decode('utf-8')
     return respstr
 
+# md5
+def md5(s):
+    import hashlib
+    hasher = hashlib.md5()
+    hasher.update(s.encode("utf-8"))
+    return hasher.hexdigest()
+
 # 唯一ID生成器函数
 def uniqueIdGenFun():
     import random
     import threading
-    import hashlib
-
+    
     uniqueNumber = random.random()
-    md5 = hashlib.md5()
     lock = threading.Lock()
     while True:
-        md5.update(str(uniqueNumber).encode("utf-8"))
-        yield md5.hexdigest()
+        yield md5(str(uniqueNumber))
         uniqueNumber+=1
 
 # 图像ID唯一生成器
