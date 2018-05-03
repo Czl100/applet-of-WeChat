@@ -16,6 +16,23 @@ def urlget(url, kvs=None):
     respstr = urllib.request.urlopen(urlinstance, timeout=2).read().decode('utf-8')
     return respstr
 
+# 唯一ID生成器函数
+def uniqueIdGenFun():
+    import random
+    import threading
+    import hashlib
+
+    uniqueNumber = random.random()
+    md5 = hashlib.md5()
+    lock = threading.Lock()
+    while True:
+        md5.update(str(uniqueNumber).encode("utf-8"))
+        yield md5.hexdigest()
+        uniqueNumber+=1
+
+# 图像ID唯一生成器
+uniqueImgIdGen = uniqueIdGenFun()
+
 # 视图函数返回装饰
 # 被该装饰器修饰的视图函数成功时返回dict，并在其中添加fg=True的kv。失败则fg=False，并添加错误信息到msg字段
 def userWrapper(sessionIdCheck=False):
