@@ -3,7 +3,6 @@
 ## 环境配置
 在本地测试的时候，应配置所需要的环境：
 * Python3.4
-* MySQL, `user:root`, `password:`, 需要确保charset为utf-8
 
 ## 依赖包安装
 在环境配置好后，还需要将Python所需要的依赖包进行安装

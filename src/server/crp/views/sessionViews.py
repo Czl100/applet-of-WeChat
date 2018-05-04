@@ -32,7 +32,7 @@ def bindRoutes(app):
         try : 
             user = dbsession.query(User).filter(User.wxid==wxid).one()
         except NoResultFound as e:
-            newUser = User(wxid=wxid, unread_notify_number=0, create_date=datetime.datetime.today())
+            newUser = User(wxid=wxid, datetime=datetime.datetime.today())
             dbsession.add(newUser)
         finally:
             dbsession.commit()
@@ -43,7 +43,7 @@ def bindRoutes(app):
 
     # 会话销毁
     @app.route("/sessionDestroy")
-    @userWrapper(haveSessionId=True)
+    @userWrapper(hasSessionId=True)
     def sessionDestroy(sessionId):
         sp.delSession(sessionId)
         return {}

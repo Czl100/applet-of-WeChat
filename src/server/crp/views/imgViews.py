@@ -26,8 +26,8 @@ def dataExtract(inpImgPath, isdel=True):
 def bindRoutes(app):
     # 图像绑定视图函数
     @app.route("/img-bind", methods=["POST"])
-    @userWrapper()
-    def imgBind():
+    @userWrapper(hasSessionId=True)
+    def imgBind(sessionId):
         # 处理图像
         imgId = next(uniqueImgIdGen)                    # 获取该次操作的图像ID
         timeStamp = str(int(time.time()*1000000))       # 转化为微秒级时间戳, 用作文件命名
@@ -48,8 +48,8 @@ def bindRoutes(app):
 
     # 作者溯源视图函数
     @app.route("/author-query", methods=["POST"])
-    @userWrapper()
-    def authorQuer():
+    @userWrapper(hasSessionId=True)
+    def authorQuer(sessionId):
         imgFile = request.files['img']      # 图像文件
         timeStamp = time.time()*1000000     # 转化为微秒级时间戳, 用作文件命名
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径

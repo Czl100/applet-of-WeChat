@@ -12,7 +12,7 @@ class __BaseConfig__:
     
 class __DevConfig__(__BaseConfig__):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost:3306/crp"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@111.230.92.161:3306/crp"
     DEV_LOCAL_HOST = "http://localhost:5000"
     
 class __ProduceConfig__(__BaseConfig__):
