@@ -43,10 +43,8 @@ def bindRoutes(app):
 
     # 会话销毁
     @app.route("/sessionDestroy")
-    @userWrapper(sessionIdCheck=True)
-    def sessionDestroy():
-        sessionId = request.args.get("sessionId", None)
-        if sessionId:
-            sp.delSession(sessionId)
+    @userWrapper(haveSessionId=True)
+    def sessionDestroy(sessionId):
+        sp.delSession(sessionId)
         return {}
 

@@ -39,19 +39,20 @@ uniqueImgIdGen = uniqueIdGenFun()
 
 # 视图函数返回装饰
 # 被该装饰器修饰的视图函数成功时返回dict，并在其中添加fg=True的kv。失败则fg=False，并添加错误信息到msg字段
-def userWrapper(sessionIdCheck=False):
+def userWrapper(haveSessionId=False):
     def innerWrapper(f):
         @wraps(f)
         def deractor(*args, **kw):
             rt = {}
             try:
                 # sessionId的存在测试
-                if sessionIdCheck:
+                if haveSessionId:
                     sessionId = request.args.get("sessionId", None)
                     if sessionId == None:
                         raise Exception("args need sessionId")
                     elif sp.getSessionData(sessionId) == None:
                         raise Exception("session not exists")
+                    kw["sessionId"] = sessionId
                 # 视图函数处理
                 rt=f(*args, **kw)
                 if not isinstance(rt, dict):
