@@ -22,8 +22,10 @@ def create_app(config):
     app.config.from_object(config)
 
     # 初始化数据库
-    # db = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-    # crp.models.Base.metadata.create_all(db)
+    db = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    crp.models.Base.metadata.create_all(db)
+    app.dbEngine = db
+    print(app.dbEngine)
 
     # URL绑定
     crp.views.bindRoutes(app)
