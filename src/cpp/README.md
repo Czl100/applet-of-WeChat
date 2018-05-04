@@ -1,2 +1,2 @@
-# cpp
-Ðinformation hiding
+#cpp
+information hiding
