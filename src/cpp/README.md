@@ -1,2 +1,2 @@
 # cpp
-ĞÅÏ¢Òş²ØËã·¨
+Ğinformation hiding
