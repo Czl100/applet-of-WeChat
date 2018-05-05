@@ -27,7 +27,7 @@ class ImgHistory(Base):
     path = Column(String(128))                              # 图像相对于工作目录的路径
     title = Column(String(64))                              # 图像名称
     content = Column(String(300))                           # 图像内容, 用于信息隐藏
-    finish = Column(Boolean(), default=False)               # 是否完成的标记
+    finish = Column(Integer, default=0)                     # 是否完成的标记, 0-未完成, 1-完成, 2-处理错误
     datetime  = Column(DateTime)                            # 创建日期
 
 class Invites(Base):

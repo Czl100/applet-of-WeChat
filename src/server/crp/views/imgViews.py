@@ -3,7 +3,6 @@
 from crp.services import sp, urlget, userWrapper, uniqueImgIdGen, md5
 from flask import request,url_for
 from crp.models import ImgHistory
-import json
 import time
 import datetime
 
@@ -48,7 +47,6 @@ def bindRoutes(app):
 
         # 信息隐藏 生成载密图像
         dataHide(inpImgPath, outImgPath, imgid)         # 调用C++信息隐藏处理
-        imgUrl = app.config["DEV_LOCAL_HOST"]+outImgPath
 
         # 更新数据库finish字段
         dbsession = app.sessionMaker()

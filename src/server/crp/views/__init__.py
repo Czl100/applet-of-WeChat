@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from crp.services import sp, urlget, userWrapper
-from crp.views import sessionViews, imgViews, inviteViews
+from crp.views import sessionViews, imgViews, inviteViews, historyViews
 from flask import request
 import json
 
@@ -20,6 +20,9 @@ def bindRoutes(app):
 
     # 绑定图像处理相关视图函数
     imgViews.bindRoutes(app)
+
+    # 绑定历史查询视图函数
+    historyViews.bindRoutes(app)
 
     # 绑定邀请提醒视图函数
     inviteViews.bindRoutes(app)
