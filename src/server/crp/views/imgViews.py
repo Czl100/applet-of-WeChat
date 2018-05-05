@@ -30,7 +30,7 @@ def bindRoutes(app):
     @userWrapper(hasSessionId=True)
     def imgBind(sessionId):
         # 处理图像
-        imgId = next(uniqueImgIdGen)                    # 获取该次操作的图像ID
+        imgid = next(uniqueImgIdGen)                    # 获取该次操作的图像ID
         timeStamp = str(int(time.time()*1000000))       # 转化为微秒级时间戳, 用作文件命名
         imgFile = request.files['img']                  # 图像文件
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
@@ -41,19 +41,20 @@ def bindRoutes(app):
 
         # 先插入历史记录
         dbsession = app.sessionMaker()
-        wxid = sp.get(sessionId, "wxid")
-        newHistory = ImgHistory(imgId=imgId, wxid=wxid, datetime=datetime.datetime.today())
+        wxid = sp.wxid(sessionId)
+        newHistory = ImgHistory(imgid=imgid, wxid=wxid, datetime=datetime.datetime.today())
+        dbsession.add(newHistory)
         dbsession.commit()
 
         # 信息隐藏 生成载密图像
-        dataHide(inpImgPath, outImgPath, imgId)         # 调用C++信息隐藏处理
+        dataHide(inpImgPath, outImgPath, imgid)         # 调用C++信息隐藏处理
         imgUrl = app.config["DEV_LOCAL_HOST"]+outImgPath
 
         # 更新数据库finish字段
         dbsession = app.sessionMaker()
-        newHistory.path = outImgPath
-        newHistory.finish = True
-        dbsession.add(newHistory)
+        tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()  
+        tmpHistory.path = outImgPath
+        tmpHistory.finish = True
         dbsession.commit()
         return {}
 

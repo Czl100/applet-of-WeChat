@@ -9,6 +9,7 @@ class __BaseConfig__:
     STATIC_DIR = "static/"
     IMG_DIR = "static/img/"
     TMP_DIR = "static/tmp/"
+    MAX_CONTENT_LENGTH = 200 * 1024 * 1024
     
 class __DevConfig__(__BaseConfig__):
     DEBUG = True
