@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, create_engine, Date, Integer, DateTime
+from sqlalchemy import Column, String, create_engine, Date, Integer, DateTime, Boolean
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -16,9 +16,9 @@ class User(Base):
     datetime = Column(DateTime)
 
 
-class ImgBind(Base):
+class ImgHistory(Base):
     # 表名
-    __tablename__='img_bind'
+    __tablename__='img_history'
 
     # 字段
     id = Column(Integer, primary_key=True)                  # 自增主键
@@ -26,6 +26,8 @@ class ImgBind(Base):
     wxid = Column(String(32), index=True)                   # 微信ID
     path = Column(String(128))                              # 图像相对于工作目录的路径
     title = Column(String(64))                              # 图像名称
+    content = Column(String(300))                           # 图像内容, 用于信息隐藏
+    finish = Column(Boolean(), default=False)               # 是否完成的标记
     datetime  = Column(DateTime)                            # 创建日期
 
 class Invites(Base):

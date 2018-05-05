@@ -2,9 +2,10 @@
 
 from crp.services import sp, urlget, userWrapper, uniqueImgIdGen, md5
 from flask import request,url_for
+from crp.models import ImgHistory
 import json
 import time
-
+import datetime
 
 # 模仿数据隐藏
 def dataHide(inpImgPath, outImgPath, imgId, isdel=True):
@@ -36,15 +37,25 @@ def bindRoutes(app):
         outImgPath = app.config["IMG_DIR"]+timeStamp+".jpeg"        # 载迷图像输出路径
         imgFile.save(inpImgPath)                                    # 将图像保存
         # 提取图像id，查看id是否已经存在
-        maybeImgId = dataExtract(inpImgPath, isdel=False)
+        # maybeImgId = dataExtract(inpImgPath, isdel=False)
+
+        # 先插入历史记录
+        dbsession = app.sessionMaker()
+        wxid = sp.get(sessionId, "wxid")
+        newHistory = ImgHistory(imgId=imgId, wxid=wxid, datetime=datetime.datetime.today())
+        dbsession.commit()
 
         # 信息隐藏 生成载密图像
         dataHide(inpImgPath, outImgPath, imgId)         # 调用C++信息隐藏处理
-        imgUrl = app.config["DEV_LOCAL_HOST"]+"/static/img/"+timeStamp+".jpeg"
-        # 插入新的绑定至数据库
-        # sessionId = request.args.get("sessionId", None)
-        # sp.get(sessionId, "wxid")
-        return {"img":imgUrl, "msg":"it's test, and the img not contain watermarking of imgId"}
+        imgUrl = app.config["DEV_LOCAL_HOST"]+outImgPath
+
+        # 更新数据库finish字段
+        dbsession = app.sessionMaker()
+        newHistory.path = outImgPath
+        newHistory.finish = True
+        dbsession.add(newHistory)
+        dbsession.commit()
+        return {}
 
     # 作者溯源视图函数
     @app.route("/author-query", methods=["POST"])

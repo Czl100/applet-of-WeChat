@@ -1,6 +1,5 @@
 from crp.services import sp, urlget, userWrapper
 from flask import request
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from crp.models import User
 import json
@@ -27,11 +26,11 @@ def bindRoutes(app):
         
         # wxid首次登陆则将用户添加至数据库
         wxid = respobj["openid"]
-        db = app.dbEngine
-        dbsession = sessionmaker(bind=db)()
+        dbsession = app.sessionMaker()
         try : 
             user = dbsession.query(User).filter(User.wxid==wxid).one()
         except NoResultFound as e:
+            # 未找到该用户，该用户首次登陆，入库。
             newUser = User(wxid=wxid, datetime=datetime.datetime.today())
             dbsession.add(newUser)
         finally:

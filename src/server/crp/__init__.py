@@ -3,6 +3,7 @@
 from crp.views import bindRoutes
 from flask import Flask
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 import pymysql
 import crp.models
 import crp.views
@@ -13,7 +14,8 @@ import os
 def create_app(config):
     
     # 偏函
-    import functools.partial
+    import functools
+    global open
     open = functools.partial(open, encoding='utf-8')
 
     #重置工作目录
@@ -29,6 +31,7 @@ def create_app(config):
     db = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
     crp.models.Base.metadata.create_all(db)
     app.dbEngine = db
+    app.sessionMaker = sessionmaker(bind=db)
 
     # URL绑定
     crp.views.bindRoutes(app)
