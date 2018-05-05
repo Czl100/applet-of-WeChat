@@ -12,6 +12,10 @@ import os
 
 def create_app(config):
     
+    # 偏函
+    import functools.partial
+    open = functools.partial(open, encoding='utf-8')
+
     #重置工作目录
     os.chdir(os.path.dirname(__file__))
     
