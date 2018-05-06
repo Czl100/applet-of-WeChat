@@ -36,7 +36,7 @@ class Invites(Base):
 
     # 字段
     id = Column(Integer, primary_key=True)                  # 自增主键
-    unread = Column(String(64), unique=True, index=True)    # 是否未读(0:已读，1:未读)
+    unread = Column(Integer, default=0)                     # 是否未读(0:已读，1:未读)
     inviterId = Column(String(32))
     authorId = Column(String(32))
     content = Column(String(300))
