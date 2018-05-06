@@ -12,7 +12,7 @@ class User(Base):
     # 字段
     id = Column(Integer, primary_key=True)
     wxid = Column(String(32), unique=True, index=True)
-    unread_notify_number = Column(Integer, default=0)
+    unreadNum = Column(Integer, default=0)
     datetime = Column(DateTime)
 
 
@@ -37,6 +37,9 @@ class Invites(Base):
     # 字段
     id = Column(Integer, primary_key=True)                  # 自增主键
     unread = Column(Integer, default=0)                     # 是否未读(0:已读，1:未读)
+    imgurl = Column(String(128))                            # 图片url
+    imgtitle = Column(String(64))                           # 图片名称
+    inviterNick = Column(String(128))                       # 用户昵称
     inviterId = Column(String(32))
     authorId = Column(String(32))
     content = Column(String(300))

@@ -18,8 +18,10 @@ def bindRoutes(app):
 
         # 数据库提取出该用户的所有图像
         dbsession = app.sessionMaker()
-        allItems = dbsession.query(ImgHistory).filter_by(wxid=wxid).order_by(ImgHistory.finish).order_by(desc(ImgHistory.datetime)).all()
-        dbsession.commit()
+        try:
+            allItems = dbsession.query(ImgHistory).filter_by(wxid=wxid).order_by(ImgHistory.finish).order_by(desc(ImgHistory.datetime)).all()
+        finally:
+            dbsession.commit()
 
         # 提取出该页数据
         totalpage = int(len(allItems)/perpage) + 1
@@ -37,5 +39,4 @@ def bindRoutes(app):
                 "finish":str(item.finish)
             }
             itemList.append(dicitem)
-        print(itemList)
         return {"pages":totalpage, "list":itemList}
