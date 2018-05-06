@@ -1,6 +1,6 @@
 from crp.services import sp, urlget, userWrapper
 from flask import request
-from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
+from sqlalchemy.orm.exc import NoResultFound
 from crp.models import User
 import json
 import datetime

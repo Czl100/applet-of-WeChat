@@ -1,8 +1,9 @@
 # coding=utf-8
 
 from crp.services import sp, urlget, userWrapper, uniqueImgIdGen, md5
-from flask import request,url_for
 from crp.models import ImgHistory
+from flask import request,url_for
+from sqlalchemy.orm.exc import NoResultFound
 import time
 import datetime
 
@@ -21,7 +22,7 @@ def dataExtract(inpImgPath, isdel=True):
     import os
     if isdel:
         os.remove(inpImgPath)
-    return "123"
+    return "8c0a22fe1dab5349541d05fc090c5086"
 
 def bindRoutes(app):
     # 图像绑定视图函数
@@ -61,9 +62,22 @@ def bindRoutes(app):
     @userWrapper(hasSessionId=True)
     def authorQuer(sessionId):
         imgFile = request.files['img']      # 图像文件
-        timeStamp = time.time()*1000000     # 转化为微秒级时间戳, 用作文件命名
+        timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
         imgFile.save(inpImgPath)                                    # 将图像保存
-        imgId = dataExtract(inpImgPath)
-        raise Exception("not support the interface, now")
-        return {}
+
+        # 提取图像id
+        imgid = dataExtract(inpImgPath)
+
+        # 查询库
+        dbsession=app.sessionMaker()
+        title="None"
+        try:
+            item = dbsession.query(ImgHistory).filter_by(imgid=imgid).one()     # one，查找不到抛出异常. first，查找不到不会抛出异常
+            if item.title:
+                title = item.title
+        except NoResultFound as e:
+            raise Exception("未能找到匹配作者")
+        finally:
+            dbsession.commit()      # 提交事务，避免死锁
+        return {"title":title, "imgid":imgid}

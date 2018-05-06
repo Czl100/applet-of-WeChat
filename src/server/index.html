@@ -2,7 +2,14 @@
     <head></head>
     <body>
         <form action="http://localhost:5000/img-bind" method="POST" enctype="multipart/form-data">
-            img : <input type="file" name="img"><br>
+            img : <input type="file" name="img"><br><br>
+            sessionId : <input type="input" name="sessionId"><br>
+            <input type="submit" value="Upload">
+        </form>
+        <br>
+        <br>
+        <form action="http://localhost:5000/author-query" method="POST" enctype="multipart/form-data">
+            img : <input type="file" name="img"><br><br>
             sessionId : <input type="input" name="sessionId"><br>
             <input type="submit" value="Upload">
         </form>
