@@ -32,7 +32,10 @@ def uniqueIdGenFun():
     lock = threading.Lock()
     while True:
         yield md5(str(uniqueNumber))
+        # 避免多线程读写竞争
+        lock.acquire()
         uniqueNumber+=1
+        lock.release()
 
 # 图像ID唯一生成器
 uniqueImgIdGen = uniqueIdGenFun()

@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.services import sp, urlget, userWrapper, uniqueImgIdGen, md5
+from crp.untils import sp, urlget, userWrapper, uniqueImgIdGen, md5
 from crp.models import ImgHistory
 from flask import request,url_for
 from sqlalchemy.orm.exc import NoResultFound
