@@ -33,6 +33,7 @@ def queryInvitesPage(app, authorId, perpage, page):
     itemList = []
     for item in items:
         dicitem = {
+            "id":item.id,
             "inviter":item.inviterNick,
             "img":item.imgurl,
             "title":item.imgtitle,

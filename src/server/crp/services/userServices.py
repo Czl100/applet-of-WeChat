@@ -9,7 +9,7 @@ import datetime
 def login(app, wxid):
     dbsession = app.sessionMaker()
     try : 
-        user = dbsession.query(User).filter(User.wxid==wxid).one()
+        dbsession.query(User).filter(User.wxid==wxid).one()
     except NoResultFound:
         # 未找到该用户，该用户首次登陆，入库。
         newUser = User(wxid=wxid, datetime=datetime.datetime.today())
@@ -17,3 +17,12 @@ def login(app, wxid):
     finally:
         dbsession.commit()
 
+def queryUnreadNumber(app, wxid):
+    dbsession = app.sessionMaker()
+    try:
+        user = dbsession.query(User).filter(User.wxid==wxid).one()
+    except NoResultFound:
+        raise Exception("未找到指定用户")
+    finally:
+        dbsession.commit()
+    return user.unreadNum

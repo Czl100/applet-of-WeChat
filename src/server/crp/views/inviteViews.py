@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from crp.untils import sp, urlget, userWrapper
-from crp.services import imgHistoryServices, invitesServices
+from crp.services import imgHistoryServices, invitesServices, userServices
 from flask import request
 
 def bindRoutes(app):
@@ -40,3 +40,10 @@ def bindRoutes(app):
         # 从库中读取出邀请信息
         totalpage, invitesList = invitesServices.queryInvitesPage(app, authorId=wxid, perpage=perpage, page=page)
         return {"pages":totalpage, "list":invitesList}
+
+    @app.route("/query-unread-number")
+    @userWrapper(hasSessionId=True)
+    def unreadNum(sessionId):
+        wxid = sp.wxid(sessionId)
+        unreadnum = userServices.queryUnreadNumber(app, wxid=wxid)
+        return {"number":unreadnum}
