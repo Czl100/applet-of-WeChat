@@ -5,6 +5,7 @@ from crp.models import User
 from sqlalchemy.orm.exc import NoResultFound
 import datetime
 
+# 微信用户首次登录将会入库，主要是记录未读信息个数，便于查询未读信息个数
 def login(app, wxid):
     dbsession = app.sessionMaker()
     try : 

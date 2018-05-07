@@ -4,6 +4,7 @@ from crp.models import Invites, User
 from sqlalchemy import desc
 import datetime
 
+# 添加一条邀请，邀请中需要包含图像相关信息
 def addInvite(app, imgtitle, imgurl, nick, inviterId, authorId, content):
     dbsession = app.sessionMaker()
     oneInvite = Invites(imgurl=imgurl, imgtitle=imgtitle, inviterNick=nick, inviterId=inviterId, authorId=authorId, content=content, datetime=datetime.datetime.today())
@@ -14,6 +15,7 @@ def addInvite(app, imgtitle, imgurl, nick, inviterId, authorId, content):
     finally:
         dbsession.commit()
 
+# 查询邀请页
 def queryInvitesPage(app, authorId, perpage, page):
     dbsession = app.sessionMaker()
     try:
