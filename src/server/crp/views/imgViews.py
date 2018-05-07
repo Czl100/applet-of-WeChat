@@ -1,11 +1,8 @@
 # coding=utf-8
 
 from crp.untils import sp, urlget, userWrapper, uniqueImgIdGen, md5
-from crp.models import ImgHistory
-from flask import request,url_for
-from sqlalchemy.orm.exc import NoResultFound
-import time
-import datetime
+from crp.services import imgHistoryServices
+from flask import request
 
 # 模仿数据隐藏
 def dataHide(inpImgPath, outImgPath, imgId, isdel=True):
@@ -25,6 +22,8 @@ def dataExtract(inpImgPath, isdel=True):
     return "8c0a22fe1dab5349541d05fc090c5086"
 
 def bindRoutes(app):
+    import time
+
     # 图像绑定视图函数
     @app.route("/img-bind", methods=["POST"])
     @userWrapper(hasSessionId=True)
@@ -40,27 +39,21 @@ def bindRoutes(app):
         # maybeImgId = dataExtract(inpImgPath, isdel=False)
 
         # 先插入历史记录
-        dbsession = app.sessionMaker()
-        wxid = sp.wxid(sessionId)
-        newHistory = ImgHistory(imgid=imgid, wxid=wxid, datetime=datetime.datetime.today())
-        dbsession.add(newHistory)
-        dbsession.commit()
+        imgHistoryServices.notFinishImgHistory(app, sessionId=sessionId, imgid=imgid)
 
         # 信息隐藏 生成载密图像
         dataHide(inpImgPath, outImgPath, imgid)         # 调用C++信息隐藏处理
 
         # 更新数据库finish字段
-        dbsession = app.sessionMaker()
-        tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()  
-        tmpHistory.path = outImgPath
-        tmpHistory.finish = True
-        dbsession.commit()
+        imgHistoryServices.updateFinishImgHistory(app, imgid=imgid, outImgPath=outImgPath)
         return {}
 
     # 作者溯源视图函数
-    @app.route("/author-query", methods=["POST"])
+    @app.route("/query-author", methods=["POST"])
     @userWrapper(hasSessionId=True)
     def authorQuer(sessionId):
+        import time
+
         imgFile = request.files['img']      # 图像文件
         timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
@@ -70,14 +63,5 @@ def bindRoutes(app):
         imgid = dataExtract(inpImgPath)
 
         # 查询库
-        dbsession=app.sessionMaker()
-        title="None"
-        try:
-            item = dbsession.query(ImgHistory).filter_by(imgid=imgid).one()     # one，查找不到抛出异常. first，查找不到不会抛出异常
-            if item.title:
-                title = item.title
-        except NoResultFound as e:
-            raise Exception("未能找到匹配作者")
-        finally:
-            dbsession.commit()      # 提交事务，避免死锁
+        title = imgHistoryServices.queryImgAuthor(app, imgid=imgid)
         return {"title":title, "imgid":imgid}

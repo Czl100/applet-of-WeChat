@@ -15,6 +15,12 @@ def bindRoutes(app):
         session = str(sp.getSessionData(sessionId)) if sessionId else "None"
         return {"msg":"server running...", "session":session}
 
+    # @app.errorhandler(404)
+    # @userWrapper()
+    # def pageNotFound(error):
+    #     raise Exception("page not found!")
+    #     return {}
+
     # 绑定会话处理视图函数
     sessionViews.bindRoutes(app)
 
