@@ -28,7 +28,7 @@ def create_app(config):
     app.config.from_object(config)
 
     # 初始化数据库
-    db = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    db = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], encoding='utf-8', convert_unicode=True)
     crp.models.Base.metadata.create_all(db)
     app.dbEngine = db
     app.sessionMaker = sessionmaker(bind=db)

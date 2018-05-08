@@ -8,6 +8,10 @@ import json
 
 sp = crp.sessionPool.SessionPool()      # 创建会话池
 
+def unescape(s):
+    from html.parser import HTMLParser
+    return HTMLParser().unescape(s)
+
 # 简化的get请求
 def urlget(url, kvs=None):
     urlkvs = urllib.parse.urlencode(kvs)

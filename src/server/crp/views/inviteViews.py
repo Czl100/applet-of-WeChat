@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, userWrapper
+from crp.untils import sp, urlget, userWrapper, unescape
 from crp.services import imgHistoryServices, invitesServices, userServices
 from flask import request
 
@@ -9,7 +9,7 @@ def bindRoutes(app):
     @userWrapper(hasSessionId=True)
     def invite(sessionId):
         inviterId = sp.wxid(sessionId)
-        content = request.form.get("content", "")
+        content = unescape(request.form.get("content", ""))
         if len(content) >= 140:
             raise Exception("邀请内容的长度应小于140, 您输入的字符串长度为:"+str(len(content)))
             
@@ -20,6 +20,8 @@ def bindRoutes(app):
         nick = request.form.get("nick", None)
         if not nick.strip():
             nick = None
+        else:
+            nick = unescape(nick)
 
         # 根据imgid查询受邀人
         authorId, imgtitle, imgurl = imgHistoryServices.queryImgInfo(app, imgid=imgid)

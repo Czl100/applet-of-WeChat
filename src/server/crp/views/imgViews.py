@@ -19,7 +19,7 @@ def dataExtract(inpImgPath, isdel=True):
     import os
     if isdel:
         os.remove(inpImgPath)
-    return "8c0a22fe1dab5349541d05fc090c5086"
+    return "b8a34e87411c6c5564ce3d55a7e7a2ed"
 
 def bindRoutes(app):
     import time

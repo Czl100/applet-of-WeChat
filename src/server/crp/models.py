@@ -8,6 +8,7 @@ Base = declarative_base()
 class User(Base):
     # 表名
     __tablename__='users'
+    __table_args__ = {"mysql_charset" : "utf8"}
 
     # 字段
     id = Column(Integer, primary_key=True)
@@ -19,6 +20,7 @@ class User(Base):
 class ImgHistory(Base):
     # 表名
     __tablename__='img_history'
+    __table_args__ = {"mysql_charset" : "utf8"}
 
     # 字段
     id = Column(Integer, primary_key=True)                  # 自增主键
@@ -31,8 +33,8 @@ class ImgHistory(Base):
     datetime  = Column(DateTime)                            # 创建日期
 
 class Invites(Base):
-    # 表明
-    __tablename__='invites'
+    __tablename__='invites'     # 表名
+    __table_args__ = {"mysql_charset" : "utf8"}
 
     # 字段
     id = Column(Integer, primary_key=True)                  # 自增主键
