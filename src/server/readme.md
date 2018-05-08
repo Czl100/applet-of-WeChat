@@ -8,6 +8,7 @@
 在环境配置好后，还需要将Python所需要的依赖包进行安装
 ```
 pip install Flask                   # Flask-WEB框架
+pip install pymysql                 # Python3的mysql包
 pip install flask-sqlalchemy        # 数据库ORM框架
 ```
 若是安装包查询失败，请使用阿里镜像: `pip install <you-need> -i http://mirrors.aliyun.com/pypi/simple`

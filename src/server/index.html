@@ -2,7 +2,24 @@
     <head></head>
     <body>
         <form action="http://localhost:5000/img-bind" method="POST" enctype="multipart/form-data">
-            <input type="file" name="img">
+            img : <input type="file" name="img"><br><br>
+            sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br>
+            <input type="submit" value="Upload">
+        </form>
+        <br>
+        <br>
+        <form action="http://localhost:5000/query-author" method="POST" enctype="multipart/form-data">
+            img : <input type="file" name="img"><br><br>
+            sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br>
+            <input type="submit" value="Upload">
+        </form>
+        <br>
+        <br>
+        <form action="http://localhost:5000/invite" method="POST">
+            sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br>
+            nick : <input type="input" name="nick">
+            imgid : <input type="input" name="imgid" value="8c0a22fe1dab5349541d05fc090c5086"><br>
+            content : <input type="input" name="content">
             <input type="submit" value="Upload">
         </form>
     </body>

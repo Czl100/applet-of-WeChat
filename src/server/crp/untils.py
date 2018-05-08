@@ -32,7 +32,10 @@ def uniqueIdGenFun():
     lock = threading.Lock()
     while True:
         yield md5(str(uniqueNumber))
+        # 避免多线程读写竞争
+        lock.acquire()
         uniqueNumber+=1
+        lock.release()
 
 # 图像ID唯一生成器
 uniqueImgIdGen = uniqueIdGenFun()
@@ -47,7 +50,7 @@ def userWrapper(hasSessionId=False):
             try:
                 # sessionId的存在测试
                 if hasSessionId:
-                    sessionId = request.args.get("sessionId", None)
+                    sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
                     if sessionId == None:
                         raise Exception("args need sessionId")
                     elif sp.getSessionData(sessionId) == None:

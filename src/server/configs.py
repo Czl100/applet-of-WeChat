@@ -9,11 +9,13 @@ class __BaseConfig__:
     STATIC_DIR = "static/"
     IMG_DIR = "static/img/"
     TMP_DIR = "static/tmp/"
+    MAX_CONTENT_LENGTH = 200 * 1024 * 1024
+    PERPAGE_SIZE = 10
     
 class __DevConfig__(__BaseConfig__):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@111.230.92.161:3306/crp"
-    DEV_LOCAL_HOST = "http://localhost:5000"
+    ENABLE_HOST = "http://localhost:5000/"
     
 class __ProduceConfig__(__BaseConfig__):
     pass

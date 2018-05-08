@@ -44,6 +44,9 @@ class SessionPool:
         finally:
             return dic
 
+    def wxid(self, sessionId):
+        return self.get(sessionId, "__wxid__")
+
     def get(self, sessionId, key):
         dic=self.__cache__.get(sessionId)
         return dic.get(key)

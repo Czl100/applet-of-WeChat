@@ -1,10 +1,9 @@
-from crp.services import sp, urlget, userWrapper
-from flask import request
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
-from crp.models import User
+# coding=utf-8
+
+from crp.untils import sp, urlget, userWrapper
+from crp.services import userServices
+from flask import request_finished
 import json
-import datetime
 
 # 给初始app绑定路由，包括蓝图
 def bindRoutes(app):
@@ -27,15 +26,7 @@ def bindRoutes(app):
         
         # wxid首次登陆则将用户添加至数据库
         wxid = respobj["openid"]
-        db = app.dbEngine
-        dbsession = sessionmaker(bind=db)()
-        try : 
-            user = dbsession.query(User).filter(User.wxid==wxid).one()
-        except NoResultFound as e:
-            newUser = User(wxid=wxid, datetime=datetime.datetime.today())
-            dbsession.add(newUser)
-        finally:
-            dbsession.commit()
+        userServices.login(app, wxid)
         
         # 建立sessionId并和wxid绑定
         sessionId = sp.newSession(wxid)
