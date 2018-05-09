@@ -15,7 +15,7 @@ def notFinishImgHistory(app, sessionId, imgid):
     dbsession.commit()
 
 # 当图像处理完成，更新该记录为已处理
-def updateFinishImgHistory(app, imgid, outImgPath):
+def updateFinishImgHistory(app, imgid, outImgPath): 
     dbsession = app.sessionMaker()
     tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()  
     tmpHistory.path = outImgPath
@@ -25,16 +25,16 @@ def updateFinishImgHistory(app, imgid, outImgPath):
 # 查询imgid所对应的作者, 正确返回则找到匹配作者
 def queryImgAuthor(app, imgid):
     dbsession=app.sessionMaker()
+    exist=False
     title=None
     try:
-        # one，查找不到抛出异常. first，查找不到不会抛出异常
-        item = dbsession.query(ImgHistory).filter_by(imgid=imgid).one()
-        title = item.title
-    except NoResultFound:
-        raise Exception("未能找到匹配作者")
+        # one，查找不到抛出异常. first，查找不到不会抛出异常    
+        item = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
+        exist = True if item else False
+        title = item.title if exist else title
     finally:
         dbsession.commit()      # 提交事务，避免死锁
-    return title
+    return exist, title
 
 # 查询指定指定微信用户，指定页面的历史记录
 def queryHistoryPage(app, wxid, page, perpage):

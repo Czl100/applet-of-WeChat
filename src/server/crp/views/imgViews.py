@@ -63,5 +63,9 @@ def bindRoutes(app):
         imgid = dataExtract(inpImgPath)
 
         # 查询库
-        title = imgHistoryServices.queryImgAuthor(app, imgid=imgid)
-        return {"title":title, "imgid":imgid}
+        exists, title = imgHistoryServices.queryImgAuthor(app, imgid=imgid)
+
+        if exists : 
+            return {"exists":exists, "title":title, "imgid":imgid}
+        else :
+            return {"exists":exists}
