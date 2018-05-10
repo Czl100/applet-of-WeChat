@@ -16,13 +16,3 @@ def login(app, wxid):
         dbsession.add(newUser)
     finally:
         dbsession.commit()
-
-def queryUnreadNumber(app, wxid):
-    dbsession = app.sessionMaker()
-    try:
-        user = dbsession.query(User).filter(User.wxid==wxid).one()
-    except NoResultFound:
-        raise Exception("未找到指定用户")
-    finally:
-        dbsession.commit()
-    return user.unreadNum

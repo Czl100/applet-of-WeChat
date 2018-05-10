@@ -3,6 +3,7 @@
 from crp.models import Invites, User
 from sqlalchemy import desc
 import datetime
+import math
 
 # 添加一条邀请，邀请中需要包含图像相关信息
 def addInvite(app, imgtitle, imgurl, nick, inviterId, authorId, content):
@@ -10,8 +11,6 @@ def addInvite(app, imgtitle, imgurl, nick, inviterId, authorId, content):
     oneInvite = Invites(imgurl=imgurl, imgtitle=imgtitle, inviterNick=nick, inviterId=inviterId, authorId=authorId, content=content, datetime=datetime.datetime.today())
     try:
         dbsession.add(oneInvite)        # 邀请入库
-        author = dbsession.query(User).filter_by(wxid=authorId).one()   # 未读信息递增
-        author.unreadNum+=1
     finally:
         dbsession.commit()
 
@@ -19,12 +18,12 @@ def addInvite(app, imgtitle, imgurl, nick, inviterId, authorId, content):
 def queryInvitesPage(app, authorId, perpage, page):
     dbsession = app.sessionMaker()
     try:
-        allItems = dbsession.query(Invites).filter_by(authorId=authorId).order_by(Invites.unread).order_by(desc(Invites.datetime)).all()
+        allItems = dbsession.query(Invites).filter_by(authorId=authorId).order_by(desc(Invites.unread)).order_by(desc(Invites.datetime)).all()
     finally:
         dbsession.commit()
 
     # 提取出该页数据
-    totalpage = int(len(allItems)/perpage) + 1
+    totalpage = math.ceil(len(allItems)/perpage)
     startIdx = perpage*(page-1)
     endIdx = startIdx+perpage if startIdx+perpage<=len(allItems) else len(allItems)
     items = allItems[startIdx:endIdx]
@@ -33,11 +32,41 @@ def queryInvitesPage(app, authorId, perpage, page):
     itemList = []
     for item in items:
         dicitem = {
-            "id":item.id,
+            "inviteId":item.id,
+            "unread": item.unread,
             "inviter":item.inviterNick,
             "img":item.imgurl,
             "title":item.imgtitle,
-            "content":item.content
+            "content":item.content,
+            "datetime":str(item.datetime)
         }
         itemList.append(dicitem)
     return totalpage, itemList
+
+def inviteUnreadNumber(app, wxid):
+    dbsession = app.sessionMaker()
+    try:
+        count = dbsession.query(Invites).filter_by(authorId=wxid).filter_by(unread=1).count()
+    finally:
+        dbsession.commit()
+    return count
+
+def inviteHaveRead(app, wxid, inviteId):
+    dbsession = app.sessionMaker()
+    try:
+        inviteItem = dbsession.query(Invites).filter_by(id=inviteId).first()
+        if not inviteItem:
+            raise Exception("not exists the inviteId")
+        inviteItem.unread=0
+    finally:
+        dbsession.commit()
+
+def inviteAllRead(app, wxid):
+    dbsession = app.sessionMaker()
+    try:
+        inviteList = dbsession.query(Invites).filter_by(authorId=wxid).filter_by(unread=1).all()
+        for item in inviteList:
+            item.unread = 0
+    finally:
+        dbsession.commit()
+        

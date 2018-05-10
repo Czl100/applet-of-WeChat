@@ -7,10 +7,10 @@ from sqlalchemy import desc
 import datetime
 
 # 插入一条未处理完成的
-def notFinishImgHistory(app, sessionId, imgid):
+def notFinishImgHistory(app, sessionId, imgid, imgtitle):
     dbsession = app.sessionMaker()
     wxid = sp.wxid(sessionId)
-    newHistory = ImgHistory(imgid=imgid, wxid=wxid, datetime=datetime.datetime.today())
+    newHistory = ImgHistory(imgid=imgid, wxid=wxid, imgtitle=imgtitle, datetime=datetime.datetime.today())
     dbsession.add(newHistory)
     dbsession.commit()
 
@@ -26,15 +26,15 @@ def updateFinishImgHistory(app, imgid, outImgPath):
 def queryImgAuthor(app, imgid):
     dbsession=app.sessionMaker()
     exist=False
-    title=None
+    imgtitle=None
     try:
         # one，查找不到抛出异常. first，查找不到不会抛出异常    
         item = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
         exist = True if item else False
-        title = item.title if exist else title
+        imgtitle = item.imgtitle if exist else imgtitle
     finally:
         dbsession.commit()      # 提交事务，避免死锁
-    return exist, title
+    return exist, imgtitle
 
 # 查询指定指定微信用户，指定页面的历史记录
 def queryHistoryPage(app, wxid, page, perpage):
@@ -71,7 +71,7 @@ def queryImgInfo(app, imgid):
         item = dbsession.query(ImgHistory).filter_by(imgid=imgid).one()
         authorId = item.wxid
         imgurl = app.config['ENABLE_HOST']+item.path
-        imgtitle = item.title
+        imgtitle = item.imgtitle
     except NoResultFound:
         raise Exception("没有查询到imgid所对应的作者")
     finally:

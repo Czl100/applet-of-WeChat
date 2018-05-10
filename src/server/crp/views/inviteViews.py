@@ -47,5 +47,22 @@ def bindRoutes(app):
     @userWrapper(hasSessionId=True)
     def unreadNum(sessionId):
         wxid = sp.wxid(sessionId)
-        unreadnum = userServices.queryUnreadNumber(app, wxid=wxid)
+        unreadnum = invitesServices.inviteUnreadNumber(app, wxid=wxid)
         return {"number":unreadnum}
+
+    @app.route("/read-invite")
+    @userWrapper(hasSessionId=True)
+    def readInvite(sessionId):
+        wxid = sp.wxid(sessionId)
+        inviteId = request.args.get("inviteId", None)
+        if not inviteId:
+            raise Exception("缺少参数-inviteId")
+        invitesServices.inviteHaveRead(app, wxid=wxid, inviteId=inviteId)
+        return {}
+
+    @app.route("/read-all-invites")
+    @userWrapper(hasSessionId=True)
+    def readAllInvites(sessionId):
+        wxid = sp.wxid(sessionId)
+        invitesServices.inviteAllRead(app, wxid=wxid)
+        return {}

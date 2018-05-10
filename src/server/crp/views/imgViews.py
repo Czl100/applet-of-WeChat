@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, userWrapper, uniqueImgIdGen, md5
+from crp.untils import sp, urlget, userWrapper, uniqueImgIdGen, md5, unescape
 from crp.services import imgHistoryServices
 from flask import request
 
@@ -19,7 +19,7 @@ def dataExtract(inpImgPath, isdel=True):
     import os
     if isdel:
         os.remove(inpImgPath)
-    return "b8a34e87411c6c5564ce3d55a7e7a2ed"
+    return "806490856ee2f580da779d1ba8619da1"
 
 def bindRoutes(app):
     import time
@@ -29,9 +29,11 @@ def bindRoutes(app):
     @userWrapper(hasSessionId=True)
     def imgBind(sessionId):
         # 处理图像
-        imgid = next(uniqueImgIdGen)                    # 获取该次操作的图像ID
-        timeStamp = str(int(time.time()*1000000))       # 转化为微秒级时间戳, 用作文件命名
-        imgFile = request.files['img']                  # 图像文件
+        imgtitle = unescape(request.form.get("imgtitle", None))     # 图像对外标题
+        imgtitle = imgtitle if imgtitle else None
+        imgid = next(uniqueImgIdGen)                                # 获取该次操作的图像ID
+        timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
+        imgFile = request.files['img']                              # 图像文件
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
         outImgPath = app.config["IMG_DIR"]+timeStamp+".jpeg"        # 载迷图像输出路径
         imgFile.save(inpImgPath)                                    # 将图像保存
@@ -39,7 +41,7 @@ def bindRoutes(app):
         # maybeImgId = dataExtract(inpImgPath, isdel=False)
 
         # 先插入历史记录
-        imgHistoryServices.notFinishImgHistory(app, sessionId=sessionId, imgid=imgid)
+        imgHistoryServices.notFinishImgHistory(app, sessionId=sessionId, imgid=imgid, imgtitle=imgtitle)
 
         # 信息隐藏 生成载密图像
         dataHide(inpImgPath, outImgPath, imgid)         # 调用C++信息隐藏处理
@@ -63,9 +65,9 @@ def bindRoutes(app):
         imgid = dataExtract(inpImgPath)
 
         # 查询库
-        exists, title = imgHistoryServices.queryImgAuthor(app, imgid=imgid)
+        exists, imgtitle = imgHistoryServices.queryImgAuthor(app, imgid=imgid)
 
         if exists : 
-            return {"exists":exists, "title":title, "imgid":imgid}
+            return {"exists":exists, "imgtitle":imgtitle, "imgid":imgid}
         else :
             return {"exists":exists}
