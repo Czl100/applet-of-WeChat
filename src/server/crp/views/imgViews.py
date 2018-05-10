@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, userWrapper, uniqueImgIdGen, md5, unescape
+from crp.untils import sp, urlget, crpview, uniqueImgIdGen, md5, unescape
 from crp.services import imgHistoryServices
 from flask import request
 
@@ -26,7 +26,7 @@ def bindRoutes(app):
 
     # 图像绑定视图函数
     @app.route("/img-bind", methods=["POST"])
-    @userWrapper(hasSessionId=True)
+    @crpview(hasSessionId=True)
     def imgBind(sessionId):
         # 处理图像
         imgtitle = unescape(request.form.get("imgtitle", None))     # 图像对外标题
@@ -52,7 +52,7 @@ def bindRoutes(app):
 
     # 作者溯源视图函数
     @app.route("/query-author", methods=["POST"])
-    @userWrapper(hasSessionId=True)
+    @crpview(hasSessionId=True)
     def authorQuer(sessionId):
         import time
 

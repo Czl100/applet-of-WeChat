@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, userWrapper
+from crp.untils import sp, urlget, crpview
 from crp.services import userServices
 from flask import request_finished
 import json
@@ -9,7 +9,7 @@ import json
 def bindRoutes(app):
     # 会话建立
     @app.route("/sessionBuild/<code>")
-    @userWrapper()
+    @crpview()
     def sessionBuild(code):
         url = app.config['CODE_TO_WXID_URL']
         # 获得wxid
@@ -34,7 +34,7 @@ def bindRoutes(app):
 
     # 会话销毁
     @app.route("/sessionDestroy")
-    @userWrapper(hasSessionId=True)
+    @crpview(hasSessionId=True)
     def sessionDestroy(sessionId):
         sp.delSession(sessionId)
         return {}

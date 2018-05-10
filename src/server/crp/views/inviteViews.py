@@ -1,12 +1,12 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, userWrapper, unescape
+from crp.untils import sp, urlget, crpview, unescape
 from crp.services import imgHistoryServices, invitesServices, userServices
 from flask import request
 
 def bindRoutes(app):
     @app.route("/invite", methods=['post'])
-    @userWrapper(hasSessionId=True)
+    @crpview(hasSessionId=True)
     def invite(sessionId):
         inviterId = sp.wxid(sessionId)
         content = unescape(request.form.get("content", ""))
@@ -33,7 +33,7 @@ def bindRoutes(app):
         return {}
 
     @app.route("/query-invites")
-    @userWrapper(hasSessionId=True)
+    @crpview(hasSessionId=True)
     def inviteQuery(sessionId):
         wxid=sp.wxid(sessionId)
         page = int(request.args.get("page", 1))     # 默认为查询第一页
@@ -44,14 +44,14 @@ def bindRoutes(app):
         return {"pages":totalpage, "list":invitesList}
 
     @app.route("/query-unread-number")
-    @userWrapper(hasSessionId=True)
+    @crpview(hasSessionId=True)
     def unreadNum(sessionId):
         wxid = sp.wxid(sessionId)
         unreadnum = invitesServices.inviteUnreadNumber(app, wxid=wxid)
         return {"number":unreadnum}
 
     @app.route("/read-invite")
-    @userWrapper(hasSessionId=True)
+    @crpview(hasSessionId=True)
     def readInvite(sessionId):
         wxid = sp.wxid(sessionId)
         inviteId = request.args.get("inviteId", None)
@@ -61,7 +61,7 @@ def bindRoutes(app):
         return {}
 
     @app.route("/read-all-invites")
-    @userWrapper(hasSessionId=True)
+    @crpview(hasSessionId=True)
     def readAllInvites(sessionId):
         wxid = sp.wxid(sessionId)
         invitesServices.inviteAllRead(app, wxid=wxid)

@@ -8,9 +8,21 @@ import json
 
 sp = crp.sessionPool.SessionPool()      # 创建会话池
 
+# 解决反义字符问题
 def unescape(s):
     from html.parser import HTMLParser
     return HTMLParser().unescape(s)
+
+# 提取对象中的特定属性转换为字典数据
+def obj2map(obj, mapper):
+    map = {}
+    for onemap in mapper:
+        objattr = onemap[0]
+        if hasattr(obj, objattr):
+            val = getattr(obj, objattr)
+            mapattr = onemap[1]
+            map[mapattr] = val
+    return map
 
 # 简化的get请求
 def urlget(url, kvs=None):
@@ -46,7 +58,7 @@ uniqueImgIdGen = uniqueIdGenFun()
 
 # 视图函数返回装饰
 # 被该装饰器修饰的视图函数成功时返回dict，并在其中添加fg=True的kv。失败则fg=False，并添加错误信息到msg字段
-def userWrapper(hasSessionId=False):
+def crpview(hasSessionId=False):
     def innerWrapper(f):
         @wraps(f)
         def deractor(*args, **kw):
