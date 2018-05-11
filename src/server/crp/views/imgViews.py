@@ -29,11 +29,13 @@ def bindRoutes(app):
     @crpview(hasSessionId=True)
     def imgBind(sessionId):
         # 处理图像
+        imgFile = request.files.get('img', None)                    # 图像文件
+        if not imgFile:
+            raise Exception("lack img file")
         imgtitle = unescape(request.form.get("imgtitle", None))     # 图像对外标题
         imgtitle = imgtitle if imgtitle else None
         imgid = next(uniqueImgIdGen)                                # 获取该次操作的图像ID
         timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
-        imgFile = request.files['img']                              # 图像文件
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
         outImgPath = app.config["IMG_DIR"]+timeStamp+".jpeg"        # 载迷图像输出路径
         imgFile.save(inpImgPath)                                    # 将图像保存
@@ -56,7 +58,9 @@ def bindRoutes(app):
     def authorQuer(sessionId):
         import time
 
-        imgFile = request.files['img']      # 图像文件
+        imgFile = request.files.get('img', None)                    # 图像文件
+        if not imgFile:
+            raise Exception("lack img file")
         timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
         imgFile.save(inpImgPath)                                    # 将图像保存
@@ -71,3 +75,18 @@ def bindRoutes(app):
             return {"exists":exists, "imgtitle":imgtitle, "imgid":imgid}
         else :
             return {"exists":exists}
+
+    @app.route("/ih", methods=["POST"])
+    @crpview(hasSessionId=True)
+    def infoHide(sessionId):
+        key = request.form.get("key", None)
+        secret = request.form.get("secret", None)
+        imgFile = request.files['img']
+        raise Exception("not support the interface")
+        return {}
+
+    @app.route("/ix", methods=["POST"])
+    @crpview(hasSessionId=True)
+    def infoExtract(sessionId):
+        raise Exception("not support the interface")
+        return {}
