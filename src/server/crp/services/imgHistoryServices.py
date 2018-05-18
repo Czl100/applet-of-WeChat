@@ -7,7 +7,7 @@ from sqlalchemy import desc
 import datetime
 
 # 插入一条未处理完成的
-def notFinishImgHistory(app, sessionId, imgid, imgtitle):
+def insert_notfinish_img_history(app, sessionId, imgid, imgtitle):
     dbsession = app.sessionMaker()
     wxid = sp.wxid(sessionId)
     newHistory = ImgHistory(imgid=imgid, wxid=wxid, imgtitle=imgtitle, datetime=datetime.datetime.today())
@@ -15,7 +15,7 @@ def notFinishImgHistory(app, sessionId, imgid, imgtitle):
     dbsession.commit()
 
 # 当图像处理完成，更新该记录为已处理
-def updateFinishImgHistory(app, imgid, outImgPath): 
+def update_finish_img_history(app, imgid, outImgPath): 
     dbsession = app.sessionMaker()
     tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()  
     tmpHistory.path = outImgPath
@@ -23,7 +23,7 @@ def updateFinishImgHistory(app, imgid, outImgPath):
     dbsession.commit()
 
 # 查询imgid所对应的作者, 正确返回则找到匹配作者
-def queryImgAuthor(app, imgid):
+def query_img_author(app, imgid):
     dbsession=app.sessionMaker()
     exist=False
     imgtitle=None
@@ -37,7 +37,7 @@ def queryImgAuthor(app, imgid):
     return exist, imgtitle
 
 # 查询指定指定微信用户，指定页面的历史记录
-def queryHistoryPage(app, wxid, page, perpage):
+def query_history_page(app, wxid, page, perpage):
     # 数据库提取出该用户的所有图像
     dbsession = app.sessionMaker()
     try:
@@ -65,7 +65,7 @@ def queryHistoryPage(app, wxid, page, perpage):
     return totalpage, itemList
 
 # 查询imgid的图片相关信息，包括作者id，图片url，图片标题
-def queryImgInfo(app, imgid):
+def query_img_info(app, imgid):
     dbsession = app.sessionMaker()
     try:
         item = dbsession.query(ImgHistory).filter_by(imgid=imgid).one()

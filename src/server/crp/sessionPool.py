@@ -6,7 +6,7 @@ class SessionPool:
     __cache__ = SimpleCache()           # 建立session缓存
     __wx2sessionId__ = SimpleCache()    # 建立wxid到sessionId的映射
     __lock__ = threading.Lock()
-    __sessionNumber__ = 0           # 服务器建立以来session的总个数(已经不存在的session+仍然存在的session)
+    __sessionNumber__ = 0               # 服务器建立以来session的总个数(已经不存在的session+仍然存在的session)
     __md5__ = hashlib.md5()             # md5生成器
 
     def __init__(self):
