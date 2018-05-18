@@ -6,7 +6,7 @@ import datetime
 import math
 
 # 添加一条邀请，邀请中需要包含图像相关信息
-def addInvite(app, imgtitle, imgurl, nick, inviterId, authorId, content):
+def add_invite(app, imgtitle, imgurl, nick, inviterId, authorId, content):
     dbsession = app.sessionMaker()
     oneInvite = Invites(imgurl=imgurl, imgtitle=imgtitle, inviterNick=nick, inviterId=inviterId, authorId=authorId, content=content, datetime=datetime.datetime.today())
     try:
@@ -15,7 +15,7 @@ def addInvite(app, imgtitle, imgurl, nick, inviterId, authorId, content):
         dbsession.commit()
 
 # 查询邀请页
-def queryInvitesPage(app, authorId, perpage, page):
+def query_invites_page(app, authorId, perpage, page):
     dbsession = app.sessionMaker()
     try:
         allItems = dbsession.query(Invites).filter_by(authorId=authorId).order_by(desc(Invites.unread)).order_by(desc(Invites.datetime)).all()
@@ -43,7 +43,7 @@ def queryInvitesPage(app, authorId, perpage, page):
         itemList.append(dicitem)
     return totalpage, itemList
 
-def inviteUnreadNumber(app, wxid):
+def invite_unread_number(app, wxid):
     dbsession = app.sessionMaker()
     try:
         count = dbsession.query(Invites).filter_by(authorId=wxid).filter_by(unread=1).count()
@@ -51,7 +51,7 @@ def inviteUnreadNumber(app, wxid):
         dbsession.commit()
     return count
 
-def inviteHaveRead(app, wxid, inviteId):
+def invite_have_read(app, wxid, inviteId):
     dbsession = app.sessionMaker()
     try:
         inviteItem = dbsession.query(Invites).filter_by(id=inviteId).first()
@@ -61,7 +61,7 @@ def inviteHaveRead(app, wxid, inviteId):
     finally:
         dbsession.commit()
 
-def inviteAllRead(app, wxid):
+def invite_all_read(app, wxid):
     dbsession = app.sessionMaker()
     try:
         inviteList = dbsession.query(Invites).filter_by(authorId=wxid).filter_by(unread=1).all()

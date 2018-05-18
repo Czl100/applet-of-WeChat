@@ -1,9 +1,11 @@
 import crp.sessionPool
 import urllib.parse
 import urllib.request
+import json
+from werkzeug.contrib.cache import SimpleCache
 from functools import wraps
 from flask import request
-import json
+from threading import Lock  
 
 
 sp = crp.sessionPool.SessionPool()      # 创建会话池
@@ -40,7 +42,7 @@ def md5(s):
     return hasher.hexdigest()
 
 # 唯一ID生成器函数
-def uniqueIdGenFun():
+def unique_id_genfun():
     import random
     import threading
     
@@ -54,7 +56,7 @@ def uniqueIdGenFun():
         lock.release()
 
 # 图像ID唯一生成器
-uniqueImgIdGen = uniqueIdGenFun()
+unique_imgid_gen = unique_id_genfun()
 
 # 视图函数返回装饰
 # 被该装饰器修饰的视图函数成功时返回dict，并在其中添加fg=True的kv。失败则fg=False，并添加错误信息到msg字段
@@ -81,5 +83,30 @@ def crpview(hasSessionId=False):
                 rt["fg"]=False
                 rt["msg"]=str(e)
             return json.dumps(rt)
+        return deractor
+    return innerWrapper
+
+# 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
+ipcache = {}
+def request_aroundproc(app, request, requestlog=None, exceptlog=True, limit=True):
+    def innerWrapper(f):
+        @wraps(f)
+        def deractor(*args, **kw):
+            # 预处理
+            if requestlog:
+                ip = request.remote_addr
+                view = request.url
+                app.logger.debug("[请求]{0} --- {1}".format(ip, view))
+            if limit:
+                pass
+            # 请求处理
+            try:
+                r = f(*args, **kw)
+            # 后处理
+            except Exception as e:
+                if exceptlog:
+                    app.logger.error(e)
+            finally:
+                return r
         return deractor
     return innerWrapper

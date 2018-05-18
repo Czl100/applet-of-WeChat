@@ -6,7 +6,7 @@ from flask import request
 from sqlalchemy import desc
 from crp.services import imgHistoryServices
 
-def bindRoutes(app):
+def bind_routes(app):
     @app.route("/query-history")
     @crpview(hasSessionId=True)
     def history(sessionId):
@@ -16,6 +16,6 @@ def bindRoutes(app):
         perpage = int(app.config["PERPAGE_SIZE"])
 
         # 数据库提取出该页数据
-        totalpage, itemspage = imgHistoryServices.queryHistoryPage(app, wxid=wxid, page=page, perpage=perpage)
+        totalpage, itemspage = imgHistoryServices.query_history_page(app, wxid=wxid, page=page, perpage=perpage)
 
         return {"pages":totalpage, "list":itemspage}
