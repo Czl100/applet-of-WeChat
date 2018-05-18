@@ -7,5 +7,6 @@ import configs
 app = crp.create_app(configs.devConfig)
 
 if __name__ == '__main__':
-    # simple_server
+    #simple_server
+    print("================start================")
     app.run()
