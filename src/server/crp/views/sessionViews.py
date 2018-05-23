@@ -21,7 +21,6 @@ def bind_routes(app):
             "grant_type":"authorization_code"
         })
         respobj = json.loads(respstr)
-        print(respobj)
         if(respobj.get("errcode", None)):
             raise Exception("校验code失败，errcode:"+str(respobj.get("errcode", None)))
         

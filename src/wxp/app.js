@@ -17,9 +17,10 @@ App({
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
-       console.log(res.code)
+        var requrl = 'http://localhost:5000/sessionBuild/' + res.code
+        console.log(requrl)
        wx.request({
-         url: 'http://localhost:5000/sessionBuild/res.code',
+         url: requrl,
        //  method:'GET',
          data: {
            userInfo:res.code    //将用户信息发送上服务器
@@ -29,13 +30,19 @@ App({
          },
          success: function (res) {
         //   console.log(res.data)
-        console.log(res.data.fg)
+           console.log('=================session success=================')
+          console.log(res.data.fg)
+          if (res.data.fg) {
+            console.log(res.data.sessionId)
+          } else {
+            console.log(res.data.msg)
+          }
          },
          fail:function(res){
-           console.log(res.data.msg)
+           console.log('=================session fail=================')
          },
          complete:function(res){
-           console.log(res.data.sessionId)
+           
          }
        })
       }
