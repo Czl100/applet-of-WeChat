@@ -87,8 +87,7 @@ def crpview(hasSessionId=False):
     return innerWrapper
 
 # 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
-ipcache = {}
-def request_aroundproc(app, request, requestlog=None, exceptlog=True, limit=True):
+def request_around(app, request, requestlog=None, exceptlog=True, limit=True):
     def innerWrapper(f):
         @wraps(f)
         def deractor(*args, **kw):
@@ -105,7 +104,8 @@ def request_aroundproc(app, request, requestlog=None, exceptlog=True, limit=True
             # 后处理
             except Exception as e:
                 if exceptlog:
-                    app.logger.error(e)
+                    app.logger.error("【异常】{0}".format(str(e)))
+                raise e
             finally:
                 return r
         return deractor
