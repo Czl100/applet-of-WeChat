@@ -2,15 +2,42 @@
 App({
   onLaunch: function () {
     // 展示本地存储能力
+    var that=this
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
+    wx.setStorageSync('logs', logs) 
+/*
+    //作为本地的一个存储
+    wx.setStorage({
+      key: '_userInfo',
+      data: this.globalData.userInfo
+    })
+*/
     // 登录
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        console.log(res.code)
+       console.log(res.code)
+       wx.request({
+         url: 'http://localhost:5000/sessionBuild/res.code',
+       //  method:'GET',
+         data: {
+           userInfo:res.code    //将用户信息发送上服务器
+         },
+         header: {
+           'content-type': 'application/json' // 默认值
+         },
+         success: function (res) {
+        //   console.log(res.data)
+        console.log(res.data.fg)
+         },
+         fail:function(res){
+           console.log(res.data.msg)
+         },
+         complete:function(res){
+           console.log(res.data.sessionId)
+         }
+       })
       }
     })
     // 获取用户信息
@@ -18,23 +45,28 @@ App({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
+    
+          wx.getUserInfo({  //如果获取了用户的信息
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
-
+              this.globalData.userInfo = res.userInfo;
+            //  console.log(res.userInfo)
+            
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
               // 所以此处加入 callback 以防止这种情况
               if (this.userInfoReadyCallback) {
                 this.userInfoReadyCallback(res)
               }
-            }
+            } 
           })
         }
       }
     })
+   
   },
-  globalData: {
-    userInfo: null
+  globalData: {  //全局变量
+    userInfo:null,  //记录用户信息
+    chooseFiles:null,//保存已经选择的图片
+    ueser_images:[]
   }
 })

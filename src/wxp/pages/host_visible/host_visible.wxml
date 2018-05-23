@@ -1,0 +1,20 @@
+<view class='container'>
+
+<view>
+<image src="{{visible_chooseFiles}}"></image>
+</view>
+
+
+ 
+<view>
+<input placeholder='请输入水印信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input'></input>
+</view>
+
+<view class="button-sp-area">
+      <button class="weui-btn" type="#40C4FF" plain="true">确定</button>
+</view>
+
+<view class="button-sp-area">
+      <button class="weui-btn" type="black" plain="true">取消</button>
+</view>
+</view>
