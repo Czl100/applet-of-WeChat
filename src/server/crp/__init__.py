@@ -19,9 +19,9 @@ def create_app(config):
 
     #重置工作目录
     #os.chdir(os.path.dirname(__file__))
-    print (os.path.dirname(__file__))
+    #print (os.path.dirname(__file__))
     os.chdir(os.path.dirname(__file__))
-    print("===============next===========")
+    #print("===============next===========")
     
     # 创建服务器
     app = Flask(__name__)

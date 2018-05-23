@@ -13,7 +13,7 @@ class __BaseConfig__:
     PERPAGE_SIZE = 10
     
 class __DevConfig__(__BaseConfig__):
-    DEBUG = True
+    DEBUG = False
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@111.230.92.161:3306/crp?charset=utf8"
     ENABLE_HOST = "http://localhost:5000/"
     
