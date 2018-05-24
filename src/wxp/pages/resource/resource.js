@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    Image: "/pages/icon/camera.png",//这是原始的icon
+    Image: "/pages/icon/add.png",//这是原始的icon
     resource_chooseFiles:null,
     title:null,  //追溯到的图片的标题
   },

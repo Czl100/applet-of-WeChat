@@ -6,10 +6,10 @@ Page({
   data: {
     showTopTips: false,
   },
-  showTopTips: function () {
+  showTopTips: function () {  
     var that = this;
     this.setData({
-      showTopTips: true
+      showTopTips: true  
     });
     setTimeout(function () {
       that.setData({

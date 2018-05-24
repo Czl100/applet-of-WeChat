@@ -83,7 +83,7 @@ wx.navigateBack()
     wx.uploadFile({
       url: 'http://localhost:5000/image-bind',
       filePath: that.data.resign_chooseFiles,  //将图片上传
-      name:img,   
+      name:'img',   
       method:'POST',
       formData: {
         'sessionId': sessionId,   //附带用户的ID,图片隐藏的信息，发送到服务器

@@ -22,14 +22,19 @@ Page({
       ser: e.detail.value
     })
   },
+  oncancel:function(){
+    wx.navigateBack()
+  },
   onsure: function () {
     var that=this;
     var key = Jmd5.hexMD5(this.data.ser);
+    console.log(key);
+   var sessionId=wx.getStorageSync('sessionId');
     wx.uploadFile({  //用户点击确定，那么就上传到服务器，进行不可见信息的嵌入
       url: 'http://localhost:5000/ih',
       //      method:'POST',
       filePath: that.data.invisible_chooseFiles,
-      name: invisible_chooseFiles,
+      name: 'file',
       formData: {
         'sessionId': sessionId,   //附带用户的ID,图片隐藏的信息，发送到服务器
         'key':key,
@@ -37,9 +42,19 @@ Page({
       },
       success:function(res){
         console.log("嵌入水印成功",res.fg)
+        wx.showToast({
+          title: '嵌入成功,',
+          icon: 'success',
+          duration: 3000
+        });
       },
       fail:function(){
-        console.log("嵌入水印失败",res.msg)
+        console.log("嵌入水印失败",res.msg),
+        wx.showToast({
+          title: '数据加载中',
+          icon: 'loading',
+          duration: 3000
+        });
       }
     })
   },
