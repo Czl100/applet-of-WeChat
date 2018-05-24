@@ -1,5 +1,7 @@
 //app.js
+
 App({
+  
   onLaunch: function () {
     // 展示本地存储能力
     var that=this
@@ -19,23 +21,29 @@ App({
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
        console.log(res.code)
        wx.request({
-         url: 'http://localhost:5000/sessionBuild/res.code',
-       //  method:'GET',
+         url: 'http://localhost:5000/sessionBuild/' + res.code,
+        //method:'GET',
          data: {
-           userInfo:res.code    //将用户信息发送上服务器
+          //将用户信息发送上服务器
          },
          header: {
            'content-type': 'application/json' // 默认值
          },
          success: function (res) {
-        //   console.log(res.data)
-        console.log(res.data.fg)
+           // console.log('登陆返回', res.data)
+           if (res.data.fg == false) {
+          //   console.log('come in false')
+             return
+           }
+           console.log(res.data)
+           wx.setStorageSync('sessionId', res.data.sessionId);
+
          },
          fail:function(res){
            console.log(res.data.msg)
          },
          complete:function(res){
-           console.log(res.data.sessionId)
+         //  console.log(res.data.sessionId)
          }
        })
       }
@@ -67,6 +75,6 @@ App({
   globalData: {  //全局变量
     userInfo:null,  //记录用户信息
     chooseFiles:null,//保存已经选择的图片
-    ueser_images:[]
+   // ueser_images:[]
   }
 })

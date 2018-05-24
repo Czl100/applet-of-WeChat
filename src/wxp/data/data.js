@@ -1,42 +1,42 @@
+var postList = [{
+  inviter: "邀请人",
+  iamge: "../icon/camera.png",
+  works: "名称",
+  date: "2018 09 09",
+  comment: "你好早上好呀"
+},
+{
+  inviter: "邀请人",
+  iamge: "../icon/camera.png",
+  works: "名称",
+  date: "2018 09 09",
+  comment: "你好早上好呀"
+}]
 
+module.export={
+  postList:postList
+}
 Page({
 
   /**
    * 页面的初始数据
    */
-  data: { 
-    postList :[{
-      inviter: "邀请人",
-      iamge: "../icon/camera.png",
-      works: "名称",
-      date: "2018 09 09",
-      comment: "你好早上好呀"
-    },
-    {
-      inviter: "邀请人",
-      iamge: "../icon/camera.png",
-      works: "名称",
-      date: "2018 09 09",
-      comment: "你好早上好呀"
-    }]
+  data: {
+    
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      postList:postList
-    })
+    
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    wx.setNavigationBarTitle({
-      title: '消息提醒',
-    })
+    
   },
 
   /**

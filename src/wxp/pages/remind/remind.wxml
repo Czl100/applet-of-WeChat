@@ -1,20 +1,17 @@
+<block wx:for="{{postList}}" wx:for-item="item" wx:for-index="idx">
 <view class='post-container'>
-
 <view class='post-little-container'>
-
 <view class='post-little'>
-<image src='{{iamge}}'></image>
-<text>{{works}}</text>
+<image src='{{item.iamge}}'></image>
+<text>{{item.works}}</text>
 </view >
-
 <view class='post-little'>
 <view class='post-little-container'>
-<text>{{inviter}}</text>
-<text>{{date}}</text>
+<text>{{item.inviter}}</text>
+<text>{{item.date}}</text>
 </view>
-<text class='comment'>{{comment}}</text>
+<text class='comment'>{{item.comment}}</text>
 </view>
-
 </view>
-
 </view>
+</block>

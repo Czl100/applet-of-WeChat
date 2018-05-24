@@ -16,21 +16,19 @@ Page({
   onLoad: function (options) {
    this.setData({
       visible_chooseFiles:app.globalData.chooseFiles
-    
     })
+    
   },
 
    Input: function(e){
     this.setData({
       dis:e.detail.value
     })
-// console.log(this.data.dis);
+ //console.log(this.data.dis);
+
   },
 
-onsure:function(){
 
-
-},
 
 oncancel:function(){
 

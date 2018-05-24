@@ -17,6 +17,9 @@ Page({
     })
  //   console.log(this.data.dis);
   },
+  oncancel:function(){
+wx.navigateBack()
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -73,5 +76,25 @@ Page({
    */
   onShareAppMessage: function () {
     
+  },
+  onsure:function(){
+   var  that=this;
+   var  sessionId = wx.getStorageSync('sessionId');
+    wx.uploadFile({
+      url: 'http://localhost:5000/image-bind',
+      filePath: that.data.resign_chooseFiles,
+      name:'img',
+      method:'POST',
+      formData: {
+        'sessionId': sessionId,
+        'imgtitle': that.data.dis
+      },
+      success: function (res) {
+        console.log("图片上传成功", res.data.fg)
+      },
+      fail: function (res) {
+        console.log("图片上传失败", res.msg)
+      }
+    })
   }
 })

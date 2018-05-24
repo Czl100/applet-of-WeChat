@@ -23,9 +23,9 @@ Page({
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData({
-         chooseFiles:res.tempFilePaths
+         chooseFiles:res.tempFilePaths[0]
         });
-        app.globalData.chooseFiles=res.tempFilePaths
+        app.globalData.chooseFiles=res.tempFilePaths[0]
       }
 
     })
@@ -50,6 +50,7 @@ Page({
             url: '/pages/index/index',
           })
         } else {
+         
           wx.getUserInfo({
             success: function (res) {
              // console.log(res.userInfo)
@@ -101,13 +102,13 @@ Page({
     wx.navigateTo({
       url: '../host_visible/host_visible',
       success: function () {
-        console.log("jump succcess")
+        console.log("可见水印页面","jump succcess")
       },
       fail: function () {
-        console.log("jump failed")
+        console.log("可见水印页面","jump failed")
       },
       complete: function () {
-        console.log("jump complete")
+        console.log("可见水印页面","jump complete")
       }
     });
   },
@@ -115,13 +116,13 @@ Page({
     wx.navigateTo({
       url: '../host_invisible/host_invisible',
       success: function () {
-        console.log("jump succcess")
+        console.log("不可见水印页面","jump succcess")
       },
       fail: function () {
         console.log("jump failed")
       },
       complete: function () {
-        console.log("jump complete")
+        console.log("不可见水印页面","jump complete")
       }
     });
   },
@@ -129,13 +130,13 @@ Page({
     wx.navigateTo({
       url: '../host_resign/host_resign',
       success: function () {
-        console.log("jump succcess")
+        console.log("注册绑定","jump succcess")
       },
       fail: function () {
-        console.log("jump failed")
+        console.log("注册绑定","jump failed")
       },
       complete: function () {
-        console.log("jump complete")
+        console.log("注册绑定","jump complete")
       }
     });
   }

@@ -1,32 +1,23 @@
-
 Page({
 
   /**
    * 页面的初始数据
    */
-  data: { 
-    postList :[{
-      inviter: "邀请人",
-      iamge: "../icon/camera.png",
-      works: "名称",
-      date: "2018 09 09",
-      comment: "你好早上好呀"
-    },
-    {
-      inviter: "邀请人",
-      iamge: "../icon/camera.png",
-      works: "名称",
-      date: "2018 09 09",
-      comment: "你好早上好呀"
-    }]
+  data: {
+    title:'追溯成功',
+    imagid:null
   },
-
+onno:function(){
+wx.navigateBack();
+},
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options)
     this.setData({
-      postList:postList
+      title:options.title,
+      imagid:options.imagid
     })
   },
 
@@ -34,9 +25,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    wx.setNavigationBarTitle({
-      title: '消息提醒',
-    })
+    
   },
 
   /**

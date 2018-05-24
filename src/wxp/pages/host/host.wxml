@@ -1,6 +1,6 @@
 <view class='host-container'>
 <view class='choice'>
-  <image src="{{chooseFiles?chooseFiles[0]:Image}}" catchtap='chooseImage' ></image>
+  <image src="{{chooseFiles?chooseFiles:Image}}" catchtap='chooseImage' ></image>
   <text >选择图片</text>
 </view>
   

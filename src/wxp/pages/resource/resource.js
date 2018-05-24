@@ -6,7 +6,8 @@ Page({
    */
   data: {
     Image: "/pages/icon/camera.png",//这是原始的icon
-    resource_chooseFiles:[]
+    resource_chooseFiles:null,
+    title:null,  //追溯到的图片的标题
   },
   chooseImage: function (event) {
     var that = this;
@@ -17,13 +18,72 @@ Page({
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData({
-           resource_chooseFiles: res.tempFilePaths
+           resource_chooseFiles: res.tempFilePaths[0]
+
         });
         // resource_chooseFiles = res.tempFilePaths
       }
 
     })
 
+  },
+  
+  onstart:function(){
+    var that=this;
+    var sessionId = wx.getStorageSync('sessionId');
+        wx.uploadFile({
+          url: 'http://localhost:5000/query-author',
+          method:'POST',
+          filePath: that.data.resource_chooseFiles,
+          name: 'file',
+          formData: {
+            'sessionId': sessionId
+          },
+          success: function (res) {
+          
+            console.log("图片可开始追溯", res.fg)
+            if(res.exist){  //如果作者信息没有找到，那么服务器上返回exit=false
+            wx.showModal({
+              title: '温馨提醒',
+              content: '该图片没有追溯成功',
+              confirmText: "确定",
+              cancelText: "取消",
+              success: function (res) {
+                console.log(res);
+                if (res.confirm) {
+                  console.log('确定')
+                  wx.navigateBack();
+                } else {
+                  console.log('取消')
+                  wx.navigateBack();
+                }
+              }
+            });
+            }
+            else{  //这个时候，作者信息找到
+              wx.navigateTo({
+                url: 'resource_success?title='+res.title +'& imgid='+res.imgid,
+              })
+            }
+        
+            /*
+            wx.showToast({
+              title: '已完成,',
+              icon: 'success',
+              duration: 3000
+            });
+            */
+          },
+          fail: function (res) {
+            console.log("图片追溯上传失败", res.msg)         
+              wx.showToast({
+                title: '数据加载中',
+                icon: 'loading',
+                duration: 3000
+              });
+          
+          }
+        })
   },
   /**
    * 生命周期函数--监听页面加载

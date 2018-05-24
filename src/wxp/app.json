@@ -8,7 +8,10 @@
     "pages/remind/remind",
     "pages/resource/resource",
     "pages/host_invisible/host_invisible",
-    "pages/host_resign/host_resign"
+    "pages/host_resign/host_resign",
+    "data/data",
+    "pages/resource/resource_success"
+  
   ],
   "window":{
     "backgroundTextStyle":"light",

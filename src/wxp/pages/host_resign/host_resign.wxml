@@ -10,11 +10,11 @@
 
 
 <view class="button-sp-area">
-      <button class="weui-btn" type="#40C4FF" plain="true">绑定</button>
+      <button class="weui-btn" type="#40C4FF" plain="true" catchtap='onsure'>绑定</button>
 </view>
 
 <view class="button-sp-area">
-      <button class="weui-btn" type="black" plain="true">取消</button>
+      <button class="weui-btn" type="black" plain="true" catchtap='oncancel'>取消</button>
 </view>
 
 </view>
