@@ -82,15 +82,15 @@ wx.navigateBack()
    var  sessionId = wx.getStorageSync('sessionId');
     wx.uploadFile({
       url: 'http://localhost:5000/image-bind',
-      filePath: that.data.resign_chooseFiles,
-      name:'img',
+      filePath: that.data.resign_chooseFiles,  //将图片上传
+      name:img,   
       method:'POST',
       formData: {
-        'sessionId': sessionId,
+        'sessionId': sessionId,   //附带用户的ID,图片隐藏的信息，发送到服务器
         'imgtitle': that.data.dis
       },
       success: function (res) {
-        console.log("图片上传成功", res.data.fg)
+        console.log("图片上传成功", res.fg)
         wx.showToast({
           title: '图片绑定成功',
           icon: 'success',

@@ -1,1 +1,10 @@
 /* pages/history/history.wxss */
+.image-container{
+  width: 150rpx;
+  height: 150rpx;
+}
+.container{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}

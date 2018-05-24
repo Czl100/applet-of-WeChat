@@ -10,7 +10,8 @@
     "pages/host_invisible/host_invisible",
     "pages/host_resign/host_resign",
     "data/data",
-    "pages/resource/resource_success"
+    "pages/resource/resource_success",
+    "pages/resource/resource_msg"
   
   ],
   "window":{

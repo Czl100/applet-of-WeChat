@@ -4,17 +4,18 @@
 <image src="{{invisible_chooseFiles}}"></image>
 </view>
 
+
+ 
 <view>
-<input placeholder='请输入不可见水印的信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input'></input>
-</view>
-
-
-<view class="button-sp-area">
-      <button class="weui-btn" type="#40C4FF" plain="true">确定</button>
+<input placeholder='请输入水印信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input_dis'></input>
+<input placeholder='请输入密码' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input_ser'></input>
 </view>
 
 <view class="button-sp-area">
-      <button class="weui-btn" type="black" plain="true">取消</button>
+      <button class="weui-btn" type="#40C4FF" plain="true" catchtap='onsure'>确定</button>
 </view>
 
+<view class="button-sp-area">
+      <button class="weui-btn" type="black" plain="true" catchtap='oncancel'>取消</button>
+</view>
 </view>

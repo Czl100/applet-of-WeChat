@@ -4,27 +4,29 @@ Page({
    * 页面的初始数据
    */
   data: {
-    title:'追溯成功',
-    imagid:null,
-  
+    showTopTips: false,
   },
-onno:function(){
-wx.navigateBack();
-},
-onyes:function(){  //如果点击了粉丝留言
-    wx.navigateTo({
-      url: 'resource_msg'
-    })
-},
+  showTopTips: function () {
+    var that = this;
+    this.setData({
+      showTopTips: true
+    });
+    setTimeout(function () {
+      that.setData({
+        showTopTips: false
+      });
+    }, 3000);
+  },
+  bindAgreeChange: function (e) {
+    this.setData({
+      isAgree: !!e.detail.value.length
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
-    this.setData({
-      title:options.title,
-      imagid:options.imagid
-    })
+    
   },
 
   /**

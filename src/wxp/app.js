@@ -19,6 +19,7 @@ App({
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        
         var requrl = 'http://localhost:5000/sessionBuild/' + res.code
         console.log(requrl)
        wx.request({
@@ -36,7 +37,7 @@ App({
            'content-type': 'application/json' // 默认值
          },
          success: function (res) {
-
+         
            // console.log('登陆返回', res.data)
            if (res.data.fg == false) {
           //   console.log('come in false')
