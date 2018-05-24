@@ -33,7 +33,7 @@ Page({
     var sessionId = wx.getStorageSync('sessionId');
         wx.uploadFile({
           url: 'http://localhost:5000/query-author',
-          method:'POST',
+         // method:'POST',
           filePath: that.data.resource_chooseFiles,
           name: 'file',
           formData: {
@@ -42,7 +42,7 @@ Page({
           success: function (res) {
           
             console.log("图片可开始追溯", res.fg)
-            if(res.exist){  //如果作者信息没有找到，那么服务器上返回exit=false
+            if(!res.exist){  //如果作者信息没有找到，那么服务器上返回exit=false
             wx.showModal({
               title: '温馨提醒',
               content: '该图片没有追溯成功',

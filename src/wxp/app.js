@@ -19,10 +19,16 @@ App({
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
-       console.log(res.code)
+        var requrl = 'http://localhost:5000/sessionBuild/' + res.code
+        console.log(requrl)
        wx.request({
+
          url: 'http://localhost:5000/sessionBuild/' + res.code,
         //method:'GET',
+
+         url: requrl,
+       //  method:'GET',
+
          data: {
           //将用户信息发送上服务器
          },
@@ -30,6 +36,7 @@ App({
            'content-type': 'application/json' // 默认值
          },
          success: function (res) {
+
            // console.log('登陆返回', res.data)
            if (res.data.fg == false) {
           //   console.log('come in false')
@@ -38,12 +45,24 @@ App({
            console.log(res.data)
            wx.setStorageSync('sessionId', res.data.sessionId);
 
+
+        //   console.log(res.data)
+           console.log('=================session success=================')
+          console.log(res.data.fg)
+          if (res.data.fg) {
+            console.log(res.data.sessionId)
+          } else {
+            console.log(res.data.msg)
+          }
+
          },
          fail:function(res){
-           console.log(res.data.msg)
+           console.log('=================session fail=================')
          },
          complete:function(res){
-         //  console.log(res.data.sessionId)
+
+
+      
          }
        })
       }

@@ -15,7 +15,14 @@ Page({
     })
     console.log(this.data.dis);
   },
-  
+  onsure:function(){
+      wx.uploadFile({
+        url: 'http://localhost:5000/ih',
+        method:'POST',
+        filePath: '',
+        name: '',
+      })
+  },
   /**
    * 生命周期函数--监听页面加载
    */

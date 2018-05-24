@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, crpview, request_aroundproc
+from crp.untils import sp, urlget, crpview, request_around
 from crp.services import userServices
 from flask import request
 import json
@@ -9,8 +9,8 @@ import json
 def bind_routes(app):
     # 会话建立
     @app.route("/sessionBuild/<code>")
-    @request_aroundproc(app, request, requestlog=True)
     @crpview()
+    @request_around(app, request, requestlog=True)
     def session_build(code):
         url = app.config['CODE_TO_WXID_URL']
         # 获得wxid
@@ -21,7 +21,6 @@ def bind_routes(app):
             "grant_type":"authorization_code"
         })
         respobj = json.loads(respstr)
-        print(respobj)
         if(respobj.get("errcode", None)):
             raise Exception("校验code失败，errcode:"+str(respobj.get("errcode", None)))
         

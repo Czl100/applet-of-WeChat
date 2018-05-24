@@ -91,6 +91,11 @@ wx.navigateBack()
       },
       success: function (res) {
         console.log("图片上传成功", res.data.fg)
+        wx.showToast({
+          title: '图片绑定成功',
+          icon: 'success',
+          duration: 3000
+        });
       },
       fail: function (res) {
         console.log("图片上传失败", res.msg)
