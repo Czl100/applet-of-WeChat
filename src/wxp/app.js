@@ -95,6 +95,6 @@ App({
   globalData: {  //全局变量
     userInfo:null,  //记录用户信息
     chooseFiles:null,//保存已经选择的图片
-   // ueser_images:[]
+   userimages:[]  //用于作为该用户的本地缓存
   }
 })

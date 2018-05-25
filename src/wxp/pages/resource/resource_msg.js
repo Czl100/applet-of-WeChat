@@ -5,18 +5,22 @@ Page({
    */
   data: {
     showTopTips: false,
+    isAgree: false  //用来后面的错误提示
   },
-  showTopTips: function () {  
+
+  showTopTips: function () {    //这个就是点击确定按键的时候
     var that = this;
     this.setData({
-      showTopTips: true  
+      showTopTips: false 
     });
     setTimeout(function () {
       that.setData({
         showTopTips: false
       });
     }, 3000);
+    wx.navigateBack();
   },
+
   bindAgreeChange: function (e) {
     this.setData({
       isAgree: !!e.detail.value.length

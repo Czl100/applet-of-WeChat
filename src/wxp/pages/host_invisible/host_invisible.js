@@ -42,6 +42,9 @@ Page({
       },
       success:function(res){
         console.log("嵌入水印成功",res.fg)
+        app.globalData.userimages.push(that.data.invisible_chooseFiles);//当用户点击确定之后，将图片保存在本地缓存
+       var ss= wx.setStorageSync('userimages',app.globalData.userimages);
+        console.log(ss);
         wx.showToast({
           title: '嵌入成功,',
           icon: 'success',
