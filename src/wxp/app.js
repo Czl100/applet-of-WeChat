@@ -37,10 +37,9 @@ App({
            'content-type': 'application/json' // 默认值
          },
          success: function (res) {
-         
            // console.log('登陆返回', res.data)
            if (res.data.fg == false) {
-          //   console.log('come in false')
+             console.log(res.data.msg)
              return
            }
            console.log(res.data)
@@ -61,8 +60,6 @@ App({
            console.log('=================session fail=================')
          },
          complete:function(res){
-
-
       
          }
        })
