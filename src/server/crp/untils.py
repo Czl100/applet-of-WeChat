@@ -100,12 +100,11 @@ def request_around(app, request, requestlog=None, exceptlog=True, limit=True):
             # 请求处理
             try:
                 r = f(*args, **kw)
+                return r
             # 后处理
             except Exception as e:
                 if exceptlog:
                     app.logger.error("【异常】{0}".format(str(e)))
                 raise e
-            finally:
-                return r
         return deractor
     return innerWrapper
