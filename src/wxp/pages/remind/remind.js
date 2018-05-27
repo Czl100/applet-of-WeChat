@@ -8,14 +8,12 @@ Page({
     postList :[{
       inviter: "邀请人",
       iamge: "../icon/camera.png",
-      works: "名称",
       date: "2018 09 09",
       comment: "你好早上好呀"
     },
     {
       inviter: "邀请人",
       iamge: "../icon/camera.png",
-      works: "名称",
       date: "2018 09 09",
       comment: "你好早上好呀"
     }]
@@ -29,7 +27,6 @@ Page({
       postList:postList
     })
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -43,7 +40,22 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+    var sessionId=wx.getStorageSync('sessionId');
+    wx.request({
+      url: 'http://localhost:5000/query-invites',
+      method:'POST',
+      data:{
+        'sessionId':sessionId,
+        'page':1
+      },
+      success:function(res){
+        console.log('查询成功',res.data.fg)
+        //将服务器反馈回来的数据存在数组当中
+      },
+      fail:function(res){
+        console.log('查询失败',res.data.msg)
+      }
+    })
   },
 
   /**

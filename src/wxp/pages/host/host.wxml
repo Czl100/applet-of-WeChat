@@ -1,18 +1,18 @@
 <view class='host-container'>
 <view class='choice'>
   <image src="{{chooseFiles?chooseFiles:Image}}" catchtap='chooseImage' ></image>
-  <text >选择图片</text>
+  <text catchtap='chooseImage'>选择图片</text>
 </view>
   
-  <view class='watermark-line-container'>
-  <text catchtap='onJump_host_visible'>可见水印-离线支持</text>
+  <view class='watermark-line-container' catchtap='onJump_host_visible'>
+  <text >可见水印-离线支持</text>
   </view>
-  <view class='watermark-line-container'>
-  <text catchtap='onJump_host_invisible'>不可见水印</text>  
+  <view class='watermark-line-container' catchtap='onJump_host_invisible'>
+  <text >不可见水印</text>  
   </view>
   
-  <view class='watermark-line-container'>
-  <text catchtap='onJump_host_resign'>图片绑定</text>
+  <view class='watermark-line-container' catchtap='onJump_host_resign'>
+  <text >图片绑定</text>
   </view>
 
   </view>

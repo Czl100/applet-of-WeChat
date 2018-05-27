@@ -5,15 +5,16 @@ Page({
    */
   data: {
     title:'追溯成功',
-    imagid:null,
+    imgid:null,
   
   },
 onno:function(){
 wx.navigateBack();
 },
 onyes:function(){  //如果点击了粉丝留言
+var that=this;
     wx.navigateTo({
-      url: 'resource_msg'
+      url: 'resource_msg?imgid'+that.data.imgid
     })
 },
   /**

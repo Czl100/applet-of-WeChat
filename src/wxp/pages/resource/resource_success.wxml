@@ -6,7 +6,7 @@
         <view class="weui-msg__text-area">
             <view class="weui-msg__title">追溯成功</view>
             <view class="weui-msg__desc">{{title}}</view>
-            <view class="weui-msg__desc">{{imagid}}</view>
+            <view class="weui-msg__desc">{{imgid}}</view>
         </view>
         <view class="weui-msg__opr-area">
             <view class="weui-btn-area">

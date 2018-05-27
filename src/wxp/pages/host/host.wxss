@@ -5,9 +5,10 @@
 }
 .choice{
   display: flex;
-  margin: 0 auto;
+  margin-top: 30rpx;
   flex-direction: column;
   align-items: center;
+
 }
 
 .choice image{
@@ -15,7 +16,7 @@
   height: 300rpx;
 }
 .choice text{
-  font-size: 38rpx;
+  font-size: 32rpx;
 }
 
 .watermark-line-container text{

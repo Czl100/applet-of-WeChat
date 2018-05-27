@@ -8,6 +8,7 @@ Page({
     Image: "/pages/icon/add.png",//这是原始的icon
     resource_chooseFiles:null,
     title:null,  //追溯到的图片的标题
+    imgid:null
   },
   chooseImage: function (event) {
     var that = this;
@@ -19,11 +20,8 @@ Page({
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData({
            resource_chooseFiles: res.tempFilePaths[0]
-
         });
-        // resource_chooseFiles = res.tempFilePaths
       }
-
     })
 
   },
@@ -33,16 +31,20 @@ Page({
     var sessionId = wx.getStorageSync('sessionId');
         wx.uploadFile({
           url: 'http://localhost:5000/query-author',
-         // method:'POST',
+          method:'POST',
           filePath: that.data.resource_chooseFiles,
           name: 'file',
           formData: {
             'sessionId': sessionId
           },
           success: function (res) {
-          
-            console.log("图片可开始追溯", res.fg)
-            if(res.exist){  //如果作者信息没有找到，那么服务器上返回exit=false
+            console.log("图片可开始追溯", res.data.fg)
+            //如果图片可以开始进行追溯，那么就将信息放在缓存中
+      
+            console.log('追溯图片是',that.data.resource_chooseFiles)
+
+        //    imgid=res.data.imgid;//这个是图片的id，用于作者溯源
+            if(!res.exist){  //如果作者信息没有找到，那么服务器上返回exit=false
             wx.showModal({
               title: '温馨提醒',
               content: '该图片没有追溯成功',
@@ -62,8 +64,10 @@ Page({
             }
             else{  //这个时候，作者信息找到
               wx.navigateTo({
-                url: 'resource_success?title='+res.title +'& imgid='+res.imgid,
+                url: 'resource_success?title='+res.data.title +'& imgid='+res.data.imgid,
               })
+              //如果作者的信息可以找到，那么可以把这个图片的id放在缓存中，
+              wx.setStorageSync('imgid',res.data.imgid);
             }
         
             /*
@@ -75,7 +79,7 @@ Page({
             */
           },
           fail: function (res) {
-            console.log("图片追溯上传失败", res.msg)         
+            console.log("图片追溯上传失败", res.data.msg)         
               wx.showToast({
                 title: '数据加载中',
                 icon: 'loading',

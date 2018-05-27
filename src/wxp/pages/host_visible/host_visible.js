@@ -27,11 +27,17 @@ Page({
  //console.log(this.data.dis);
 
   },
-
-
-
+onsure:function(){
+  /*
+  wx.showToast({
+    title: '嵌入成功,',
+    icon: 'success',
+    duration: 3000
+  });
+  */
+},
 oncancel:function(){
-
+  wx.navigateBack()
 },
   /**
    * 生命周期函数--监听页面初次渲染完成

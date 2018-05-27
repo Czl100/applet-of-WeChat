@@ -15,7 +15,7 @@ Page({
     this.setData({
       dis: e.detail.value
     })
-    console.log(this.data.dis);
+  //  console.log(this.data.dis);
   },
   Input_ser: function (e) {
     this.setData({
@@ -30,18 +30,19 @@ Page({
     var key = Jmd5.hexMD5(this.data.ser);
     console.log(key);
    var sessionId=wx.getStorageSync('sessionId');
-    wx.uploadFile({  //用户点击确定，那么就上传到服务器，进行不可见信息的嵌入
+   console.log(that.data.invisible_chooseFiles);
+    wx.uploadFile({ //用户点击确定，那么就上传到服务器，进行不可见信息的嵌入
       url: 'http://localhost:5000/ih',
-      //      method:'POST',
+       method:'POST',
       filePath: that.data.invisible_chooseFiles,
       name: 'file',
       formData: {
-        'sessionId': sessionId,   //附带用户的ID,图片隐藏的信息，发送到服务器
-        'key':key,
-        'secret': that.data.dis
+        'sessionId': sessionId,     //附带用户的ID,图片隐藏的信息，发送到服务器
+        'key':key, //这个通过md5加密过之后的key(用户输入的密码)
+        'secret': that.data.dis     //这个是嵌入水印的密文信息
       },
       success:function(res){
-        console.log("嵌入水印成功",res.fg)
+        console.log("嵌入成功",res.data.fg)
         app.globalData.userimages.push(that.data.invisible_chooseFiles);//当用户点击确定之后，将图片保存在本地缓存
        var ss= wx.setStorageSync('userimages',app.globalData.userimages);
         console.log(ss);
@@ -52,7 +53,7 @@ Page({
         });
       },
       fail:function(){
-        console.log("嵌入水印失败",res.msg),
+        console.log("嵌入水印失败",res.data.msg),
         wx.showToast({
           title: '数据加载中',
           icon: 'loading',

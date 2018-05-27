@@ -3,7 +3,6 @@
 <view class='post-little-container'>
 <view class='post-little'>
 <image src='{{item.iamge}}'></image>
-<text>{{item.works}}</text>
 </view >
 <view class='post-little'>
 <view class='post-little-container'>

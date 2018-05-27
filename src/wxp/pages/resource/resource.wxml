@@ -6,8 +6,8 @@
   
   
   
-<view class="button-sp-area">
-      <button class="weui-btn" type="#40C4FF" plain="true"  bindtap="onstart">开始追溯</button>
+<view class="button-sp-area"  bindtap="onstart">
+      <button class="weui-btn" type="#40C4FF" plain="true" >开始追溯</button>
 </view>
 
   </view>

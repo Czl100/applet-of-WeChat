@@ -3,8 +3,6 @@
 <view>
 <image src="{{visible_chooseFiles}}"></image>
 </view>
-
-
  
 <view>
 <input placeholder='请输入水印信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input'></input>

@@ -1,7 +1,21 @@
+var app=getApp();
+
 Page({
   data: {
-    files: []
+    files: [],
+   
   },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onShow: function (options) {
+    this.setData({
+      files: (wx.getStorageSync('userimages')),
+
+    })
+  //  console.log(this.data.files)
+  },
+  /*
   chooseImage: function (e) {
     var that = this;
     wx.chooseImage({
@@ -15,6 +29,7 @@ Page({
       }
     })
   },
+  */
   previewImage: function (e) {
     wx.previewImage({
       current: e.currentTarget.id, // 当前显示图片的http链接

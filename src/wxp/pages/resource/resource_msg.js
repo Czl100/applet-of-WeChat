@@ -1,3 +1,4 @@
+var content;
 Page({
 
   /**
@@ -5,11 +6,34 @@ Page({
    */
   data: {
     showTopTips: false,
-    isAgree: false  //用来后面的错误提示
+    isAgree: false,  //用来后面的错误提示
+   // content:null  //用来进行相关的文本，字数是140个
+  //  imgid=null
   },
-
+  Input_content: function (e) {  //获取留言框中的信息content
+    content = e.detail.value
+    // console.log(content)
+  },
   showTopTips: function () {    //这个就是点击确定按键的时候
     var that = this;
+    var imgid=wx.getStorageSync('imgid');     //从缓存中吧imgid取出来
+    var sessionId=wx.getStorageSync('sessionId');
+    //将用户的id,imgid,content都发送到服务器上
+    wx.request({
+      url: 'http://localhost:5000/invite',
+      method:'POST',
+      data:{
+        'sessionId':sessionId,
+        'imgid':imgid,
+        'content':content //留言信息发送到服务器
+      },
+      success:function(res){
+        console.log('发送邀请成功',res.data.fg)
+      },
+      fail:function(res){
+        console.log('发送邀请失败',res.data.msg)
+      }
+    })
     this.setData({
       showTopTips: false 
     });
@@ -19,8 +43,9 @@ Page({
       });
     }, 3000);
     wx.navigateBack();
+    
   },
-
+ 
   bindAgreeChange: function (e) {
     this.setData({
       isAgree: !!e.detail.value.length
