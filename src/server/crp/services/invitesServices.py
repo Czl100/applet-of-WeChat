@@ -36,7 +36,7 @@ def query_invites_page(app, authorId, perpage, page):
             "unread": item.unread,
             "inviter":item.inviterNick,
             "img":item.imgurl,
-            "title":item.imgtitle,
+            "imgtitle":item.imgtitle,
             "content":item.content,
             "datetime":str(item.datetime)
         }
