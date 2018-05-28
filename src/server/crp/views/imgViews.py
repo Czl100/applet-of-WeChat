@@ -59,7 +59,6 @@ def bind_routes(app):
     @request_around(app, request, requestlog=True)
     def query_author(sessionId):
         import time
-
         imgFile = request.files.get('img', None)                    # 图像文件
         if not imgFile:
             raise Exception("lack img file")
@@ -72,7 +71,6 @@ def bind_routes(app):
 
         # 查询库
         exists, imgtitle = imgHistoryServices.query_img_author(app, imgid=imgid)
-
         if exists : 
             return {"exists":exists, "imgtitle":imgtitle, "imgid":imgid}
         else :
@@ -82,16 +80,11 @@ def bind_routes(app):
     @crpview(hasSessionId=True)
     @request_around(app, request, requestlog=True)
     def info_hide(sessionId):
-        print('================= start =================')
         key = request.form.get("key", None)
-        print('===1===')
         secret = request.form.get("secret", None)
-        print('===2===')
         imgFile = request.files.get('img', None)                    # 图像文件
         if not imgFile:
             raise Exception("lack img file")
-        print('===3===')
-        print('================= over =================')
         raise Exception("not support the interface")
         return {}
 

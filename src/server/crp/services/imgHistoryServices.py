@@ -56,7 +56,7 @@ def query_history_page(app, wxid, page, perpage):
     for item in items:
         dicitem = {
             "img":app.config['ENABLE_HOST']+item.path,
-            "title":item.title,
+            "title":item.imgtitle,
             "date":str(item.datetime),
             "finish":str(item.finish)
         }

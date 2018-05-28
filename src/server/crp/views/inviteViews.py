@@ -1,13 +1,15 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, crpview, unescape
+from crp.untils import sp, urlget, crpview, unescape, request_around
 from crp.services import imgHistoryServices, invitesServices, userServices
 from flask import request
 
 def bind_routes(app):
-    @app.route("/invite", methods=['post'])
+    @app.route("/invite", methods=['post', 'get'])
     @crpview(hasSessionId=True)
+    @request_around(app, request, requestlog=True)
     def invite(sessionId):
+        print("=============== START ===============")
         inviterId = sp.wxid(sessionId)
         content = unescape(request.form.get("content", ""))
         if len(content) >= 140:
@@ -29,11 +31,12 @@ def bind_routes(app):
         # 邀请信息入库
         invitesServices.add_invite(app, \
             imgtitle=imgtitle, imgurl=imgurl, nick=nick, inviterId=inviterId, authorId=authorId, content=content)
-        
+        print("=============== OK ===============")
         return {}
 
     @app.route("/query-invites")
     @crpview(hasSessionId=True)
+    @request_around(app, request, requestlog=True)
     def query_invites(sessionId):
         wxid=sp.wxid(sessionId)
         page = int(request.args.get("page", 1))     # 默认为查询第一页
@@ -45,6 +48,7 @@ def bind_routes(app):
 
     @app.route("/query-unread-number")
     @crpview(hasSessionId=True)
+    @request_around(app, request, requestlog=True)
     def query_unread(sessionId):
         wxid = sp.wxid(sessionId)
         unreadnum = invitesServices.invite_unread_number(app, wxid=wxid)
@@ -52,6 +56,7 @@ def bind_routes(app):
 
     @app.route("/read-invite")
     @crpview(hasSessionId=True)
+    @request_around(app, request, requestlog=True)
     def read_invite(sessionId):
         wxid = sp.wxid(sessionId)
         inviteId = request.args.get("inviteId", None)
@@ -62,6 +67,7 @@ def bind_routes(app):
 
     @app.route("/read-all-invites")
     @crpview(hasSessionId=True)
+    @request_around(app, request, requestlog=True)
     def read_all_invites(sessionId):
         wxid = sp.wxid(sessionId)
         invitesServices.invite_all_read(app, wxid=wxid)
