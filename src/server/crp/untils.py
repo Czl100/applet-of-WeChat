@@ -4,7 +4,7 @@ import urllib.request
 import json
 from werkzeug.contrib.cache import SimpleCache
 from functools import wraps
-from flask import request
+from flask import request, Response
 from threading import Lock  
 
 
@@ -81,7 +81,7 @@ def crpview(hasSessionId=False):
             except Exception as e:
                 rt["fg"]=False
                 rt["msg"]=str(e)
-            return json.dumps(rt)
+            return Response(json.dumps(rt), mimetype='application/json')
         return deractor
     return innerWrapper
 
