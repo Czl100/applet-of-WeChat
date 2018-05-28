@@ -31,8 +31,8 @@ Page({
    url: 'http://localhost:5000/ix',
    method:'POST',
    data:{
-     'sessionId': wx.getStorageSync(sessionId),
-      'file':file,
+     'sessionId': wx.getStorageSync('sessionId'),
+      'img':file,
       'key':that.data.ser  //输入的密码
    },
    success:function(res){
@@ -69,7 +69,7 @@ Page({
       url: 'http://localhost:5000/ih',
        method:'POST',
       filePath: that.data.invisible_chooseFiles,
-      name: 'file',
+      name: 'img',
       formData: {
         'sessionId': sessionId,     //附带用户的ID,图片隐藏的信息，发送到服务器
         'key':key, //这个通过md5加密过之后的key(用户输入的密码)
