@@ -45,9 +45,6 @@ Page({
             console.log('追溯图片是',that.data.resource_chooseFiles)
 
         //    imgid=res.data.imgid;//这个是图片的id，用于作者溯源
-
-            if(res.data.exist){  //如果作者信息没有找到，那么服务器上返回exit=false
-
             if(!res.data.exists){  //如果作者信息没有找到，那么服务器上返回exit=false
 
             wx.showModal({
@@ -73,7 +70,6 @@ Page({
               })
               //如果作者的信息可以找到，那么可以把这个图片的id放在缓存中，
               wx.setStorageSync('imgid',res.data.imgid);
-            }
             }
           },
           fail: function (res) {
