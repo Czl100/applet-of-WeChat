@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, crpview, unique_imgid_gen, md5, unescape
+from crp.untils import sp, urlget, crpview, unique_imgid_gen, md5, unescape, request_around
 from crp.services import imgHistoryServices
 from flask import request
 
@@ -27,6 +27,7 @@ def bind_routes(app):
     # 图像绑定视图函数
     @app.route("/img-bind", methods=["POST"])
     @crpview(hasSessionId=True)
+    @request_around(app, request, requestlog=True)
     def img_bind(sessionId):
         # 处理图像
         imgFile = request.files.get('img', None)                    # 图像文件
@@ -55,6 +56,7 @@ def bind_routes(app):
     # 作者溯源视图函数
     @app.route("/query-author", methods=["POST"])
     @crpview(hasSessionId=True)
+    @request_around(app, request, requestlog=True)
     def query_author(sessionId):
         import time
 
@@ -78,15 +80,24 @@ def bind_routes(app):
 
     @app.route("/ih", methods=["POST"])
     @crpview(hasSessionId=True)
+    @request_around(app, request, requestlog=True)
     def info_hide(sessionId):
+        print('================= start =================')
         key = request.form.get("key", None)
+        print('===1===')
         secret = request.form.get("secret", None)
-        imgFile = request.files['img']
+        print('===2===')
+        imgFile = request.files.get('img', None)                    # 图像文件
+        if not imgFile:
+            raise Exception("lack img file")
+        print('===3===')
+        print('================= over =================')
         raise Exception("not support the interface")
         return {}
 
     @app.route("/ix", methods=["POST"])
     @crpview(hasSessionId=True)
+    @request_around(app, request, requestlog=True)
     def info_extract(sessionId):
         raise Exception("not support the interface")
         return {}
