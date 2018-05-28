@@ -33,11 +33,13 @@ Page({
           url: 'http://localhost:5000/query-author',
           method:'POST',
           filePath: that.data.resource_chooseFiles,
-          name: 'file',
+          name: 'img',
           formData: {
             'sessionId': sessionId
           },
           success: function (res) {
+            res.data = JSON.parse(res.data)
+            debugger
             console.log("图片可开始追溯", res.data.fg)
             //如果图片可以开始进行追溯，那么就将信息放在缓存中
       
