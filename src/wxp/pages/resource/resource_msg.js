@@ -5,8 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    showTopTips: false,
-    isAgree: false,  //用来后面的错误提示
+    showTopTips: false,//用来后面的错误提示
+    isAgree: false,  
    // content:null  //用来进行相关的文本，字数是140个
   //  imgid=null
   },
@@ -34,16 +34,25 @@ Page({
         console.log('发送邀请失败',res.data.msg)
       }
     })
+    if(!this.data.isAgree){  //如果不同意，那么显示顶部栏错误提示
     this.setData({
-      showTopTips: false 
+      showTopTips: true 
     });
     setTimeout(function () {
       that.setData({
         showTopTips: false
       });
     }, 3000);
-    wx.navigateBack();
-    
+    }
+    else  //如果符合条件的输入，那么则返回，这个时候可以给用户一个提示
+    {
+      wx.showToast({
+        title: '留言已经发送,',
+        icon: 'success',
+        duration: 3000
+      });
+      wx.navigateBack();
+    }
   },
  
   bindAgreeChange: function (e) {

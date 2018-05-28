@@ -90,7 +90,7 @@ wx.navigateBack()
         'imgtitle': that.data.dis
       },
       success: function (res) {
-        console.log("图片上传成功", res.data.fg);
+        console.log("图片上传成功", res.data);
       //  console.log("图片上传成功", res.fg);
         app.globalData.userimages.push(that.data.resign_chooseFiles),//将这张图片放在全局变量中（数组—）
         wx.setStorageSync('userimages', app.globalData.userimages); //数组放进缓存

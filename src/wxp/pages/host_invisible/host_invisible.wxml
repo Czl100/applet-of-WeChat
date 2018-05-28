@@ -12,10 +12,11 @@
 </view>
 
 <view class="button-sp-area"  catchtap='onsure'>
-      <button class="weui-btn" type="#40C4FF" plain="true">确定</button>
+      <button class="weui-btn" type="#40C4FF" plain="true">嵌入水印信息</button>
 </view>
 
-<view class="button-sp-area" catchtap='oncancel'>
-      <button class="weui-btn" type="black" plain="true" >取消</button>
+<view class="button-sp-area" catchtap='onget'>
+      <button class="weui-btn" type="black" plain="true" >提取水印信息</button>
 </view>
+
 </view>

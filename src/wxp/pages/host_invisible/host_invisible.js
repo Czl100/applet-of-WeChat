@@ -22,8 +22,42 @@ Page({
       ser: e.detail.value
     })
   },
-  oncancel:function(){
-    wx.navigateBack()
+  onget:function(){  //提取水印信息
+ //   wx.navigateBack()
+ var that=this;
+ //var sessionId=wx.getStorageSync(sessionId);
+ var file=app.globalData.chooseFiles;
+ wx.request({
+   url: 'http://localhost:5000/ix',
+   method:'POST',
+   data:{
+     'sessionId': wx.getStorageSync(sessionId),
+      'file':file,
+      'key':that.data.ser  //输入的密码
+   },
+   success:function(res){
+     console.log('获取水印信息',res.data);
+     wx.showModal({
+       title: '水印信息',
+       content: res.data.secret,
+       confirmText: "确定",
+       cancelText: "取消",
+       success: function (res) {
+         console.log(res);
+         if (res.confirm) {
+           console.log('确定')
+           wx.navigateBack();
+         } else {
+           console.log('取消')
+           wx.navigateBack();
+         }
+       }
+     });
+   },
+   fail:function(res){
+     console.log('获取失败，服务器无法进行处理')
+   }
+ })
   },
   onsure: function () {
     var that=this;
@@ -42,7 +76,9 @@ Page({
         'secret': that.data.dis     //这个是嵌入水印的密文信息
       },
       success:function(res){
-        console.log("嵌入成功",res.data.fg)
+        res.data = JSON.parse(res.data);
+        console.log("嵌入成功",res.data)
+
         app.globalData.userimages.push(that.data.invisible_chooseFiles);//当用户点击确定之后，将图片保存在本地缓存
        var ss= wx.setStorageSync('userimages',app.globalData.userimages);
         console.log(ss);
@@ -53,7 +89,7 @@ Page({
         });
       },
       fail:function(){
-        console.log("嵌入水印失败",res.data.msg),
+        console.log("嵌入水印失败"),
         wx.showToast({
           title: '数据加载中',
           icon: 'loading',

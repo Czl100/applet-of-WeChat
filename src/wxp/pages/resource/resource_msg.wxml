@@ -12,7 +12,7 @@
   <view class="weui-cell">
     <view class="weui-cell__bd">
       <textarea class="weui-textarea" placeholder="请输入文本" bindinput='Input_content' style="height: 3.3em" />
-      <view class="weui-textarea-counter">字数不能超过140</view>
+      <view class="weui-textarea-counter" maxlength='140'>字数不能超过140</view>
     </view>
   </view>
 </view>
