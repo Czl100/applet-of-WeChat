@@ -51,13 +51,13 @@ def bind_routes(app):
         # maybeImgId = dataExtract(inpImgPath, isdel=False)
 
         # 先插入历史记录
-        imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, imgid=imgid, imgtitle=imgtitle, imgtype=0)
+        imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, imgid=imgid, path=outImgPath, imgtitle=imgtitle, imgtype=0)
 
         # 信息隐藏 生成载密图像
         data_hide(inpImgPath, outImgPath, imgid)         # 调用C++信息隐藏处理
 
         # 更新数据库finish字段
-        imgHistoryServices.update_finish_img_history(app, imgid=imgid, outImgPath=outImgPath)
+        imgHistoryServices.update_finish_img_history(app, imgid=imgid)
         return {}
 
     # 作者溯源视图函数
@@ -101,13 +101,13 @@ def bind_routes(app):
         # maybeImgId = dataExtract(inpImgPath, isdel=False)
         
          # 先插入历史记录
-        imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, imgid=imgid, imgtype=1)
+        imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, path=outImgPath, imgid=imgid, imgtype=1, secret=secret, key=key)
 
          # 信息隐藏 生成载密图像
         data_hide(inpImgPath, outImgPath, imgid)         # 调用C++信息隐藏处理
 
         # 更新数据库finish字段
-        imgHistoryServices.update_finish_img_history(app, imgid=imgid, outImgPath=outImgPath, secret=secret, key=key)
+        imgHistoryServices.update_finish_img_history(app, imgid)
 
         return {}
 

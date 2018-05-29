@@ -7,21 +7,28 @@ from sqlalchemy import desc
 import datetime
 
 # 插入一条未处理完成的
-def insert_notfinish_img_history(app, sessionId, imgid, imgtype, imgtitle=None):
+def insert_notfinish_img_history(app, sessionId, imgid, imgtype, path, secret=None, key=None, imgtitle=None):
     dbsession = app.sessionMaker()
     wxid = sp.wxid(sessionId)
-    newHistory = ImgHistory(imgid=imgid, wxid=wxid, imgtitle=imgtitle, imgtype=imgtype, datetime=datetime.datetime.today())
+    kws = {
+        "imgid":imgid,
+        "wxid":wxid,
+        "imgtitle":imgtitle,
+        "imgtype":imgtype,
+        "path":path,
+        "secret":secret,
+        "key":key,
+        "datetime":datetime.datetime.today()
+    }
+    newHistory = ImgHistory(**kws)
     dbsession.add(newHistory)
     dbsession.commit()
 
 # 当图像处理完成，更新该记录为已处理
-def update_finish_img_history(app, imgid, outImgPath, secret=None, key=None):
+def update_finish_img_history(app, imgid):
     dbsession = app.sessionMaker()
-    tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()  
-    tmpHistory.path = outImgPath
+    tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
     tmpHistory.finish = True
-    tmpHistory.secret = secret
-    tmpHistory.key = key
     dbsession.commit()
 
 # 查询imgid所对应的作者, 正确返回则找到匹配作者
@@ -43,13 +50,11 @@ def query_img_secret(app, imgid, key):
     secret = None
     try:
         item = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
-        if item:
-            if item.key == key:
-                secret = item.secret
-            else:
-                raise Exception("密码错误")
-        else:
+        if not item:
             raise Exception("该图像没有隐藏数据")
+        if item.key != key:
+            raise Exception("密码错误")
+        secret = item.secret
     finally:
         dbsession.commit()
     return secret
