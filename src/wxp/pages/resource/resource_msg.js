@@ -21,11 +21,7 @@ Page({
     //将用户的id,imgid,content都发送到服务器上
     wx.request({
       url: 'http://localhost:5000/invite',
-<<<<<<< HEAD
-      method:'POST',
-=======
       method:'post',
->>>>>>> f3fc78bdc4f51b774074bdec38f4ee00d215d608
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },

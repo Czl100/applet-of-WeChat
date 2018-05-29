@@ -45,11 +45,6 @@ Page({
             console.log('追溯图片是',that.data.resource_chooseFiles)
 
         //    imgid=res.data.imgid;//这个是图片的id，用于作者溯源
-<<<<<<< HEAD
-
-
-=======
->>>>>>> f3fc78bdc4f51b774074bdec38f4ee00d215d608
             if(!res.data.exists){  //如果作者信息没有找到，那么服务器上返回exit=false
             wx.showModal({
               title: '温馨提醒',
@@ -75,10 +70,6 @@ Page({
               //如果作者的信息可以找到，那么可以把这个图片的id放在缓存中，
               wx.setStorageSync('imgid',res.data.imgid);
             }
-<<<<<<< HEAD
-            
-=======
->>>>>>> f3fc78bdc4f51b774074bdec38f4ee00d215d608
           },
           fail: function (res) {
             console.log("图片追溯上传失败", res.data.msg)         

@@ -21,6 +21,12 @@ def data_extract(inpImgPath, isdel=True):
         os.remove(inpImgPath)
     return "cef5058cf5699449de4bdc539b9f22a2"
 
+def data_extract2(inpImgPath, isdel=True):
+    import os
+    if isdel:
+        os.remove(inpImgPath)
+    return "78c4af40f3bfd56d6642b260f4ccd215"
+
 def bind_routes(app):
     import time
 
@@ -105,9 +111,18 @@ def bind_routes(app):
 
         return {}
 
-    @app.route("/ix", methods=["POST"])
+    @app.route("/ix", methods=["post"])
     @crpview(hasSessionId=True)
     @request_around(app, request, requestlog=True)
     def info_extract(sessionId):
-        raise Exception("not support the interface")
-        return {}
+        key = unescape(request.form.get("key", None))
+        imgFile = request.files.get('img', None)                    # 图像文件
+
+        timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
+        inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
+        imgFile.save(inpImgPath)    
+
+        # 提取图像id
+        imgid = data_extract2(inpImgPath)
+        secret = imgHistoryServices.query_img_secret(app, imgid, key)
+        return {'secret':secret}

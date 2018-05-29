@@ -13,7 +13,7 @@ sp = crp.sessionPool.SessionPool()      # 创建会话池
 # 解决反义字符问题
 def unescape(s):
     from html.parser import HTMLParser
-    return HTMLParser().unescape(s)
+    return HTMLParser().unescape(s) if s!=None else None
 
 # 提取对象中的特定属性转换为字典数据
 def obj2map(obj, mapper):

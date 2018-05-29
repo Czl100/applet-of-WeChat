@@ -38,6 +38,22 @@ def query_img_author(app, imgid):
         dbsession.commit()      # 提交事务，避免死锁
     return exist, imgtitle
 
+def query_img_secret(app, imgid, key):
+    dbsession = app.sessionMaker()
+    secret = None
+    try:
+        item = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
+        if item:
+            if item.key == key:
+                secret = item.secret
+            else:
+                raise Exception("密码错误")
+        else:
+            raise Exception("该图像没有隐藏数据")
+    finally:
+        dbsession.commit()
+    return secret
+
 # 查询指定指定微信用户，指定页面的历史记录
 def query_history_page(app, wxid, page, perpage):
     # 数据库提取出该用户的所有图像
