@@ -7,7 +7,7 @@ Page({
   data: {
     Image: "/pages/icon/camera.png",
     resign_chooseFiles: app.globalData.chooseFiles, 
-    dis: null,
+    dis: "",
     useKeyboardFlag: true,  //默认是键盘输入类型的输入框
   },
 

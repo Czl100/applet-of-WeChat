@@ -1,10 +1,14 @@
 <block wx:for="{{postList}}" wx:for-item="item" wx:for-index="idx">
-<view class='container'>
+
+<view wx:if="{{item.finish}}">
+<view class='container-a'>
 <image src="{{item.img}}"></image>
-<text>{{item.title}}</text>
+<text>{{item.imgtitle}}</text>
 <text>{{item.date}}</text>
 </view>
+</view>
 </block>
+
 <view class='container-b'>
  <button class="weui-btn mini-btn" type="primary" size="mini" catchtap='onbefore'>上一页</button>
             <button class="weui-btn mini-btn" type="default" size="mini">{{mypage}}</button>

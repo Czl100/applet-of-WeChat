@@ -4,12 +4,18 @@
  bottom: 0rpx;
  text-align: center;
 }
-.container{
+.container-a{
+  flex-direction: row;
   display: flex;
-  flex-direction: column;
-  margin:20rpx 0 40rpx;
+  align-items: center;
+  justify-content: space-between;
+  margin:5rpx 0 20rpx;
   background-color: #fff;
   border-top: 1rpx solid #ededed;
   border-bottom: 1rpx solid #ededed;
   padding-bottom: 5rpx;
+}
+.container-a image{
+  width: 150rpx;
+  height: 150rpx;
 }

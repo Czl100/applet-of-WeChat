@@ -22,6 +22,9 @@ Page({
     wx.request({
       url: 'http://localhost:5000/invite',
       method:'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
       data:{
         'sessionId':sessionId,
         'imgid':imgid,

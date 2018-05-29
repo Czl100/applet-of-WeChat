@@ -5,20 +5,40 @@ Page({
    * 页面的初始数据
    */
   data: { 
+    mypage: 1,//默认查找第一页
     postList :[{
       inviter: "邀请人",
-      iamge: "../icon/camera.png",
+      image: "../icon/camera.png",
+      title:"图片",
       date: "2018 09 09",
       comment: "你好早上好呀"
     },
     {
       inviter: "邀请人",
-      iamge: "../icon/camera.png",
+      title: "图片",
+      image: "../icon/camera.png",
       date: "2018 09 09",
       comment: "你好早上好呀"
     }]
   },
-
+  onbefore: function () { //点击上一页
+    if (this.data.mypage > 1) {
+      this.setData({
+        mypage: this.data.mypage - 1
+      })
+    }
+    else {
+      //如果页数小于0
+      this.setData({
+        mypage: 1
+      })
+    }
+  },
+  onafter: function () { //点击下一页
+    this.setData({
+      mypage: this.data.mypage + 1
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */

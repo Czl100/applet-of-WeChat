@@ -46,10 +46,8 @@ Page({
 
         //    imgid=res.data.imgid;//这个是图片的id，用于作者溯源
 
-            if(res.data.exist){  //如果作者信息没有找到，那么服务器上返回exit=false
 
-            if(!res.data.exists){  //如果作者信息没有找到，那么服务器上返回exit=false
-
+            if(res.data.exists){  //如果作者信息没有找到，那么服务器上返回exit=false
             wx.showModal({
               title: '温馨提醒',
               content: '该图片没有追溯成功',
@@ -69,12 +67,12 @@ Page({
             }
             else{  //这个时候，作者信息找到
               wx.navigateTo({
-                url: 'resource_success?title='+res.data.title +'& imgid='+res.data.imgid,
+                url: 'resource_success?title='+res.data.imgtitle +'& imgid='+res.data.imgid,
               })
               //如果作者的信息可以找到，那么可以把这个图片的id放在缓存中，
               wx.setStorageSync('imgid',res.data.imgid);
             }
-            }
+            
           },
           fail: function (res) {
             console.log("图片追溯上传失败", res.data.msg)         

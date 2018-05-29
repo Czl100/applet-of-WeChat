@@ -7,8 +7,8 @@ Page({
    */
   data: {
     invisible_chooseFiles: app.globalData.chooseFiles,
-    dis: null,     //这个是水印的文字信息
-    ser: null,     //这是嵌入的密码
+    dis: "",     //这个是水印的文字信息
+    ser: "",     //这是嵌入的密码
     useKeyboardFlag: true,  //默认是键盘输入类型的输入框
   },
   Input_dis: function (e) {
@@ -30,6 +30,9 @@ Page({
  wx.request({
    url: 'http://localhost:5000/ix',
    method:'POST',
+   header: {
+     'content-type': 'application/x-www-form-urlencoded' // 默认值
+   },
    data:{
      'sessionId': wx.getStorageSync('sessionId'),
       'img':file,

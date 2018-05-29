@@ -24,7 +24,7 @@ var that=this;
     console.log(options)
     this.setData({
       title:options.title,
-      imagid:options.imagid
+      imgid:options.imgid
     })
   },
 

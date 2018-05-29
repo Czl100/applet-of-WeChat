@@ -6,7 +6,19 @@ Page({
    * 页面的初始数据
    */
   data: {
-    mypage: 1//默认查找第一页
+    mypage: 1,//默认查找第一页
+    postList:[{
+      finish: true,
+      img: "/pages/icon/camera.png",
+      imgtitle: '我的标题',
+      date: '2018 09 01'
+    },
+      {
+        finish: true,
+        img: "/pages/icon/camera.png",
+        imgtitle: '我的标题',
+        date: '2018 09 01'
+      }]
   },
 
   onbefore: function () { //点击上一页
@@ -31,15 +43,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-var postList=[{
-  finish:true,
-  img:"/pages/icon/camera.png",
-  title:'我的标题',
-  date:'2018 09 01'
-}]
-this.setData({
-  postList:List_  //数据刷新
-})
 
   },
 
@@ -54,10 +57,16 @@ this.setData({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      postList: List_  //数据刷新
+    })
     var sessionId=wx.getStorageSync('sessionId');
 wx.request({
   url: 'http://localhost:5000/query-history',
   method:'GET',
+  header: {
+    'content-type': 'application/x-www-form-urlencoded' // 默认值
+  },
   data:{
       'sessionId':sessionId,
       'page':this.data.mypage
