@@ -27,8 +27,10 @@ class ImgHistory(Base):
     wxid = Column(String(32), index=True)                   # 微信ID
     path = Column(String(128))                              # 图像相对于工作目录的路径
     imgtitle = Column(String(64))                           # 图像名称
-    content = Column(String(300))                           # 图像内容, 用于信息隐藏
+    secret = Column(String(300))                            # 图像秘密内容, 用于信息隐藏
+    key = Column(String(300))                               # 图像密钥(md5-key)
     finish = Column(Integer, default=0)                     # 是否完成的标记, 0-未完成, 1-完成, 2-处理错误
+    imgtype = Column(Integer, default=0)                   # 图像记录类型, 0-图像注册, 1-信息隐藏
     datetime  = Column(DateTime)                            # 创建日期
 
 class Invites(Base):

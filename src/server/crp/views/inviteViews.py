@@ -9,29 +9,26 @@ def bind_routes(app):
     @crpview(hasSessionId=True)
     @request_around(app, request, requestlog=True)
     def invite(sessionId):
-        print("=============== START ===============")
         inviterId = sp.wxid(sessionId)
+
         content = unescape(request.form.get("content", ""))
         if len(content) >= 140:
             raise Exception("邀请内容的长度应小于140, 您输入的字符串长度为:"+str(len(content)))
-            
+
         imgid = request.form.get("imgid", None)
         if imgid == None:
             raise Exception("缺少imgid参数")
 
-        nick = request.form.get("nick", None)
+        nick = request.form.get("nick", "")
         if not nick.strip():
             nick = None
         else:
             nick = unescape(nick)
-
         # 根据imgid查询受邀人
         authorId, imgtitle, imgurl = imgHistoryServices.query_img_info(app, imgid=imgid)
-        
         # 邀请信息入库
         invitesServices.add_invite(app, \
             imgtitle=imgtitle, imgurl=imgurl, nick=nick, inviterId=inviterId, authorId=authorId, content=content)
-        print("=============== OK ===============")
         return {}
 
     @app.route("/query-invites")

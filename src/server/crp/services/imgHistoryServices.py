@@ -7,19 +7,21 @@ from sqlalchemy import desc
 import datetime
 
 # 插入一条未处理完成的
-def insert_notfinish_img_history(app, sessionId, imgid, imgtitle):
+def insert_notfinish_img_history(app, sessionId, imgid, imgtype, imgtitle=None):
     dbsession = app.sessionMaker()
     wxid = sp.wxid(sessionId)
-    newHistory = ImgHistory(imgid=imgid, wxid=wxid, imgtitle=imgtitle, datetime=datetime.datetime.today())
+    newHistory = ImgHistory(imgid=imgid, wxid=wxid, imgtitle=imgtitle, imgtype=imgtype, datetime=datetime.datetime.today())
     dbsession.add(newHistory)
     dbsession.commit()
 
 # 当图像处理完成，更新该记录为已处理
-def update_finish_img_history(app, imgid, outImgPath): 
+def update_finish_img_history(app, imgid, outImgPath, secret=None, key=None):
     dbsession = app.sessionMaker()
     tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()  
     tmpHistory.path = outImgPath
     tmpHistory.finish = True
+    tmpHistory.secret = secret
+    tmpHistory.key = key
     dbsession.commit()
 
 # 查询imgid所对应的作者, 正确返回则找到匹配作者
@@ -56,8 +58,8 @@ def query_history_page(app, wxid, page, perpage):
     for item in items:
         dicitem = {
             "img":app.config['ENABLE_HOST']+item.path,
-            "title":item.imgtitle,
-            "date":str(item.datetime),
+            "imgtitle":item.imgtitle,
+            "datetime":str(item.datetime),
             "finish":str(item.finish)
         }
         itemList.append(dicitem)
