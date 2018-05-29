@@ -1,26 +1,33 @@
-<block wx:for="{{postList}}" wx:for-item="item" wx:for-index="idx">
+
+<view class='container-d'>
+  <button class="weui-btn mini-btn" type="primary" size="mini" catchtap='onget'>全部已读</button>
+</view>
+
+<block wx:for="{{postList}}" wx:for-item="item" wx:for-index="idx" >
   <view class='post-container'>
-   <view class='main'>
-    <view class='image'>
-      <view class='img'><image src="{{item.image}}"></image></view>
-      <view class='title'>{{item.title}}</view>
-    </view>
-    <view class='body'>
-      <view class='bodytop'>
-        <view>{{item.inviter}}</view>
-        <view>2018-05-28</view>
+    <view class='main'>
+      <view class='image'>
+        <view class='img'>
+          <image src="{{item.img}}"></image>
+        </view>
+        <view class='title'>{{item.imgtitle}}</view>
       </view>
-      <view class='bodybottom'>
-       {{item.comment}}
+      <view class='body'>
+        <view class='bodytop'>
+          <view>{{item.inviter}}</view>
+          <view>{{item.date}}</view>
+        </view>
+        <view class='bodybottom'>
+          {{item.content}}
+        </view>
       </view>
     </view>
-  </view>
 
   </view>
 </block>
 
 <view class='container-b'>
- <button class="weui-btn mini-btn" type="primary" size="mini" catchtap='onbefore'>上一页</button>
-            <button class="weui-btn mini-btn" type="default" size="mini">{{mypage}}</button>
-            <button class="weui-btn mini-btn" type="warn" size="mini" catchtap='onafter'>下一页</button>
+  <button class="weui-btn mini-btn" type="primary" size="mini" catchtap='onbefore'>上一页</button>
+  <button class="weui-btn mini-btn" type="default" size="mini">{{mypage}}</button>
+  <button class="weui-btn mini-btn" type="warn" size="mini" catchtap='onafter'>下一页</button>
 </view>

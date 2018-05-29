@@ -2,7 +2,7 @@
   flex-direction: column;
   display: flex;
   margin:8rpx 0 20rpx;
-  background-color: #fff;
+  background-color: #E1F5FE;
   border-top: 1rpx solid #ededed;
   border-bottom: 1rpx solid #ededed;
   padding-bottom: 5rpx;
@@ -17,6 +17,12 @@
  position: fixed;
  bottom: 0rpx;
  text-align: center;
+}
+.container-d{
+width: 100%;
+ position: absolute;
+ top: 0rpx;
+ text-align: right;
 }
 .image{
   width: 20%;

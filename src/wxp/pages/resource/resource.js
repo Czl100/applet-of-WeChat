@@ -47,7 +47,7 @@ Page({
         //    imgid=res.data.imgid;//这个是图片的id，用于作者溯源
 
 
-            if(res.data.exists){  //如果作者信息没有找到，那么服务器上返回exit=false
+            if(!res.data.exists){  //如果作者信息没有找到，那么服务器上返回exit=false
             wx.showModal({
               title: '温馨提醒',
               content: '该图片没有追溯成功',

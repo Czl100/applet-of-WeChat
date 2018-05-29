@@ -1,24 +1,21 @@
 var app = getApp();
 var List_;
+var pages=1;
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+   // pages:1,//初始值总页数是1
     mypage: 1,//默认查找第一页
     postList:[{
-      finish: true,
-      img: "/pages/icon/camera.png",
-      imgtitle: '我的标题',
-      date: '2018 09 01'
-    },
-      {
-        finish: true,
-        img: "/pages/icon/camera.png",
-        imgtitle: '我的标题',
-        date: '2018 09 01'
-      }]
+      finish: '',
+      img: "",
+      imgtitle: '',
+      date: '',
+      imgtype:''
+    }]
   },
 
   onbefore: function () { //点击上一页
@@ -35,9 +32,15 @@ Page({
     }
   },
   onafter: function () { //点击下一页
+  if(this.data.mypage<pages){
     this.setData({
       mypage: this.data.mypage + 1
+    })}
+else{
+    this.setData({
+      mypage: pages
     })
+}
   },
   /**
    * 生命周期函数--监听页面加载
@@ -75,6 +78,10 @@ wx.request({
     console.log('发送查询历史信息请求',res.data),
     List_=res.data.lists
     console.log(List_)  //打印出来看看
+    //总页数
+   
+      pages:res.data.pages
+  
   }
 })
   },
