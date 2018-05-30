@@ -1,8 +1,14 @@
 .container-b{
  width: 100%;
- position: fixed;
  bottom: 0rpx;
+ position:fixed;
  text-align: center;
+}
+.a{
+  margin-top: 8rpx;
+}
+.c{
+  margin-bottom: 10rpx;
 }
 .container-a{
   flex-direction: row;

@@ -7,15 +7,26 @@ Page({
    */
   data: { 
     mypage: 1,//默认查找第一页
+    _number:0,//未邀请个数
+    onread:false,//这是设置数据是否已读，默认是未读
     postList :[{
-      inviteId:'',
-      uread: '',
-      inviter: '',
-      imgtitle: '',
-      img: "",
-     date: '',
-      content: ''
-    }]
+      inviteId:'222222inviterID',
+      uread: true,
+      inviter: '李',
+      imgtitle: 'my',
+      img: "/pages/icon/camera.png",
+     date: '2018 09 01',
+      content: 'ggggggggggggggggggggggggg'
+    },
+      {
+        inviteId: '222222inviterID',
+        uread: false,
+        inviter: '李',
+        imgtitle: 'my',
+        img: "/pages/icon/camera.png",
+        date: '2018 09 01',
+        content: 'ggggggggggggggggggggggggg'
+      }]
   },
   onbefore: function () { //点击上一页
     if (this.data.mypage > 1) {
@@ -42,7 +53,8 @@ Page({
       })
     }
   },
-  onget:function(){ //点击全部已读
+  onget:function(){ //点击全部已读,意思就是说告诉后台，这些数据用户已经读了
+  var that=this;
 wx.request({
   url: 'http://localhost:5000/read-all-invites',
   method:'POST',
@@ -54,6 +66,16 @@ wx.request({
   },
   success:function(res){
     console.log('全部已读发送到服务端',res.data)
+    if(res.data)
+  {//如果成功
+    that.setData({
+      onread:true //将onread设置为true
+    })
+    //将消息提醒那里设置为0
+    wx.removeTabBarBadge({
+      index:3
+    });
+  }
   },
   fail:function(res){
     console.log('失败')
@@ -81,6 +103,21 @@ wx.request({
   onShow: function () {
     var that=this;
     var sessionId=wx.getStorageSync('sessionId');
+    wx.request({
+      url: 'http://localhost:5000/query-unread-number',
+      method: 'GET',
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+      },
+      success: function (res) {
+        console.log('打开消息提醒时未邀请个数', res.data)
+        wx.setStorageSync('_number', res.data.number);
+        wx.setTabBarBadge({
+          index: 3,
+          text: 'number',
+        })
+      }
+    })
     wx.request({
       url: 'http://localhost:5000/query-invites',
       method:'GET',

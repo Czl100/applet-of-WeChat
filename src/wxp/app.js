@@ -1,7 +1,23 @@
 //app.js
 
 App({
-  
+  onShow:function(){
+    wx.request({
+      url: 'http://localhost:5000/query-unread-number',
+      method: 'GET',
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+      },
+      success: function (res) {
+        console.log('打开时查询未邀请个数', res.data)
+       wx.setStorageSync('_number',res.data.number);
+        wx.setTabBarBadge({
+          index: 3,
+          text: 'number',
+        })
+      }
+    })
+  },
   onLaunch: function () {
     // 展示本地存储能力
     var that=this

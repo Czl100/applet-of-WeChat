@@ -8,7 +8,8 @@ Page({
    */
   data: {
    // pages:1,//初始值总页数是1
-    mypage: 1,//默认查找第一页
+   mypage: 1,//默认查找第一页
+    
     postList:[{
       datetime:'',
       finish: '',
@@ -16,6 +17,20 @@ Page({
       imgtitle: '',
       imgtype:''
     }]
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
   },
 
   onbefore: function () { //点击上一页
@@ -32,38 +47,28 @@ Page({
     }
   },
   onafter: function () { //点击下一页
-  if(this.data.mypage<pages){
-    this.setData({
-      mypage: this.data.mypage + 1
-    })}
-else{
-    this.setData({
-      mypage: pages
-    })
-}
+    console.log(this.data.mypage, pages);
+    if (this.data.mypage < pages) {
+      this.setData({
+        mypage: this.data.mypage + 1
+      })
+    }
+    else {
+      this.setData({
+        mypage: pages
+      })
+    }
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
   /**
    * 生命周期函数--监听页面显示
    */
+
   onShow: function () {
     var that = this;
     var sessionId=wx.getStorageSync('sessionId');
-wx.request({
-  
+    
+    console.log('发送到服务器的页数',that.data.mypage)
+wx.request({ 
   url: 'http://localhost:5000/query-history',
   method:'GET',
   header: {
@@ -71,20 +76,35 @@ wx.request({
   },
   data:{
       'sessionId':sessionId,
-      'page':this.data.mypage
+      'page':that.data.mypage
   },
   success:function(res){
-  
+
     console.log('发送查询历史信息请求',res.data),
     List_=res.data.list
     console.log(List_)  //打印出来看看
     //总页数
-      pages:res.data.pages
+      pages=res.data.pages
       that.setData({
-        postList: List_  
+        postList:List_  
       })
   }
 })
+    wx.request({
+      url: 'http://localhost:5000/query-unread-number',
+      method: 'GET',
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+      },
+      success: function (res) {
+        console.log('打开历史记录时查询未邀请个数', res.data)
+        wx.setStorageSync('_number', res.data.number);
+        wx.setTabBarBadge({
+          index: 3,
+          text: 'number',
+        })
+      }
+    })
   },
 
   /**

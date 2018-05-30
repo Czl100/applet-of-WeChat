@@ -1,12 +1,21 @@
 .post-container{
   flex-direction: column;
   display: flex;
-  margin:8rpx 0 20rpx;
-  background-color: #E1F5FE;
+  margin:1rpx 0 13rpx;
   border-top: 1rpx solid #ededed;
   border-bottom: 1rpx solid #ededed;
   padding-bottom: 5rpx;
+  margin-top: 30rpx;
+}
+.color{
+   background-color: #E1F5FE;
+}
+.color1{
+   background-color: #fff;
+}
+.g{
   margin-top: 60rpx;
+  margin-bottom: 60rpx;
 }
 .main{
   width: 100%;

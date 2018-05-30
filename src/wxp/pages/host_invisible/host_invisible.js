@@ -25,24 +25,25 @@ Page({
   onget:function(){  //提取水印信息
  //   wx.navigateBack()
  var that=this;
+ var key = Jmd5.hexMD5(that.data.ser);
  //var sessionId=wx.getStorageSync(sessionId);
+ console.log(key);
  var file=app.globalData.chooseFiles;
- wx.request({
+ wx.uploadFile({
    url: 'http://localhost:5000/ix',
    method:'POST',
-   header: {
-     'content-type': 'application/x-www-form-urlencoded' // 默认值
-   },
-   data:{
+   filePath: that.data.invisible_chooseFiles,
+   name: 'img',
+   formData:{
      'sessionId': wx.getStorageSync('sessionId'),
-      'img':file,
       'key':that.data.ser  //输入的密码
    },
    success:function(res){
      console.log('获取水印信息',res.data);
+     console.log('获取水印信息', res.data.secret);
      wx.showModal({
        title: '水印信息',
-       content: res.data.secret,
+       content: res.data,
        confirmText: "确定",
        cancelText: "取消",
        success: function (res) {
@@ -64,7 +65,7 @@ Page({
   },
   onsure: function () {
     var that=this;
-    var key = Jmd5.hexMD5(this.data.ser);
+    var key = Jmd5.hexMD5(that.data.ser);
     console.log(key);
    var sessionId=wx.getStorageSync('sessionId');
    console.log(that.data.invisible_chooseFiles);

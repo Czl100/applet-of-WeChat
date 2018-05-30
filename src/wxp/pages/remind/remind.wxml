@@ -2,8 +2,9 @@
 <view class='container-d'>
   <button class="weui-btn mini-btn" type="primary" size="mini" catchtap='onget'>全部已读</button>
 </view>
-
+<view class='g'>
 <block wx:for="{{postList}}" wx:for-item="item" wx:for-index="idx" wx:key="2" >
+<view class="{{onread==false?'color':'color1'}}"  >
   <view class='post-container'>
     <view class='main'>
       <view class='image'>
@@ -24,8 +25,10 @@
     </view>
 
   </view>
-</block>
 
+  </view>
+</block>
+</view>
 <view class='container-b'>
   <button class="weui-btn mini-btn" type="primary" size="mini" catchtap='onbefore'>上一页</button>
   <button class="weui-btn mini-btn" type="default" size="mini">{{mypage}}</button>

@@ -1,7 +1,7 @@
 <view class='container-a'>
 
-<view>
-<image src="{{visible_chooseFiles}}"></image>
+<view >
+<canvas style='width:{{imgw}};height:{{imgh}}; background-size="contain";'  canvas-id='canvas'></canvas>
 </view>
  
 <view>
@@ -9,10 +9,12 @@
 </view>
 
 <view class="button-sp-area">
-      <button class="weui-btn" type="#40C4FF" plain="true" catchtap='onsure'>确定</button>
+      <button class="weui-btn" type="#40C4FF" plain="true" catchtap='onsure'>加入可见水印</button>
 </view>
 
 <view class="button-sp-area">
-      <button class="weui-btn" type="black" plain="true" catchtap='oncancel'>取消</button>
+      <button class="weui-btn" type="black" plain="true" catchtap='onsave'>保存图片</button>
 </view>
+
+
 </view>

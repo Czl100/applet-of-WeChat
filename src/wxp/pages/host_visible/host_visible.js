@@ -7,17 +7,21 @@ Page({
   data: {
     useKeyboardFlag:true,  //默认是键盘输入类型的输入框
     visible_chooseFiles:app.globalData.chooseFiles,
-    dis:null
+    dis:null,
+   imgw:null,
+   imgh:null
   },
-
+  
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
    this.setData({
-      visible_chooseFiles:app.globalData.chooseFiles
+      visible_chooseFiles:app.globalData.chooseFiles,
+      imgw:options.imgw,
+      imgh:options.imgh
     })
-    
+   console.log(this.data.imgw, this.data.imgh)
   },
 
    Input: function(e){
@@ -27,18 +31,34 @@ Page({
  //console.log(this.data.dis);
 
   },
+   onsave: function () {
+     //点击保存图片的时候
+     wx.canvasToTempFilePath({
+       canvasId: 'canvas',
+       success: function (res1) {
+         console.log(res1.tempFilePath)
+       }
+     })
+     },
 onsure:function(){
-  /*
-  wx.showToast({
-    title: '嵌入成功,',
-    icon: 'success',
-    duration: 3000
-  });
-  */
+
+  var context = wx.createCanvasContext('canvas');
+  
+  context.drawImage(this.data.visible_chooseFiles,0,0,350,200);
+  context.fillText(this.data.dis, 10, 50);
+  context.setFontSize(40);
+  context.setFillStyle('#FFFFFF');
+  context.draw()
+  console.log(this.data.imgh,this.data.imgh)
+  
+
 },
+/*
 oncancel:function(){
   wx.navigateBack()
 },
+*/
+ 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -49,8 +69,8 @@ oncancel:function(){
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    
+  onShow: function (e) {
+  
   },
 
   /**

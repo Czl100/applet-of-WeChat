@@ -6,8 +6,10 @@ Page({
    */
   data: {
     Image: "/pages/icon/camera.png",//这是原始的icon
+    imageWidth: 0,
+    imageHeight: 0  
   },
-
+ 
   /**
    * 生命周期函数--监听页面加载
    */
@@ -29,8 +31,22 @@ Page({
       }
 
     })
-
+    
+   
   },
+  
+  imageLoad: function (e) {
+    //获取图片的原始宽度和高度  
+    let originalWidth = e.detail.width;
+    let originalHeight = e.detail.height;
+
+    this.setData({
+      imageWidth: originalWidth,
+      imageHeight: originalHeight
+    });
+    
+  },
+  
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -42,6 +58,21 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    wx.request({
+      url: 'http://localhost:5000/query-unread-number',
+      method: 'GET',
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+      },
+      success: function (res) {
+        console.log('打开图片版权页面的时候未邀请个数', res.data)
+        wx.setStorageSync('_number', res.data.number);
+        wx.setTabBarBadge({
+          index: 3,
+          text: 'number',
+        })
+      }
+    })
     // 检验是否授权
     wx.getSetting({
       success: function (res) {
@@ -66,7 +97,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    
+   // console.log(this.data.imageWidth)
   },
 
   /**
@@ -99,8 +130,10 @@ Page({
 
  
   onJump_host_visible:function(event){
+    var that=this;
     wx.navigateTo({
-      url: '../host_visible/host_visible',
+      url: '../host_visible/host_visible?imgw=' + that.data.imageWidth + '&imgh=' + that.data.imageHeight,  
+      //将数据传送过去
       success: function () {
         console.log("可见水印页面","jump succcess")
       },
@@ -111,6 +144,7 @@ Page({
         console.log("可见水印页面","jump complete")
       }
     });
+    console.log(that.data.imageWidth, that.data.imageHeight);
   },
   onJump_host_invisible: function (event) {
     wx.navigateTo({
