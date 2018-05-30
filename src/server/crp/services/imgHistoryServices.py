@@ -38,7 +38,7 @@ def query_img_author(app, imgid):
     imgtitle=None
     try:
         # one，查找不到抛出异常. first，查找不到不会抛出异常    
-        item = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
+        item = dbsession.query(ImgHistory).filter_by(imgid=imgid, imgtype=0).first()
         exist = True if item else False
         imgtitle = item.imgtitle if exist else imgtitle
     finally:
@@ -49,7 +49,7 @@ def query_img_secret(app, imgid, key):
     dbsession = app.sessionMaker()
     secret = None
     try:
-        item = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
+        item = dbsession.query(ImgHistory).filter_by(imgid=imgid, imgtype=1).first()
         if not item:
             raise Exception("该图像没有隐藏数据")
         if item.key != key:
