@@ -79,10 +79,8 @@ wx.request({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var that=this;
     var sessionId=wx.getStorageSync('sessionId');
-    this.setData({
-postList:remind_List
-    });
     wx.request({
       url: 'http://localhost:5000/query-invites',
       method:'GET',
@@ -93,8 +91,11 @@ postList:remind_List
       success:function(res){
         console.log('查询成功',res.data);
         //将服务器反馈回来的数据存在数组当中
-        remind_List:res.data.list;
+        remind_List:res.data.lists;
         pages:res.data.pages
+        that.setData({
+          postList: remind_List
+        })
       },
       fail:function(res){
         console.log('查询失败')

@@ -10,10 +10,10 @@ Page({
    // pages:1,//初始值总页数是1
     mypage: 1,//默认查找第一页
     postList:[{
+      datetime:'',
       finish: '',
       img: "",
       imgtitle: '',
-      date: '',
       imgtype:''
     }]
   },
@@ -60,11 +60,10 @@ else{
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setData({
-      postList: List_  //数据刷新
-    })
+    var that = this;
     var sessionId=wx.getStorageSync('sessionId');
 wx.request({
+  
   url: 'http://localhost:5000/query-history',
   method:'GET',
   header: {
@@ -75,13 +74,15 @@ wx.request({
       'page':this.data.mypage
   },
   success:function(res){
+  
     console.log('发送查询历史信息请求',res.data),
-    List_=res.data.lists
+    List_=res.data.list
     console.log(List_)  //打印出来看看
     //总页数
-   
       pages:res.data.pages
-  
+      that.setData({
+        postList: List_  
+      })
   }
 })
   },

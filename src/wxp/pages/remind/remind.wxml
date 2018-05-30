@@ -3,7 +3,7 @@
   <button class="weui-btn mini-btn" type="primary" size="mini" catchtap='onget'>全部已读</button>
 </view>
 
-<block wx:for="{{postList}}" wx:for-item="item" wx:for-index="idx" >
+<block wx:for="{{postList}}" wx:for-item="item" wx:for-index="idx" wx:key="2" >
   <view class='post-container'>
     <view class='main'>
       <view class='image'>
