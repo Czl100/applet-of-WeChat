@@ -1,4 +1,5 @@
 var content;
+var nick;
 Page({
 
   /**
@@ -12,6 +13,10 @@ Page({
   },
   Input_content: function (e) {  //获取留言框中的信息content
     content = e.detail.value
+    // console.log(content)
+  },
+  Input_nick: function (e) {  //获取留言框中的信息content
+    nick = e.detail.value
     // console.log(content)
   },
   showTopTips: function () {    //这个就是点击确定按键的时候
@@ -28,7 +33,9 @@ Page({
       },
       data:{
         'sessionId':sessionId,
-        'imgid':imgid,
+        'nick':nick,
+//        'imgid':imgid,
+        'imgid':'8380bb4e0a70522a440398eea6e4cfba',
         'content':content //留言信息发送到服务器
       },
       success:function(res){
