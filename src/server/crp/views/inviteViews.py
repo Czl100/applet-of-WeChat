@@ -62,7 +62,7 @@ def bind_routes(app):
         invitesServices.invite_have_read(app, wxid=wxid, inviteId=inviteId)
         return {}
 
-    @app.route("/read-all-invites"， methods=['post'])
+    @app.route("/read-all-invites", methods=['post'])
     @crpview(hasSessionId=True)
     @request_around(app, request, requestlog=True)
     def read_all_invites(sessionId):
