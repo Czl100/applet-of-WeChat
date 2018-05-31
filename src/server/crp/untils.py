@@ -40,7 +40,22 @@ def md5(s):
     hasher.update(s.encode("utf-8"))
     return hasher.hexdigest()
 
-# 唯一ID生成器函数
+# 线程安全的递增生成器函数
+def inc_num_genfun(init_num):
+    import threading
+    
+    lock = threading.Lock()
+    while True:
+        yield init_num
+        # 避免多线程读写竞争
+        lock.acquire()
+        init_num+=1
+        lock.release()
+
+# 递增的imgnum, 用于信息隐藏。imgid=md5(imgnum)
+inc_imgnum_gen = inc_num_genfun(0)
+
+# 线程安全的唯一ID生成器函数
 def unique_id_genfun():
     import random
     import threading

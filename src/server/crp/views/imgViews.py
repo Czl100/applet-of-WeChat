@@ -1,11 +1,11 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, crpview, unique_imgid_gen, md5, unescape, request_around
+from crp.untils import sp, urlget, crpview, unique_imgid_gen, md5, unescape, request_around, inc_imgnum_gen
 from crp.services import imgHistoryServices
 from flask import request
 
 # 模仿数据隐藏
-def data_hide(inpImgPath, outImgPath, imgId, isdel=True):
+def data_hide(inpImgPath, outImgPath, imgnum, isdel=True):
     import shutil
     import os
 
@@ -19,13 +19,13 @@ def data_extract(inpImgPath, isdel=True):
     import os
     if isdel:
         os.remove(inpImgPath)
-    return "cef5058cf5699449de4bdc539b9f22a2"
+    return 0
 
 def data_extract2(inpImgPath, isdel=True):
     import os
     if isdel:
         os.remove(inpImgPath)
-    return "78c4af40f3bfd56d6642b260f4ccd215"
+    return 1
 
 def bind_routes(app):
     import time
@@ -42,7 +42,9 @@ def bind_routes(app):
         imgtitle = unescape(request.form.get("imgtitle", None))     # 图像对外标题
         imgtitle = imgtitle if imgtitle else None
         print("title:", imgtitle)
-        imgid = next(unique_imgid_gen)                              # 获取该次操作的图像ID
+        # imgid = next(unique_imgid_gen)                              # 获取该次操作的图像ID
+        imgnum = next(inc_imgnum_gen)
+        imgid = md5(str(imgnum))
         timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
         outImgPath = app.config["IMG_DIR"]+timeStamp+".jpeg"        # 载迷图像输出路径
@@ -54,7 +56,7 @@ def bind_routes(app):
         imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, imgid=imgid, path=outImgPath, imgtitle=imgtitle, imgtype=0)
 
         # 信息隐藏 生成载密图像
-        data_hide(inpImgPath, outImgPath, imgid)         # 调用C++信息隐藏处理
+        data_hide(inpImgPath, outImgPath, imgnum)         # 调用C++信息隐藏处理
 
         # 更新数据库finish字段
         imgHistoryServices.update_finish_img_history(app, imgid=imgid)
@@ -74,7 +76,8 @@ def bind_routes(app):
         imgFile.save(inpImgPath)                                    # 将图像保存
 
         # 提取图像id
-        imgid = data_extract(inpImgPath)
+        imgnum = data_extract(inpImgPath)
+        imgid = md5(str(imgnum))
 
         # 查询库
         exists, imgtitle = imgHistoryServices.query_img_author(app, imgid=imgid)
@@ -92,7 +95,9 @@ def bind_routes(app):
         imgFile = request.files.get('img', None)                    # 图像文件
         if not imgFile:
             raise Exception("lack img file")
-        imgid = next(unique_imgid_gen)                              # 获取该次操作的图像ID
+        # imgid = next(unique_imgid_gen)                              # 获取该次操作的图像ID
+        imgnum = next(inc_imgnum_gen)
+        imgid = md5(str(imgnum))
         timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
         outImgPath = app.config["IMG_DIR"]+timeStamp+".jpeg"        # 载迷图像输出路径
@@ -123,6 +128,7 @@ def bind_routes(app):
         imgFile.save(inpImgPath)    
 
         # 提取图像id
-        imgid = data_extract2(inpImgPath)
+        imgnum = data_extract2(inpImgPath)
+        imgid = md5(str(imgnum))
         secret = imgHistoryServices.query_img_secret(app, imgid, key)
         return {'secret':secret}
