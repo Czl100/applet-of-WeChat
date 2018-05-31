@@ -5,6 +5,9 @@ App({
     wx.request({
       url: 'http://localhost:5000/query-unread-number',
       method: 'GET',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
       data: {
         'sessionId': wx.getStorageSync('sessionId'),
       },
@@ -104,6 +107,20 @@ App({
       }
     })
    
+  },
+  onHide:function(){
+    /*
+wx.request({
+  url: 'http://localhost:5000/sessionDestroy',
+  method:'GET',
+  data:{
+    sessionId:wx.getStorageSync('sessionId'),
+  },
+  success:function(res){
+    console.log('会话销毁',res.data)
+  }
+})
+*/
   },
   globalData: {  //全局变量
     userInfo:null,  //记录用户信息

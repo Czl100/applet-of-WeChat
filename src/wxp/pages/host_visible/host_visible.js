@@ -1,4 +1,5 @@
 var app=getApp();
+var context;
 Page({
 
   /**
@@ -36,20 +37,30 @@ Page({
      wx.canvasToTempFilePath({
        canvasId: 'canvas',
        success: function (res1) {
-         console.log(res1.tempFilePath)
+         console.log(res1.tempFilePath);
+         //把水印放进去之后，保存在手机相册
+         wx.saveImageToPhotosAlbum({
+           success(res) {
+             console.log('保存相册成功')
+             wx.showToast({
+               title: '已保存于手机相册,',
+               icon: 'success',
+               duration: 3000
+             });
+           }
+         })
        }
      })
+
+    
      },
 onsure:function(){
-
-  var context = wx.createCanvasContext('canvas');
-  
-  context.drawImage(this.data.visible_chooseFiles,0,0,350,200);
-  context.fillText(this.data.dis, 10, 50);
-  context.setFontSize(40);
+  context.drawImage(this.data.visible_chooseFiles, 0, 0, this.data.imgw, this.data.imgh);
+  context.fillText(this.data.dis, 265, 350);
+  context.setFontSize('50rpx');
   context.setFillStyle('#FFFFFF');
   context.draw()
-  console.log(this.data.imgh,this.data.imgh)
+  //console.log(this.data.imgw,this.data.imgh)
   
 
 },
@@ -70,7 +81,9 @@ oncancel:function(){
    * 生命周期函数--监听页面显示
    */
   onShow: function (e) {
-  
+    context = wx.createCanvasContext('canvas');
+    context.drawImage(this.data.visible_chooseFiles, 0, 0, this.data.imgw, this.data.imgh);
+    context.draw()
   },
 
   /**

@@ -1,5 +1,4 @@
 var pages=1;//总页数初始值
-var remind_List;
 Page({
 
   /**
@@ -8,10 +7,10 @@ Page({
   data: { 
     mypage: 1,//默认查找第一页
     _number:0,//未邀请个数
-    onread:false,//这是设置数据是否已读，默认是未读
+  //  onread:false,//这是设置数据是否已读，默认是未读
     postList :[{
       inviteId:'222222inviterID',
-      uread: true,
+      uread: false,
       inviter: '李',
       imgtitle: 'my',
       img: "/pages/icon/camera.png",
@@ -20,7 +19,7 @@ Page({
     },
       {
         inviteId: '222222inviterID',
-        uread: false,
+        uread: true,
         inviter: '李',
         imgtitle: 'my',
         img: "/pages/icon/camera.png",
@@ -40,6 +39,31 @@ Page({
         mypage: 1
       })
     }
+    var that=this;
+    wx.request({
+      url: 'http://localhost:5000/query-invites',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      method: 'GET',
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+        'page': that.data.mypage
+      },
+      success: function (res) {
+        console.log('查询成功', res.data.list);
+        //将服务器反馈回来的数据存在数组当中
+        //   remind_List:res.data.list;
+        pages: res.data.pages
+        that.setData({
+          //    postList: remind_List
+          postList: res.data.list
+        })
+      },
+      fail: function (res) {
+        console.log('查询失败')
+      }
+    })
   },
   onafter: function () { //点击下一页
     if (this.data.mypage < pages) {
@@ -52,6 +76,37 @@ Page({
         mypage: pages
       })
     }
+    var that=this;
+    wx.request({
+      url: 'http://localhost:5000/query-invites',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      method: 'GET',
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+        'page': that.data.mypage
+      },
+      success: function (res) {
+        console.log('查询成功', res.data.list);
+        //将服务器反馈回来的数据存在数组当中
+        //   remind_List:res.data.list;
+        pages: res.data.pages
+        that.setData({
+          //    postList: remind_List
+          postList: res.data.list
+        })
+      },
+      fail: function (res) {
+        console.log('查询失败')
+      }
+    })
+  },
+  oncatch:function(){ //当点击的时候
+var that=this;
+that.setData({
+  uread:true
+})
   },
   onget:function(){ //点击全部已读,意思就是说告诉后台，这些数据用户已经读了
   var that=this;
@@ -106,6 +161,9 @@ wx.request({
     wx.request({
       url: 'http://localhost:5000/query-unread-number',
       method: 'GET',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
       data: {
         'sessionId': wx.getStorageSync('sessionId'),
       },
@@ -120,18 +178,22 @@ wx.request({
     })
     wx.request({
       url: 'http://localhost:5000/query-invites',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
       method:'GET',
       data:{
         'sessionId':sessionId,
-        'page':1
+        'page':that.data.mypage
       },
       success:function(res){
-        console.log('查询成功',res.data);
+        console.log('查询成功',res.data.list);
         //将服务器反馈回来的数据存在数组当中
-        remind_List:res.data.lists;
+     //   remind_List:res.data.list;
         pages:res.data.pages
         that.setData({
-          postList: remind_List
+      //    postList: remind_List
+          postList: res.data.list
         })
       },
       fail:function(res){

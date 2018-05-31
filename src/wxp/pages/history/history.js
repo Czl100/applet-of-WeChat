@@ -14,7 +14,7 @@ Page({
       datetime:'',
       finish: '',
       img: "",
-      imgtitle: '',
+      imgtitle: '暂无标题',
       imgtype:''
     }]
   },
@@ -45,6 +45,31 @@ Page({
         mypage: 1
       })
     }
+    var that=this;
+    console.log('点击上一页',this.data.mypage)
+    wx.request({
+      url: 'http://localhost:5000/query-history',
+      method: 'GET',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+        'page': that.data.mypage
+      },
+      success: function (res) {
+        console.log('发送查询历史信息请求', res.data),
+          List_ = res.data.list
+        console.log(List_)  //打印出来看看
+        //总页数
+        pages = res.data.pages
+        that.setData({
+          postList: List_
+        })
+        console.log('总页数pages', pages);
+        console.log('服务器上的总页数', res.data.pages);
+      }
+    })
   },
   onafter: function () { //点击下一页
     console.log(this.data.mypage, pages);
@@ -58,6 +83,31 @@ Page({
         mypage: pages
       })
     }
+    var that=this;
+    console.log('点击下一页', this.data.mypage)
+    wx.request({
+      url: 'http://localhost:5000/query-history',
+      method: 'GET',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+        'page': that.data.mypage
+      },
+      success: function (res) {
+        console.log('发送查询历史信息请求', res.data),
+          List_ = res.data.list
+        console.log(List_)  //打印出来看看
+        //总页数
+        pages = res.data.pages
+        that.setData({
+          postList: List_
+        })
+        console.log('总页数pages', pages);
+        console.log('服务器上的总页数', res.data.pages);
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面显示
@@ -79,7 +129,6 @@ wx.request({
       'page':that.data.mypage
   },
   success:function(res){
-
     console.log('发送查询历史信息请求',res.data),
     List_=res.data.list
     console.log(List_)  //打印出来看看
@@ -88,11 +137,16 @@ wx.request({
       that.setData({
         postList:List_  
       })
+     console.log('总页数pages',pages);
+     console.log('服务器上的总页数',res.data.pages);
   }
 })
     wx.request({
       url: 'http://localhost:5000/query-unread-number',
       method: 'GET',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
       data: {
         'sessionId': wx.getStorageSync('sessionId'),
       },

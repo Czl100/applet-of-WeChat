@@ -104,6 +104,9 @@ Page({
   onShow: function () {
     wx.request({
       url: 'http://localhost:5000/query-unread-number',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
       method: 'GET',
       data: {
         'sessionId': wx.getStorageSync('sessionId'),

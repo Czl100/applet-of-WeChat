@@ -21,11 +21,8 @@ Page({
     //将用户的id,imgid,content都发送到服务器上
     wx.request({
       url: 'http://localhost:5000/invite',
-
       method:'POST',
-
-      method:'post',
-
+    
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
@@ -39,7 +36,7 @@ Page({
       },
       fail:function(res){
         console.log('发送邀请失败',res.data.msg)
-      }
+      }     
     })
     if(!this.data.isAgree){  //如果不同意，那么显示顶部栏错误提示
     this.setData({

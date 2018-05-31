@@ -4,8 +4,8 @@
 </view>
 <view class='g'>
 <block wx:for="{{postList}}" wx:for-item="item" wx:for-index="idx" wx:key="2" >
-<view class="{{onread==false?'color':'color1'}}"  >
-  <view class='post-container'>
+<view class="{{item.uread==false?'color':'color1'}}"  catchtap='oncatch'>
+  <view class='post-container' >
     <view class='main'>
       <view class='image'>
         <view class='img'>

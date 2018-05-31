@@ -39,11 +39,12 @@ Page({
       'key':that.data.ser  //输入的密码
    },
    success:function(res){
+     res.data = JSON.parse(res.data);
      console.log('获取水印信息',res.data);
      console.log('获取水印信息', res.data.secret);
      wx.showModal({
        title: '水印信息',
-       content: res.data,
+       content: res.data.secret,
        confirmText: "确定",
        cancelText: "取消",
        success: function (res) {

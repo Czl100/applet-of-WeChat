@@ -4,9 +4,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    title:'追溯成功',
-    imgid:null,
-  
+    title:'暂无标题',
   },
 onno:function(){
 wx.navigateBack();
@@ -23,9 +21,14 @@ var that=this;
   onLoad: function (options) {
     console.log(options)
     this.setData({
-      title:options.title,
       imgid:options.imgid
     })
+    if(!options.title)  //如果title不是空的话
+    {
+      this.setData({
+        title: options.title,
+      })
+    }
   },
 
   /**

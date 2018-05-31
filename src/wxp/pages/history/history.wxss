@@ -8,7 +8,7 @@
   margin-top: 8rpx;
 }
 .c{
-  margin-bottom: 10rpx;
+  margin-bottom: 40rpx;
 }
 .container-a{
   flex-direction: row;

@@ -1,7 +1,7 @@
 <view class='container-a'>
 
 <view >
-<canvas style='width:{{imgw}};height:{{imgh}}; background-size="contain";'  canvas-id='canvas'></canvas>
+<canvas style='width:{{imgw}}px;height:{{imgh}}px;' class='c' canvas-id='canvas'></canvas>
 </view>
  
 <view>
