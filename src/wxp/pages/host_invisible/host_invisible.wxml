@@ -1,7 +1,7 @@
 <view class='container-a'>
 
 <view>
-<image src="{{invisible_chooseFiles}}"></image>
+<image mode='aspectFit' src="{{invisible_chooseFiles}}" catchtap='onpre'></image>
 </view>
 
 

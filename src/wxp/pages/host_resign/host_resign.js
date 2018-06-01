@@ -10,7 +10,12 @@ Page({
     dis: "",
     useKeyboardFlag: true,  //默认是键盘输入类型的输入框
   },
-
+  onpre: function () {
+    wx.previewImage({
+      current: 'app.global.chooseFiles', // 当前显示图片的http链接
+      urls: [app.globalData.chooseFiles],
+    })
+  },
   Input: function (e) {
     this.setData({
       dis: e.detail.value

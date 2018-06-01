@@ -16,6 +16,7 @@ Page({
     })
   },
   onLoad: function () {
+    
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -63,11 +64,14 @@ Page({
    */
   getUserInfo: function (e) {
     if (e.detail.errMsg == "getUserInfo:ok") {
+      
       wx.showToast({
         title: '授权成功',
-      })
+      });
+      console.log('已经授权');
       setTimeout(function () {
-        wx.navigateBack()
+        wx.navigateBack({
+        })
       }, 700)
     }
   },

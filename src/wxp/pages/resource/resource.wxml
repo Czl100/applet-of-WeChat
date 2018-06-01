@@ -1,6 +1,6 @@
 <view class='host-container'>
 <view class='choice'>
-  <image class='img'  src="{{resource_chooseFiles?resource_chooseFiles:Image}}" catchtap='chooseImage' ></image>
+  <image mode='aspectFit' class='img'  src="{{resource_chooseFiles?resource_chooseFiles:Image}}" catchtap='chooseImage' ></image>
   <text >选择图片</text>
 </view>
   

@@ -22,6 +22,12 @@ Page({
       ser: e.detail.value
     })
   },
+  onpre:function(){
+      wx.previewImage({
+        current: 'app.global.chooseFiles', // 当前显示图片的http链接
+        urls: [app.globalData.chooseFiles],
+      })
+  },
   onget:function(){  //提取水印信息
  //   wx.navigateBack()
  var that=this;

@@ -9,7 +9,7 @@ Page({
   data: {
    // pages:1,//初始值总页数是1
    mypage: 1,//默认查找第一页
-    
+   img_unfinish:"/pages/icon/unfinished.png" ,//如果是未完成时的图片
     postList:[{
       datetime:'',
       finish: '',
@@ -109,6 +109,7 @@ Page({
       }
     })
   },
+ 
   /**
    * 生命周期函数--监听页面显示
    */
@@ -140,6 +141,7 @@ wx.request({
      console.log('总页数pages',pages);
      console.log('服务器上的总页数',res.data.pages);
   }
+  
 })
     wx.request({
       url: 'http://localhost:5000/query-unread-number',
@@ -153,14 +155,27 @@ wx.request({
       success: function (res) {
         console.log('打开历史记录时查询未邀请个数', res.data)
         wx.setStorageSync('_number', res.data.number);
+        var number = wx.getStorageSync('_number');
+        if (number == 0) {
+          wx.removeTabBarBadge({
+            index: 3
+          });
+        }
+        else{
         wx.setTabBarBadge({
           index: 3,
-          text: 'number',
+          text: number+"",
         })
+      }
       }
     })
   },
-
+onpre:function(e){
+  wx.previewImage({
+    current: e.detail.image, // 当前显示图片的http链接
+    urls: ['e.image'],// 需要预览的图片http链接列表
+  })
+},
   /**
    * 生命周期函数--监听页面隐藏
    */

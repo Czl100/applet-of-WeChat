@@ -1,6 +1,6 @@
 <view class='host-container'>
 <view class='choice'>
-  <image bindload="imageLoad" src="{{chooseFiles?chooseFiles:Image}}" catchtap='chooseImage' ></image>
+  <image mode='aspectFit' bindload="imageLoad" src="{{chooseFiles?chooseFiles:Image}}" catchtap='chooseImage' ></image>
   <text catchtap='chooseImage'>选择图片</text>
 </view>
   

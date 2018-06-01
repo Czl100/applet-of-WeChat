@@ -1,54 +1,22 @@
 //app.js
 
 App({
-  onShow:function(){
-    wx.request({
-      url: 'http://localhost:5000/query-unread-number',
-      method: 'GET',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded' // 默认值
-      },
-      data: {
-        'sessionId': wx.getStorageSync('sessionId'),
-      },
-      success: function (res) {
-        console.log('打开时查询未邀请个数', res.data)
-       wx.setStorageSync('_number',res.data.number);
-        wx.setTabBarBadge({
-          index: 3,
-          text: 'number',
-        })
-      }
-    })
-  },
   onLaunch: function () {
     // 展示本地存储能力
     var that=this
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs) 
-/*
-    //作为本地的一个存储
-    wx.setStorage({
-      key: '_userInfo',
-      data: this.globalData.userInfo
-    })
-*/
+
     // 登录
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        
         var requrl = 'http://localhost:5000/sessionBuild/' + res.code
         console.log(requrl)
        wx.request({
-
          url: 'http://localhost:5000/sessionBuild/' + res.code,
-        //method:'GET',
-
          url: requrl,
-       //  method:'GET',
-
          data: {
           //将用户信息发送上服务器
          },
@@ -79,7 +47,7 @@ App({
            console.log('=================session fail=================')
          },
          complete:function(res){
-      
+         
          }
        })
       }
@@ -89,9 +57,10 @@ App({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-    
+  
           wx.getUserInfo({  //如果获取了用户的信息
             success: res => {
+            
               // 可以将 res 发送给后台解码出 unionId
               this.globalData.userInfo = res.userInfo;
             //  console.log(res.userInfo)
@@ -108,20 +77,7 @@ App({
     })
    
   },
-  onHide:function(){
-    /*
-wx.request({
-  url: 'http://localhost:5000/sessionDestroy',
-  method:'GET',
-  data:{
-    sessionId:wx.getStorageSync('sessionId'),
-  },
-  success:function(res){
-    console.log('会话销毁',res.data)
-  }
-})
-*/
-  },
+
   globalData: {  //全局变量
     userInfo:null,  //记录用户信息
     chooseFiles:null,//保存已经选择的图片

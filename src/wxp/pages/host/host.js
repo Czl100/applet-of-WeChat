@@ -81,12 +81,21 @@ that.setData({
         'sessionId': wx.getStorageSync('sessionId'),
       },
       success: function (res) {
-        console.log('打开图片版权页面的时候未邀请个数', res.data)
-        wx.setStorageSync('_number', res.data.number);
-        wx.setTabBarBadge({
+        console.log('打开个数', res.data.number)
+       wx.setStorageSync('_number', res.data.number);
+       var number=wx.getStorageSync('_number');
+       console.log(number);
+       if(number==0)
+       {
+         wx.removeTabBarBadge({
+           index: 3
+         });
+       }
+       else{ wx.setTabBarBadge({
           index: 3,
-          text: 'number',
+          text: number+"",
         })
+      }
       }
     })
     // 检验是否授权

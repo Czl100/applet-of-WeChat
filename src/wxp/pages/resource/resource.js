@@ -114,10 +114,18 @@ Page({
       success: function (res) {
         console.log('打开追溯界面时刷新未邀请个数', res.data)
         wx.setStorageSync('_number', res.data.number);
+        var number = wx.getStorageSync('_number');
+        if (number == 0) {
+          wx.removeTabBarBadge({
+            index: 3
+          });
+        }
+        else{
         wx.setTabBarBadge({
           index: 3,
-          text: 'number',
+          text: number+"",
         })
+      }
       }
     })
   },

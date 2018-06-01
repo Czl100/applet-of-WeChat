@@ -9,14 +9,14 @@
     <view class='main'>
       <view class='image'>
         <view class='img'>
-          <image src="{{item.img}}"></image>
+          <image mode='aspectFit' src="{{item.img}}"></image>
         </view>
         <view class='title'>{{item.imgtitle}}</view>
       </view>
       <view class='body'>
         <view class='bodytop'>
           <view>{{item.inviter}}</view>
-          <view>{{item.date}}</view>
+          <view>{{item. datetime}}</view>
         </view>
         <view class='bodybottom'>
           {{item.content}}

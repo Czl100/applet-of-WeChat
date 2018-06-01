@@ -9,23 +9,14 @@ Page({
     _number:0,//未邀请个数
   //  onread:false,//这是设置数据是否已读，默认是未读
     postList :[{
-      inviteId:'222222inviterID',
+      inviteId:'',
       uread: false,
-      inviter: '李',
-      imgtitle: 'my',
-      img: "/pages/icon/camera.png",
-     date: '2018 09 01',
-      content: 'ggggggggggggggggggggggggg'
-    },
-      {
-        inviteId: '222222inviterID',
-        uread: true,
-        inviter: '李',
-        imgtitle: 'my',
-        img: "/pages/icon/camera.png",
-        date: '2018 09 01',
-        content: 'ggggggggggggggggggggggggg'
-      }]
+      inviter: '',
+      imgtitle: '',
+      img: "",
+      datetime: '',
+      content: ''
+    }]
   },
   onbefore: function () { //点击上一页
     if (this.data.mypage > 1) {
@@ -170,10 +161,18 @@ wx.request({
       success: function (res) {
         console.log('打开消息提醒时未邀请个数', res.data)
         wx.setStorageSync('_number', res.data.number);
+        var number = wx.getStorageSync('_number');
+        if (number == 0) {
+          wx.removeTabBarBadge({
+            index: 3
+          });
+        }
+        else{
         wx.setTabBarBadge({
           index: 3,
-          text: 'number',
+          text: number+"",
         })
+      }
       }
     })
     wx.request({

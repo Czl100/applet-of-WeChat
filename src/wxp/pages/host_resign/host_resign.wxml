@@ -1,7 +1,7 @@
 <view class='container-a'>
 
 <view>
-<image src="{{resign_chooseFiles}}"></image>
+<image mode='aspectFit' catchtap='onpre' src="{{resign_chooseFiles}}"></image>
 </view>
 
 <view>
