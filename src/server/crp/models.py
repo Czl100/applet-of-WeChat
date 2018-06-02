@@ -8,35 +8,38 @@ Base = declarative_base()
 class User(Base):
     # 表名
     __tablename__='users'
+    __table_args__ = {"mysql_charset" : "utf8"}
 
     # 字段
     id = Column(Integer, primary_key=True)
     wxid = Column(String(32), unique=True, index=True)
-    unreadNum = Column(Integer, default=0)
     datetime = Column(DateTime)
 
 
 class ImgHistory(Base):
     # 表名
     __tablename__='img_history'
+    __table_args__ = {"mysql_charset" : "utf8"}
 
     # 字段
     id = Column(Integer, primary_key=True)                  # 自增主键
     imgid = Column(String(64), unique=True, index=True)     # 图像ID, 隐藏在图像中的数据
     wxid = Column(String(32), index=True)                   # 微信ID
     path = Column(String(128))                              # 图像相对于工作目录的路径
-    title = Column(String(64))                              # 图像名称
-    content = Column(String(300))                           # 图像内容, 用于信息隐藏
+    imgtitle = Column(String(64))                           # 图像名称
+    secret = Column(String(300))                            # 图像秘密内容, 用于信息隐藏
+    key = Column(String(300))                               # 图像密钥(md5-key)
     finish = Column(Integer, default=0)                     # 是否完成的标记, 0-未完成, 1-完成, 2-处理错误
+    imgtype = Column(Integer, default=0)                   # 图像记录类型, 0-图像注册, 1-信息隐藏
     datetime  = Column(DateTime)                            # 创建日期
 
 class Invites(Base):
-    # 表明
-    __tablename__='invites'
+    __tablename__='invites'     # 表名
+    __table_args__ = {"mysql_charset" : "utf8"}
 
     # 字段
     id = Column(Integer, primary_key=True)                  # 自增主键
-    unread = Column(Integer, default=0)                     # 是否未读(0:已读，1:未读)
+    unread = Column(Integer, default=1)                     # 是否未读(0:已读，1:未读)
     imgurl = Column(String(128))                            # 图片url
     imgtitle = Column(String(64))                           # 图片名称
     inviterNick = Column(String(128))                       # 用户昵称

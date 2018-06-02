@@ -1,0 +1,22 @@
+<view class='container-a'>
+
+<view>
+<image mode='aspectFit' src="{{invisible_chooseFiles}}" catchtap='onpre'></image>
+</view>
+
+
+ 
+<view>
+<input placeholder='请输入水印信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input_dis'></input>
+<input placeholder='请输入密码' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input_ser'></input>
+</view>
+
+<view class="button-sp-area"  catchtap='onsure'>
+      <button class="weui-btn" type="#40C4FF" plain="true">嵌入水印信息</button>
+</view>
+
+<view class="button-sp-area" catchtap='onget'>
+      <button class="weui-btn" type="black" plain="true" >提取水印信息</button>
+</view>
+
+</view>

@@ -7,37 +7,60 @@ from sqlalchemy import desc
 import datetime
 
 # 插入一条未处理完成的
-def notFinishImgHistory(app, sessionId, imgid):
+def insert_notfinish_img_history(app, sessionId, imgid, imgtype, path, secret=None, key=None, imgtitle=None):
     dbsession = app.sessionMaker()
     wxid = sp.wxid(sessionId)
-    newHistory = ImgHistory(imgid=imgid, wxid=wxid, datetime=datetime.datetime.today())
+    kws = {
+        "imgid":imgid,
+        "wxid":wxid,
+        "imgtitle":imgtitle,
+        "imgtype":imgtype,
+        "path":path,
+        "secret":secret,
+        "key":key,
+        "datetime":datetime.datetime.today()
+    }
+    newHistory = ImgHistory(**kws)
     dbsession.add(newHistory)
     dbsession.commit()
 
 # 当图像处理完成，更新该记录为已处理
-def updateFinishImgHistory(app, imgid, outImgPath):
+def update_finish_img_history(app, imgid):
     dbsession = app.sessionMaker()
-    tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()  
-    tmpHistory.path = outImgPath
+    tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
     tmpHistory.finish = True
     dbsession.commit()
 
 # 查询imgid所对应的作者, 正确返回则找到匹配作者
-def queryImgAuthor(app, imgid):
+def query_img_author(app, imgid):
     dbsession=app.sessionMaker()
-    title=None
+    exist=False
+    imgtitle=None
     try:
-        # one，查找不到抛出异常. first，查找不到不会抛出异常
-        item = dbsession.query(ImgHistory).filter_by(imgid=imgid).one()
-        title = item.title
-    except NoResultFound:
-        raise Exception("未能找到匹配作者")
+        # one，查找不到抛出异常. first，查找不到不会抛出异常    
+        item = dbsession.query(ImgHistory).filter_by(imgid=imgid, imgtype=0).first()
+        exist = True if item else False
+        imgtitle = item.imgtitle if exist else imgtitle
     finally:
         dbsession.commit()      # 提交事务，避免死锁
-    return title
+    return exist, imgtitle
+
+def query_img_secret(app, imgid, key):
+    dbsession = app.sessionMaker()
+    secret = None
+    try:
+        item = dbsession.query(ImgHistory).filter_by(imgid=imgid, imgtype=1).first()
+        if not item:
+            raise Exception("该图像没有隐藏数据")
+        if item.key != key:
+            raise Exception("密码错误")
+        secret = item.secret
+    finally:
+        dbsession.commit()
+    return secret
 
 # 查询指定指定微信用户，指定页面的历史记录
-def queryHistoryPage(app, wxid, page, perpage):
+def query_history_page(app, wxid, page, perpage):
     # 数据库提取出该用户的所有图像
     dbsession = app.sessionMaker()
     try:
@@ -56,8 +79,9 @@ def queryHistoryPage(app, wxid, page, perpage):
     for item in items:
         dicitem = {
             "img":app.config['ENABLE_HOST']+item.path,
-            "title":item.title,
-            "date":str(item.datetime),
+            "imgtitle":item.imgtitle,
+            "imgtype":item.imgtype,
+            "datetime":str(item.datetime),
             "finish":str(item.finish)
         }
         itemList.append(dicitem)
@@ -65,13 +89,13 @@ def queryHistoryPage(app, wxid, page, perpage):
     return totalpage, itemList
 
 # 查询imgid的图片相关信息，包括作者id，图片url，图片标题
-def queryImgInfo(app, imgid):
+def query_img_info(app, imgid):
     dbsession = app.sessionMaker()
     try:
         item = dbsession.query(ImgHistory).filter_by(imgid=imgid).one()
         authorId = item.wxid
         imgurl = app.config['ENABLE_HOST']+item.path
-        imgtitle = item.title
+        imgtitle = item.imgtitle
     except NoResultFound:
         raise Exception("没有查询到imgid所对应的作者")
     finally:

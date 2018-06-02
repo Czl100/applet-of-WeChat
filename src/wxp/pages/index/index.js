@@ -4,7 +4,7 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
+    motto: '欢迎使用',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
@@ -12,19 +12,22 @@ Page({
   //事件处理函数
   bindViewTap: function() {
     wx.navigateTo({
-      url: '../logs/logs'
+      url: '../logs/logs',
     })
   },
   onLoad: function () {
+    
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
+      
     } else if (this.data.canIUse){
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
+   //     console.log(res),
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
@@ -34,21 +37,43 @@ Page({
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         success: res => {
-          app.globalData.userInfo = res.userInfo
+          app.globalData.userInfo = res.userInfo;
           this.setData({
             userInfo: res.userInfo,
             hasUserInfo: true
           })
+          
         }
       })
     }
   },
   getUserInfo: function(e) {
-    console.log(e)
+ //  console.log(e)
     app.globalData.userInfo = e.detail.userInfo
+  //  console.log(app.globalData.userInfo)
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
+      
     })
-  }
+   
+  },
+
+  /**
+   * 授权事件
+   */
+  getUserInfo: function (e) {
+    if (e.detail.errMsg == "getUserInfo:ok") {
+      
+      wx.showToast({
+        title: '授权成功',
+      });
+      console.log('已经授权');
+      setTimeout(function () {
+        wx.navigateBack({
+        })
+      }, 700)
+    }
+  },
+
 })

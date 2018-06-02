@@ -1,0 +1,20 @@
+<view class='container-a'>
+
+<view >
+<canvas style='width:{{imgw}}px;height:{{imgh}}px;' class='c' canvas-id='canvas'></canvas>
+</view>
+ 
+<view>
+<input placeholder='请输入水印信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input'></input>
+</view>
+
+<view class="button-sp-area">
+      <button class="weui-btn" type="#40C4FF" plain="true" catchtap='onsure'>加入可见水印</button>
+</view>
+
+<view class="button-sp-area">
+      <button class="weui-btn" type="black" plain="true" catchtap='onsave'>保存图片</button>
+</view>
+
+
+</view>

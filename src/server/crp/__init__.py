@@ -1,6 +1,5 @@
 # coding=utf-8
 
-from crp.views import bindRoutes
 from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -28,12 +27,19 @@ def create_app(config):
     app.config.from_object(config)
 
     # 初始化数据库
-    db = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    db = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], encoding='utf-8', convert_unicode=True)
     crp.models.Base.metadata.create_all(db)
     app.dbEngine = db
     app.sessionMaker = sessionmaker(bind=db)
 
     # URL绑定
-    crp.views.bindRoutes(app)
+    crp.views.bind_routes(app)
+
+    # 日志系统
+    import logging
+    file_handler = logging.FileHandler('../crp.log', encoding='UTF-8')
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s ''[in %(pathname)s:%(lineno)d]'))
+    app.logger.addHandler(file_handler)
 
     return app

@@ -1,0 +1,27 @@
+.container-b{
+ width: 100%;
+ bottom: 0rpx;
+ position:fixed;
+ text-align: center;
+}
+.a{
+  margin-top: 8rpx;
+}
+.c{
+  margin-bottom: 40rpx;
+}
+.container-a{
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin:5rpx 0 20rpx;
+  background-color: #fff;
+  border-top: 1rpx solid #ededed;
+  border-bottom: 1rpx solid #ededed;
+  padding-bottom: 5rpx;
+}
+.container-a image{
+  width: 150rpx;
+  height: 150rpx;
+}

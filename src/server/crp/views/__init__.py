@@ -1,15 +1,16 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, userWrapper
+from crp.untils import sp, urlget, crpview, request_around
 from crp.views import sessionViews, imgViews, inviteViews, historyViews
 from flask import request
 import json
 
-def bindRoutes(app):
+def bind_routes(app):
     @app.route("/")
     @app.route("/index")
     @app.route("/debug")
-    @userWrapper()
+    @crpview()
+    @request_around(app, request, requestlog=True)
     def index():
         sessionId = request.args.get("sessionId", None)
         session = str(sp.getSessionData(sessionId)) if sessionId else "None"
@@ -22,13 +23,13 @@ def bindRoutes(app):
     #     return {}
 
     # 绑定会话处理视图函数
-    sessionViews.bindRoutes(app)
+    sessionViews.bind_routes(app)
 
     # 绑定图像处理相关视图函数
-    imgViews.bindRoutes(app)
+    imgViews.bind_routes(app)
 
     # 绑定历史查询视图函数
-    historyViews.bindRoutes(app)
+    historyViews.bind_routes(app)
 
     # 绑定邀请提醒视图函数
-    inviteViews.bindRoutes(app)
+    inviteViews.bind_routes(app)

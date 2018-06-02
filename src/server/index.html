@@ -1,13 +1,16 @@
 <html>
     <head></head>
     <body>
+        <h2>图像绑定</h2>
         <form action="http://localhost:5000/img-bind" method="POST" enctype="multipart/form-data">
             img : <input type="file" name="img"><br><br>
+            imgtitle : <input type="input" name="imgtitle"><br><br>
             sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br>
             <input type="submit" value="Upload">
         </form>
         <br>
         <br>
+        <h2>图片溯源</h2>
         <form action="http://localhost:5000/query-author" method="POST" enctype="multipart/form-data">
             img : <input type="file" name="img"><br><br>
             sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br>
@@ -15,11 +18,37 @@
         </form>
         <br>
         <br>
+        <h2>发送邀请</h2>
         <form action="http://localhost:5000/invite" method="POST">
             sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br>
             nick : <input type="input" name="nick">
-            imgid : <input type="input" name="imgid" value="8c0a22fe1dab5349541d05fc090c5086"><br>
+            imgid : <input type="input" name="imgid" value="806490856ee2f580da779d1ba8619da1"><br>
             content : <input type="input" name="content">
+            <input type="submit" value="Upload">
+        </form>
+        <br>
+        <br>
+        <h2>读取邀请</h2>
+        <form action="http://localhost:5000/read-invite" method="get">
+            sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br>
+            inviteId : <input type="input" name="inviteId" value="1"><br>
+            <input type="submit" value="Upload">
+        </form>
+        <br>
+        <br>
+        <h2>嵌入不可见水印</h2>
+        <form action="http://localhost:5000/ih" method="POST" enctype="multipart/form-data">
+            img : <input type="file" name="img"><br><br>
+            sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br><br>
+            secret : <input type="input" name="secret"><br><br>
+            key : <input type="input" name="key"><br><br>
+            <input type="submit" value="Upload">
+        </form>
+        <h2>读取不可见水印</h2>
+        <form action="http://localhost:5000/ix" method="POST" enctype="multipart/form-data">
+            img : <input type="file" name="img"><br><br>
+            sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br><br>
+            key : <input type="input" name="key"><br><br>
             <input type="submit" value="Upload">
         </form>
     </body>

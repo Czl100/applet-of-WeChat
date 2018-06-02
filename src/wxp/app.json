@@ -1,12 +1,55 @@
 {
   "pages":[
+    "pages/host/host",
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/host_visible/host_visible",
+    "pages/logs/logs",
+    "pages/history/history",
+    "pages/remind/remind",
+    "pages/resource/resource",
+    "pages/host_invisible/host_invisible",
+    "pages/host_resign/host_resign",
+    "pages/resource/resource_success",
+    "pages/resource/resource_msg"
+  
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "版权护卫",
     "navigationBarTextStyle":"black"
+  },
+  
+  "tabBar":{
+    "borderStyle":"black",
+    "selectcolor":"#40C4FF",
+    "color":"#333",
+    "backgroundColor":"#fff",
+    "position":"bottom",
+    "list":[
+      {"pagePath":"pages/host/host",
+      "text":"图片版权",
+      "iconPath":"pages/icon/host_before.png",
+      "selectedIconPath":"pages/icon/host_after.png"
+      },
+      {
+        "pagePath":"pages/resource/resource",
+        "text":"图片追溯",
+        "iconPath": "pages/icon/resource_before.png",
+        "selectedIconPath": "pages/icon/resource_after.png"
+      },
+      {
+        "pagePath": "pages/history/history",
+        "text": "历史记录",
+        "iconPath": "pages/icon/history_before.png",
+        "selectedIconPath": "pages/icon/history_after.png"
+      },
+      {
+        "pagePath": "pages/remind/remind",
+        "text": "消息提醒",
+        "iconPath": "pages/icon/remind_before.png",
+        "selectedIconPath": "pages/icon/remind_after.png"
+      }
+    ]
   }
 }
