@@ -1,7 +1,5 @@
 #include"transf.h"
 #include<opencv2/opencv.hpp>	//包含所有OpenCV头文件
-//#include<cv.h>
-//#include<highgui.h>
 
 #include<vector>
 using namespace std;
