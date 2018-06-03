@@ -8,11 +8,17 @@ import json
 # 给初始app绑定路由，包括蓝图
 def bind_routes(app):
     # 会话建立
-    @app.route("/sessionBuild/<code>")
+    @app.route("/session-build")
     @crpview()
     @request_around(app, request, requestlog=True)
-    def session_build(code):
+    def session_build():
         url = app.config['CODE_TO_WXID_URL']
+        code = request.args.get("code", None)
+        if not code:
+            raise Exception("缺少code参数")
+        did = request.args.get("did", None)
+        if not did:
+            raise Exception("缺少设备id参数(did)")
         # 获得wxid
         respstr = urlget(url, {
             "appid":app.config['APPID'],
@@ -29,11 +35,11 @@ def bind_routes(app):
         userServices.login(app, wxid)
         
         # 建立sessionId并和wxid绑定
-        sessionId = sp.newSession(wxid)
+        sessionId = sp.newSession(wxid, did)
         return {"sessionId":sessionId}
 
     # 会话销毁
-    @app.route("/sessionDestroy")
+    @app.route("/session-destroy")
     @crpview(hasSessionId=True)
     def session_destroy(sessionId):
         sp.delSession(sessionId)

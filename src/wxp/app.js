@@ -12,13 +12,19 @@ App({
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        var requrl = 'http://localhost:5000/sessionBuild/' + res.code
+        var did = 0
+        var requrl = 'http://localhost:5000/session-build?code=' + res.code + "&did=" + did
         console.log(requrl)
        wx.request({
-         url: 'http://localhost:5000/sessionBuild/' + res.code,
+         url: 'http://localhost:5000/session-build/',
          url: requrl,
+         header: {
+           'content-type': 'application/x-www-form-urlencoded' // 默认值
+         },
          data: {
           //将用户信息发送上服务器
+           'code':res.code,
+           'did' : did
          },
          header: {
            'content-type': 'application/json' // 默认值
