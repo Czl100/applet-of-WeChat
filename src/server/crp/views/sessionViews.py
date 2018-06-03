@@ -1,16 +1,21 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, crpview, request_around, unique_did_gen
+from crp.untils import sp, urlget, request_around, unique_did_gen
 from crp.services import userServices
 from flask import request
 import json
 
 # 给初始app绑定路由，包括蓝图
 def bind_routes(app):
+    # 服务器生成新的设备id
+    @app.route("/did")
+    @request_around(app, request)
+    def did_gen():
+        return {"did":next(unique_did_gen)}
+
     # 会话建立
     @app.route("/session-build")
-    @crpview()
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request)
     def session_build():
         url = app.config['CODE_TO_WXID_URL']
         code = request.args.get("code", None)
@@ -40,16 +45,8 @@ def bind_routes(app):
 
     # 会话销毁
     @app.route("/session-destroy")
-    @crpview(hasSessionId=True)
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request, hasSessionId=True)
     def session_destroy(sessionId):
         sp.delSession(sessionId)
         return {}
-
-    # 服务器生成新的设备id
-    @app.route("/did")
-    @crpview()
-    @request_around(app, request, requestlog=True)
-    def did_gen():
-        return {"did":next(unique_did_gen)}
 

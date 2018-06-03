@@ -1,13 +1,12 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, crpview, unescape, request_around
+from crp.untils import sp, urlget, unescape, request_around
 from crp.services import imgHistoryServices, invitesServices, userServices
 from flask import request
 
 def bind_routes(app):
     @app.route("/invite", methods=['post', 'get'])
-    @crpview(hasSessionId=True)
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request, hasSessionId=True)
     def invite(sessionId):
         inviterId = sp.wxid(sessionId)
 
@@ -32,8 +31,7 @@ def bind_routes(app):
         return {}
 
     @app.route("/query-invites")
-    @crpview(hasSessionId=True)
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request, hasSessionId=True)
     def query_invites(sessionId):
         wxid=sp.wxid(sessionId)
         page = int(request.args.get("page", 1))     # 默认为查询第一页
@@ -44,16 +42,14 @@ def bind_routes(app):
         return {"pages":totalpage, "list":invitesList}
 
     @app.route("/query-unread-number")
-    @crpview(hasSessionId=True)
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request, hasSessionId=True)
     def query_unread(sessionId):
         wxid = sp.wxid(sessionId)
         unreadnum = invitesServices.invite_unread_number(app, wxid=wxid)
         return {"number":unreadnum}
 
     @app.route("/read-invite", methods=['post'])
-    @crpview(hasSessionId=True)
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request, hasSessionId=True)
     def read_invite(sessionId):
         wxid = sp.wxid(sessionId)
         inviteId = request.args.get("inviteId", None)
@@ -63,8 +59,7 @@ def bind_routes(app):
         return {}
 
     @app.route("/read-all-invites", methods=['post'])
-    @crpview(hasSessionId=True)
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request, hasSessionId=True)
     def read_all_invites(sessionId):
         wxid = sp.wxid(sessionId)
         invitesServices.invite_all_read(app, wxid=wxid)

@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, crpview, unique_imgid_gen, md5, unescape, request_around, inc_imgnum_gen
+from crp.untils import sp, urlget, unique_imgid_gen, md5, unescape, request_around, inc_imgnum_gen
 from crp.services import imgHistoryServices
 from flask import request
 
@@ -32,8 +32,7 @@ def bind_routes(app):
 
     # 图像绑定视图函数
     @app.route("/img-bind", methods=["POST"])
-    @crpview(hasSessionId=True)
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request, hasSessionId=True)
     def img_bind(sessionId):
         # 处理图像
         imgFile = request.files.get('img', None)                    # 图像文件
@@ -64,8 +63,7 @@ def bind_routes(app):
 
     # 作者溯源视图函数
     @app.route("/query-author", methods=["POST"])
-    @crpview(hasSessionId=True)
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request, hasSessionId=True)
     def query_author(sessionId):
         import time
         imgFile = request.files.get('img', None)                    # 图像文件
@@ -87,8 +85,7 @@ def bind_routes(app):
             return {"exists":exists}
 
     @app.route("/ih", methods=["POST"])
-    @crpview(hasSessionId=True)
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request, hasSessionId=True)
     def info_hide(sessionId):
         key = unescape(request.form.get("key", None))
         secret = unescape(request.form.get("secret", None))
@@ -117,8 +114,7 @@ def bind_routes(app):
         return {}
 
     @app.route("/ix", methods=["post"])
-    @crpview(hasSessionId=True)
-    @request_around(app, request, requestlog=True)
+    @request_around(app, request, hasSessionId=True)
     def info_extract(sessionId):
         key = unescape(request.form.get("key", None))
         imgFile = request.files.get('img', None)                    # 图像文件

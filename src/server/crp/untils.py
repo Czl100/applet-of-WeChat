@@ -75,12 +75,19 @@ unique_imgid_gen = unique_id_genfun()
 # 设备ID唯一生成器
 unique_did_gen = unique_id_genfun()
 
-# 视图函数返回装饰
-# 被该装饰器修饰的视图函数成功时返回dict，并在其中添加fg=True的kv。失败则fg=False，并添加错误信息到msg字段
-def crpview(hasSessionId=False):
+# 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
+def request_around(app, request, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):
     def innerWrapper(f):
         @wraps(f)
         def deractor(*args, **kw):
+            # 预处理(请求记录, 限流, sessionId测试)
+            if requestlog:
+                ip = request.remote_addr
+                view = request.url
+                app.logger.debug("[请求]{0} --- {1}".format(ip, view))
+            if limit:
+                pass
+            # 请求处理
             rt = {}
             try:
                 # sessionId的存在测试
@@ -92,37 +99,16 @@ def crpview(hasSessionId=False):
                         raise Exception("session not exists")
                     kw["sessionId"] = sessionId
                 # 视图函数处理
-                rt=f(*args, **kw)
+                rt = f(*args, **kw)
+            # 后处理(异常日志记录, 返回值JSON化)
                 if not isinstance(rt, dict):
                     raise Exception("视图函数正在尝试返回非字典类型数据")
                 rt["fg"]=True
             except Exception as e:
                 rt["fg"]=False
                 rt["msg"]=str(e)
-            return Response(json.dumps(rt), mimetype='application/json')
-        return deractor
-    return innerWrapper
-
-# 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
-def request_around(app, request, requestlog=None, exceptlog=True, limit=True):
-    def innerWrapper(f):
-        @wraps(f)
-        def deractor(*args, **kw):
-            # 预处理
-            if requestlog:
-                ip = request.remote_addr
-                view = request.url
-                app.logger.debug("[请求]{0} --- {1}".format(ip, view))
-            if limit:
-                pass
-            # 请求处理
-            try:
-                r = f(*args, **kw)
-                return r
-            # 后处理
-            except Exception as e:
                 if exceptlog:
                     app.logger.error("【异常】{0}".format(str(e)))
-                raise e
+            return Response(json.dumps(rt), mimetype='application/json')
         return deractor
     return innerWrapper
