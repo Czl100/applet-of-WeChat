@@ -72,6 +72,9 @@ def unique_id_genfun():
 # 图像ID唯一生成器
 unique_imgid_gen = unique_id_genfun()
 
+# 设备ID唯一生成器
+unique_did_gen = unique_id_genfun()
+
 # 视图函数返回装饰
 # 被该装饰器修饰的视图函数成功时返回dict，并在其中添加fg=True的kv。失败则fg=False，并添加错误信息到msg字段
 def crpview(hasSessionId=False):

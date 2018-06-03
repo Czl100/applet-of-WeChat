@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, crpview, request_around
+from crp.untils import sp, urlget, crpview, request_around, unique_did_gen
 from crp.services import userServices
 from flask import request
 import json
@@ -41,7 +41,15 @@ def bind_routes(app):
     # 会话销毁
     @app.route("/session-destroy")
     @crpview(hasSessionId=True)
+    @request_around(app, request, requestlog=True)
     def session_destroy(sessionId):
         sp.delSession(sessionId)
         return {}
+
+    # 服务器生成新的设备id
+    @app.route("/did")
+    @crpview()
+    @request_around(app, request, requestlog=True)
+    def did_gen():
+        return {"did":next(unique_did_gen)}
 
