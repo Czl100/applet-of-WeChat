@@ -10,7 +10,8 @@ Page({
     visible_chooseFiles:app.globalData.chooseFiles,
     dis:null,
    imgw:null,
-   imgh:null
+   imgh:null,
+   text_length:null
   },
   
   /**
@@ -26,12 +27,14 @@ Page({
   },
 
    Input: function(e){
+   
     this.setData({
-      dis:e.detail.value
+      dis:e.detail.value,
+      text_length:e.detail.value.length  //获取水印文字的长度
     })
- //console.log(this.data.dis);
+     
 
-  },
+   },
    onsave: function () {
      //点击保存图片的时候
      wx.canvasToTempFilePath({
@@ -54,15 +57,64 @@ Page({
 
     
      },
+
 onsure:function(){
-  context.drawImage(this.data.visible_chooseFiles, 0, 0, this.data.imgw, this.data.imgh);
-  context.fillText(this.data.dis, 265, 350);
-  context.setFontSize('50rpx');
+  var that=this;
+ 
+  var w;
+  var h;
+  //this.data.imgw和imgh分别是图片的宽高
+  if(this.data.imgw>this.data.imgh) 
+  //如果图片的宽度比高度大的话，那么大小是由高度来决定，宽度和画布大小一样
+    {
+      w=350;
+      h = this.data.imgh * w/this.data.imgw;
+      console.log('宽度>高度',w,h);
+     var start_y = (350 - h) / 2;
+     var text_x=w-this.data.text_length*11-50;
+     var text_y=(350-h)/2+h-20;
+    }  
+  else{
+    h = 350;
+    w = this.data.imgw * h/this.data.imgh;
+    console.log('宽度<高度', w, h);
+   var start_x = (350 - w) / 2;
+   var text_y=h-20;
+   var text_x=(350-w)/2+w-this.data.text_length*11-50;
+  }
+  if (that.data.text_length > 10) {
+    //如果离线水印的长度大于10
+    wx.showModal({
+      title: '温馨提示',
+      content: '用户最多可以输入10个字',
+      confirmText: "确定",
+      cancelText: "取消",
+      success: function (res) {
+        console.log(res);
+        if (res.confirm) {
+          console.log('确定');
+          //    wx.navigateBack({})
+          that.setData({
+
+          })
+        }
+        else {
+          console.log('取消');
+          //   wx.navigateBack({})
+        }
+      }
+    })
+  }
+  else{
+  context.drawImage(this.data.visible_chooseFiles, start_x, start_y, w,h);
+  context.setFontSize(20);
+  context.fillText(this.data.dis, text_x, text_y);
+  console.log(text_x,text_y);
   context.setFillStyle('#FFFFFF');
   context.draw()
   //console.log(this.data.imgw,this.data.imgh)
   
-
+  }
 },
 /*
 oncancel:function(){
@@ -81,8 +133,25 @@ oncancel:function(){
    * 生命周期函数--监听页面显示
    */
   onShow: function (e) {
+    var w;
+    var h;
+    //this.data.imgw和imgh分别是图片的宽高
+    if (this.data.imgw > this.data.imgh)
+    //如果图片的宽度比高度大的话，那么大小是由高度来决定，宽度和画布大小一样
+    {
+      w = 350;
+      h = this.data.imgh * w / this.data.imgw;
+      console.log('宽度>高度', w, h)
+      var start_y = (350 - h) / 2
+    }
+    else {
+      h = 350;
+      w = this.data.imgw * h / this.data.imgh;
+      console.log('宽度>高度', w, h);
+      var start_x = (350 - w) / 2
+    }
     context = wx.createCanvasContext('canvas');
-    context.drawImage(this.data.visible_chooseFiles, 0, 0, this.data.imgw, this.data.imgh);
+    context.drawImage(this.data.visible_chooseFiles, start_x, start_y, w, h);
     context.draw()
   },
 

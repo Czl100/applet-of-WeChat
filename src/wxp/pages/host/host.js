@@ -81,7 +81,9 @@ that.setData({
         'sessionId': wx.getStorageSync('sessionId'),
       },
       success: function (res) {
-        console.log('打开个数', res.data.number)
+        console.log('host界面的消息提醒',res.data.errcode,res.data.errmsg);
+        if(res.data.errcode==0){
+        console.log('打开的时候消息提醒的个数', res.data.number)
        wx.setStorageSync('_number', res.data.number);
        var number=wx.getStorageSync('_number');
        console.log(number);
@@ -96,6 +98,33 @@ that.setData({
           text: number+"",
         })
       }
+       return
+        }
+        if(res.data.errcode==1){
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon:'none',
+            duration:2000
+          })
+          return
+        }
+        else{
+          console.log(res.data.errmsg);
+          wx.showModal({
+            title: '提示',
+           content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+        }
+      },
+      fail:function(res){
+
       }
     })
     // 检验是否授权

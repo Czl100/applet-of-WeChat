@@ -7,9 +7,15 @@ Page({
    */
   data: {
     invisible_chooseFiles: app.globalData.chooseFiles,
+    imgtitle:"",
     dis: "",     //这个是水印的文字信息
     ser: "",     //这是嵌入的密码
     useKeyboardFlag: true,  //默认是键盘输入类型的输入框
+  },
+  Input_title:function(e){
+this.setData({
+imgtitle:e.detail.value
+})
   },
   Input_dis: function (e) {
     this.setData({
@@ -29,11 +35,16 @@ Page({
       })
   },
   onget:function(){  //提取水印信息
+    wx.showToast({
+      title: '正在处理',
+      icon: 'loading',
+      duration: 6000
+    });
  //   wx.navigateBack()
  var that=this;
  var key = Jmd5.hexMD5(that.data.ser);
  //var sessionId=wx.getStorageSync(sessionId);
- console.log(key);
+ console.log('提取水印',key);
  var file=app.globalData.chooseFiles;
  wx.uploadFile({
    url: 'http://localhost:5000/ix',
@@ -42,10 +53,34 @@ Page({
    name: 'img',
    formData:{
      'sessionId': wx.getStorageSync('sessionId'),
-      'key':that.data.ser  //输入的密码
+     'key':key //输入的密码
    },
    success:function(res){
+     wx.hideToast();
      res.data = JSON.parse(res.data);
+     if(res.data.errcode==1000){
+       wx.showModal({
+         title: '提示',
+         content: res.data.errmsg,
+         success: function (res1) {
+           if (res1.confirm) {
+             console.log('用户点击确定')
+           } else if (res1.cancel) {
+             console.log('用户点击取消')
+           }
+         }
+       })
+       return
+     }
+     if(res.data.errcode==1){
+       wx.showToast({
+         title: '服务器遇到了异常，请稍后再试',
+         icon: 'none',
+         duration: 2000
+       })
+       return
+     }
+     else{
      console.log('获取水印信息',res.data);
      console.log('获取水印信息', res.data.secret);
      wx.showModal({
@@ -64,16 +99,31 @@ Page({
          }
        }
      });
+     return
+     }
    },
    fail:function(res){
-     console.log('获取失败，服务器无法进行处理')
+     wx.hideToast();
+     console.log('获取失败，服务器无法进行处理');
+     wx.showToast({
+       title: '提取失败',
+       icon: 'none',
+       duration: 2000
+     });
    }
  })
   },
   onsure: function () {
+    wx.showToast({
+      title: '正在处理',
+      icon:'loading',
+      duration:6000
+    })
     var that=this;
+
+    console.log('图片标题', that.data.imgtitle);
     var key = Jmd5.hexMD5(that.data.ser);
-    console.log(key);
+    console.log('嵌入水印',key);
    var sessionId=wx.getStorageSync('sessionId');
    console.log(that.data.invisible_chooseFiles);
     wx.uploadFile({ //用户点击确定，那么就上传到服务器，进行不可见信息的嵌入
@@ -84,12 +134,39 @@ Page({
       formData: {
         'sessionId': sessionId,     //附带用户的ID,图片隐藏的信息，发送到服务器
         'key':key, //这个通过md5加密过之后的key(用户输入的密码)
-        'secret': that.data.dis     //这个是嵌入水印的密文信息
+        'secret': that.data.dis,     //这个是嵌入水印的密文信息
+        'imgtitle':that.data.imgtitle
       },
       success:function(res){
+        wx.hideToast();
         res.data = JSON.parse(res.data);
+        console.log('嵌入的反馈',res.data.errcode);
+        if (res.data.errcode == 1) {
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        if(res.data.errcode==1000){
+          console.log(res.data.errmsg);
+          wx.showModal({
+            title: '提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+return
+        }
+       else{
+       
         console.log("嵌入成功",res.data)
-
         app.globalData.userimages.push(that.data.invisible_chooseFiles);//当用户点击确定之后，将图片保存在本地缓存
        var ss= wx.setStorageSync('userimages',app.globalData.userimages);
         console.log(ss);
@@ -98,13 +175,17 @@ Page({
           icon: 'success',
           duration: 3000
         });
+        return
+        }
+
       },
       fail:function(){
+        wx.hideToast();
         console.log("嵌入水印失败"),
         wx.showToast({
           title: '数据加载中',
           icon: 'loading',
-          duration: 3000
+          duration: 2000
         });
       }
     })

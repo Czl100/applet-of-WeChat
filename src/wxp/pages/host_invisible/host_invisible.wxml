@@ -7,6 +7,7 @@
 
  
 <view>
+<input placeholder='请输入图片的标题' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_title'></input>
 <input placeholder='请输入水印信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input_dis'></input>
 <input placeholder='请输入密码' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input_ser'></input>
 </view>
