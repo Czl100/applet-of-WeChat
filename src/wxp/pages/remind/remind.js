@@ -10,7 +10,7 @@ Page({
   //  onread:false,//这是设置数据是否已读，默认是未读
     postList :[{
       inviteId:'',
-      uread: false,
+      unread: false,
       inviter: '',
       imgtitle: '',
       img: "",
@@ -93,11 +93,51 @@ Page({
       }
     })
   },
-  oncatch:function(){ //当点击的时候
+  oncatch:function(e){ //当点击的时候,说明这个是已经读了
+  console.log(e);
+    console.log('id', e.currentTarget.id);
 var that=this;
 that.setData({
-  uread:true
-})
+  unread:true
+});
+wx.request({
+  url: 'http://localhost:5000/read-invite',
+  mothod:'POST',
+  header: {
+    'content-type': 'application/x-www-form-urlencoded' // 默认值
+  },
+  data:{
+    sessionId:wx.getStorageSync('sessionId'),
+    inviteId: e.currentTarget.id
+  },
+  success:function(res){
+    console.log('标记某个为已读'.res.data)
+  }
+});
+    wx.request({
+      url: 'http://localhost:5000/query-invites',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      method: 'GET',
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+        'page': that.data.mypage
+      },
+      success: function (res) {
+        console.log('查询成功', res.data.list);
+        //将服务器反馈回来的数据存在数组当中
+        //   remind_List:res.data.list;
+        pages: res.data.pages
+        that.setData({
+          //    postList: remind_List
+          postList: res.data.list
+        })
+      },
+      fail: function (res) {
+        console.log('查询失败')
+      }
+    })
   },
   onget:function(){ //点击全部已读,意思就是说告诉后台，这些数据用户已经读了
   var that=this;
@@ -115,13 +155,37 @@ wx.request({
     if(res.data)
   {//如果成功
     that.setData({
-      onread:true //将onread设置为true
+      unread:true //将onread设置为true
     })
     //将消息提醒那里设置为0
     wx.removeTabBarBadge({
       index:3
     });
   }
+    wx.request({
+      url: 'http://localhost:5000/query-invites',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      method: 'GET',
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+        'page': that.data.mypage
+      },
+      success: function (res) {
+        console.log('查询成功', res.data.list);
+        //将服务器反馈回来的数据存在数组当中
+        //   remind_List:res.data.list;
+        pages: res.data.pages
+        that.setData({
+          //    postList: remind_List
+          postList: res.data.list
+        })
+      },
+      fail: function (res) {
+        console.log('查询失败')
+      }
+    })
   },
   fail:function(res){
     console.log('失败')
@@ -189,7 +253,10 @@ wx.request({
         console.log('查询成功',res.data.list);
         //将服务器反馈回来的数据存在数组当中
      //   remind_List:res.data.list;
-        pages:res.data.pages
+       pages=res.data.pages
+       
+        console.log('总页数pages', pages);
+        console.log('服务器上的总页数', res.data.pages);
         that.setData({
       //    postList: remind_List
           postList: res.data.list

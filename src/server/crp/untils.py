@@ -2,10 +2,12 @@ import crp.sessionPool
 import urllib.parse
 import urllib.request
 import json
+import random
 from werkzeug.contrib.cache import SimpleCache
 from functools import wraps
 from flask import request, Response
-from threading import Lock  
+from threading import Lock
+from crp.exception import CrpException
 
 
 sp = crp.sessionPool.SessionPool()      # 创建会话池
@@ -41,6 +43,7 @@ def md5(s):
     return hasher.hexdigest()
 
 # 线程安全的递增生成器函数
+max_num = 4294967295
 def inc_num_genfun(init_num):
     import threading
     
@@ -50,14 +53,15 @@ def inc_num_genfun(init_num):
         # 避免多线程读写竞争
         lock.acquire()
         init_num+=1
+        if init_num >= max_num:
+            init_num = 0
         lock.release()
 
 # 递增的imgnum, 用于信息隐藏。imgid=md5(imgnum)
-inc_imgnum_gen = inc_num_genfun(0)
+inc_imgnum_gen = inc_num_genfun(random.randint(0, max_num))
 
 # 线程安全的唯一ID生成器函数
 def unique_id_genfun():
-    import random
     import threading
     
     uniqueNumber = random.random()
@@ -72,40 +76,15 @@ def unique_id_genfun():
 # 图像ID唯一生成器
 unique_imgid_gen = unique_id_genfun()
 
-# 视图函数返回装饰
-# 被该装饰器修饰的视图函数成功时返回dict，并在其中添加fg=True的kv。失败则fg=False，并添加错误信息到msg字段
-def crpview(hasSessionId=False):
-    def innerWrapper(f):
-        @wraps(f)
-        def deractor(*args, **kw):
-            rt = {}
-            try:
-                # sessionId的存在测试
-                if hasSessionId:
-                    sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
-                    if sessionId == None:
-                        raise Exception("args need sessionId")
-                    elif sp.getSessionData(sessionId) == None:
-                        raise Exception("session not exists")
-                    kw["sessionId"] = sessionId
-                # 视图函数处理
-                rt=f(*args, **kw)
-                if not isinstance(rt, dict):
-                    raise Exception("视图函数正在尝试返回非字典类型数据")
-                rt["fg"]=True
-            except Exception as e:
-                rt["fg"]=False
-                rt["msg"]=str(e)
-            return Response(json.dumps(rt), mimetype='application/json')
-        return deractor
-    return innerWrapper
+# 设备ID唯一生成器
+unique_did_gen = unique_id_genfun()
 
 # 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
-def request_around(app, request, requestlog=None, exceptlog=True, limit=True):
+def request_around(app, request, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):
     def innerWrapper(f):
         @wraps(f)
         def deractor(*args, **kw):
-            # 预处理
+            # 预处理(请求记录, 限流, sessionId测试)
             if requestlog:
                 ip = request.remote_addr
                 view = request.url
@@ -113,13 +92,35 @@ def request_around(app, request, requestlog=None, exceptlog=True, limit=True):
             if limit:
                 pass
             # 请求处理
+            rt = {}
             try:
-                r = f(*args, **kw)
-                return r
-            # 后处理
+                # sessionId的存在测试
+                if hasSessionId:
+                    sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
+                    if sessionId == None:
+                        raise CrpException("缺少sessionId操作")
+                    elif sp.getSessionData(sessionId) == None:
+                        raise CrpException("未登录，会话不存在，请登录后操作")
+                    kw["sessionId"] = sessionId
+                # 视图函数处理
+                rt = f(*args, **kw)
+            # 后处理(异常日志记录, 返回值JSON化)
+                if not isinstance(rt, dict):
+                    raise CrpException("视图函数正在尝试返回非字典类型数据")
+                rt["fg"]=True
+                rt["errcode"]=0
+            except CrpException as e:
+                # crp应用层面异常
+                rt["fg"]=False
+                rt["errmsg"]=str(e)
+                rt["errcode"]=e.errcode()
             except Exception as e:
-                if exceptlog:
-                    app.logger.error("【异常】{0}".format(str(e)))
-                raise e
+                # 服务器其他异常
+                rt["fg"]=False
+                rt["errmsg"]=str(e)
+                rt["errcode"]=1
+            if (not rt["fg"]) and exceptlog:
+                app.logger.error("【异常】{0}".format(rt["errmsg"]))
+            return Response(json.dumps(rt), mimetype='application/json')
         return deractor
     return innerWrapper

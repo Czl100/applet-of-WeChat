@@ -2,6 +2,7 @@
 
 from crp.models import Invites, User
 from sqlalchemy import desc
+from crp.exception import CrpException
 import datetime
 import math
 
@@ -56,7 +57,7 @@ def invite_have_read(app, wxid, inviteId):
     try:
         inviteItem = dbsession.query(Invites).filter_by(id=inviteId).first()
         if not inviteItem:
-            raise Exception("not exists the inviteId")
+            raise CrpException("邀请项不存在")
         inviteItem.unread=0
     finally:
         dbsession.commit()

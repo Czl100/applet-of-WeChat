@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, crpview, request_around
+from crp.untils import sp, urlget, request_around
 from crp.views import sessionViews, imgViews, inviteViews, historyViews
 from flask import request
 import json
@@ -9,7 +9,6 @@ def bind_routes(app):
     @app.route("/")
     @app.route("/index")
     @app.route("/debug")
-    @crpview()
     @request_around(app, request, requestlog=True)
     def index():
         sessionId = request.args.get("sessionId", None)

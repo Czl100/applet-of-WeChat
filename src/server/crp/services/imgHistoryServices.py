@@ -4,6 +4,7 @@ from crp.models import ImgHistory
 from crp.untils import sp
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import desc
+from crp.exception import CrpException
 import datetime
 
 # 插入一条未处理完成的
@@ -51,9 +52,9 @@ def query_img_secret(app, imgid, key):
     try:
         item = dbsession.query(ImgHistory).filter_by(imgid=imgid, imgtype=1).first()
         if not item:
-            raise Exception("该图像没有隐藏数据")
+            raise CrpException("该图像没有隐藏数据")
         if item.key != key:
-            raise Exception("密码错误")
+            raise CrpException("密码错误")
         secret = item.secret
     finally:
         dbsession.commit()
@@ -97,7 +98,7 @@ def query_img_info(app, imgid):
         imgurl = app.config['ENABLE_HOST']+item.path
         imgtitle = item.imgtitle
     except NoResultFound:
-        raise Exception("没有查询到imgid所对应的作者")
+        raise CrpException("没有查询到imgid所对应的作者")
     finally:
         dbsession.commit()
     return authorId, imgtitle, imgurl
