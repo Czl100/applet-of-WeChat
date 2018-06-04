@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, request_around, unique_did_gen
+from crp.untils import sp, urlget, request_around, unique_did_gen, GetArg
 from crp.services import userServices
 from crp.exception import CrpException
 from flask import request
@@ -16,15 +16,11 @@ def bind_routes(app):
 
     # 会话建立
     @app.route("/session-build")
-    @request_around(app, request)
-    def session_build():
+    @request_around(app, request, args=(
+        GetArg("code", "缺少code参数"),
+        GetArg("did", "缺少设备id参数(did)")))
+    def session_build(code, did):
         url = app.config['CODE_TO_WXID_URL']
-        code = request.args.get("code", None)
-        if not code:
-            raise CrpException("缺少code参数")
-        did = request.args.get("did", None)
-        if not did:
-            raise CrpException("缺少设备id参数(did)")
         # 获得wxid
         respstr = urlget(url, {
             "appid":app.config['APPID'],

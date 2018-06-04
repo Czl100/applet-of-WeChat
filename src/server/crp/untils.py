@@ -12,6 +12,67 @@ from crp.exception import CrpException
 
 sp = crp.sessionPool.SessionPool()      # 创建会话池
 
+# 请求参数包装
+class RequestArg:
+    def __init__(self, key, excep=None, default=None, method="get"):
+        self.__key__ = key
+        self.__excep__ = excep
+        self.__default__ = default
+        self.__method__ = method
+        
+    def key(self):
+        return self.__key__
+
+    def val(self, request, method=None):
+        v = None
+        if method==None:
+            method = self.__method__
+        if method == "get" or method == "GET":
+            v = request.args.get(self.__key__, None)
+        elif method == "post" or method == "POST":
+            v = request.form.get(self.__key__, None)
+        if v == None:
+            if self.__excep__ == None:
+                v = self.__default__
+            else:
+                raise CrpException(str(self.__excep__))
+        else:
+            return v
+
+class GetArg(RequestArg):
+    def __init__(self, key, excep=None, default=None):
+        self.__key__ = key
+        self.__excep__ = excep
+        self.__default__ = default
+    def key(self):
+        return self.__key__
+    def val(self, request, method=None):
+        v = request.args.get(self.__key__, None)
+        if v == None:
+            if self.__excep__ == None:
+                v = self.__default__
+            else:
+                raise CrpException(str(self.__excep__))
+        else:
+            return v
+
+class PostArg(RequestArg):
+    def __init__(self, key, excep=None, default=None):
+        self.__key__ = key
+        self.__excep__ = excep
+        self.__default__ = default
+    def key(self):
+        return self.__key__
+    def val(self, request, method=None):
+        v = request.form.get(self.__key__, None)
+        if v == None:
+            if self.__excep__ == None:
+                v = self.__default__
+            else:
+                raise CrpException(str(self.__excep__))
+        else:
+            return v
+
 # 解决反义字符问题
 def unescape(s):
     from html.parser import HTMLParser
@@ -80,10 +141,12 @@ unique_imgid_gen = unique_id_genfun()
 unique_did_gen = unique_id_genfun()
 
 # 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
-def request_around(app, request, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):
+def request_around(app, request, args=None, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):
+    if args == None:
+        args = ()
     def innerWrapper(f):
         @wraps(f)
-        def deractor(*args, **kw):
+        def deractor(*ks, **kws):
             # 预处理(请求记录, 限流, sessionId测试)
             if requestlog:
                 ip = request.remote_addr
@@ -98,12 +161,19 @@ def request_around(app, request, requestlog=False, exceptlog=True, limit=True, h
                 if hasSessionId:
                     sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
                     if sessionId == None:
-                        raise CrpException("缺少sessionId操作")
+                        raise CrpException("缺少sessionId参数")
                     elif sp.getSessionData(sessionId) == None:
                         raise CrpException("未登录，会话不存在，请登录后操作")
-                    kw["sessionId"] = sessionId
+                    kws["sessionId"] = sessionId
+                # 装载kw
+                for arg in args:
+                    print(arg)
+                    k = arg.key()
+                    v = arg.val(request)
+                    kws[k] = v
                 # 视图函数处理
-                rt = f(*args, **kw)
+                print(kws)
+                rt = f(*ks, **kws)
             # 后处理(异常日志记录, 返回值JSON化)
                 if not isinstance(rt, dict):
                     raise CrpException("视图函数正在尝试返回非字典类型数据")

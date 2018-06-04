@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, unique_imgid_gen, md5, unescape, request_around, inc_imgnum_gen
+from crp.untils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen
 from crp.services import imgHistoryServices
 from crp.exception import CrpException
 from flask import request
