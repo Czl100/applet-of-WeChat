@@ -14,11 +14,13 @@ class __BaseConfig__:
     
 class __DevConfig__(__BaseConfig__):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:HELLOworld0@111.230.92.161:3306/crp?charset=utf8"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:HELLOworld0@111.230.92.161:3306/crp_dev?charset=utf8"
     ENABLE_HOST = "http://localhost:5000/"
     
 class __ProduceConfig__(__BaseConfig__):
-    pass
+    DEBUG = False
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:HELLOworld0@111.230.92.161:3306/crp?charset=utf8"
+    ENABLE_HOST = "https://crp.shakeel.cn/"
 
 devConfig = __DevConfig__()
 produceConfig = __ProduceConfig__()
