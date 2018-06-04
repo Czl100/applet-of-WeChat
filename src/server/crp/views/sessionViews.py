@@ -2,6 +2,7 @@
 
 from crp.untils import sp, urlget, request_around, unique_did_gen
 from crp.services import userServices
+from crp.exception import CrpException
 from flask import request
 import json
 
@@ -20,10 +21,10 @@ def bind_routes(app):
         url = app.config['CODE_TO_WXID_URL']
         code = request.args.get("code", None)
         if not code:
-            raise Exception("缺少code参数")
+            raise CrpException("缺少code参数")
         did = request.args.get("did", None)
         if not did:
-            raise Exception("缺少设备id参数(did)")
+            raise CrpException("缺少设备id参数(did)")
         # 获得wxid
         respstr = urlget(url, {
             "appid":app.config['APPID'],
@@ -33,7 +34,7 @@ def bind_routes(app):
         })
         respobj = json.loads(respstr)
         if(respobj.get("errcode", None)):
-            raise Exception("校验code失败，errcode:"+str(respobj.get("errcode", None)))
+            raise CrpException("校验code失败，errcode:"+str(respobj.get("errcode", None)))
         
         # wxid首次登陆则将用户添加至数据库
         wxid = respobj["openid"]

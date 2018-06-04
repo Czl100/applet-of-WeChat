@@ -5,7 +5,8 @@ import json
 from werkzeug.contrib.cache import SimpleCache
 from functools import wraps
 from flask import request, Response
-from threading import Lock  
+from threading import Lock
+from crp.exception import CrpException
 
 
 sp = crp.sessionPool.SessionPool()      # 创建会话池
@@ -94,21 +95,29 @@ def request_around(app, request, requestlog=False, exceptlog=True, limit=True, h
                 if hasSessionId:
                     sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
                     if sessionId == None:
-                        raise Exception("args need sessionId")
+                        raise CrpException("缺少sessionId操作")
                     elif sp.getSessionData(sessionId) == None:
-                        raise Exception("session not exists")
+                        raise CrpException("未登录，会话不存在，请登录后操作")
                     kw["sessionId"] = sessionId
                 # 视图函数处理
                 rt = f(*args, **kw)
             # 后处理(异常日志记录, 返回值JSON化)
                 if not isinstance(rt, dict):
-                    raise Exception("视图函数正在尝试返回非字典类型数据")
+                    raise CrpException("视图函数正在尝试返回非字典类型数据")
                 rt["fg"]=True
-            except Exception as e:
+                rt["errcode"]=0
+            except CrpException as e:
+                # crp应用层面异常
                 rt["fg"]=False
-                rt["msg"]=str(e)
-                if exceptlog:
-                    app.logger.error("【异常】{0}".format(str(e)))
+                rt["errmsg"]=str(e)
+                rt["errcode"]=e.errcode()
+            except Exception as e:
+                # 服务器其他异常
+                rt["fg"]=False
+                rt["errmsg"]=str(e)
+                rt["errcode"]=1
+            if (not rt["fg"]) and exceptlog:
+                app.logger.error("【异常】{0}".format(rt["msg"]))
             return Response(json.dumps(rt), mimetype='application/json')
         return deractor
     return innerWrapper
