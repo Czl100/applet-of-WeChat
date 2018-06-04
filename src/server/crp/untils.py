@@ -2,6 +2,7 @@ import crp.sessionPool
 import urllib.parse
 import urllib.request
 import json
+import random
 from werkzeug.contrib.cache import SimpleCache
 from functools import wraps
 from flask import request, Response
@@ -42,6 +43,7 @@ def md5(s):
     return hasher.hexdigest()
 
 # 线程安全的递增生成器函数
+max_num = 4294967295
 def inc_num_genfun(init_num):
     import threading
     
@@ -51,14 +53,15 @@ def inc_num_genfun(init_num):
         # 避免多线程读写竞争
         lock.acquire()
         init_num+=1
+        if init_num >= max_num:
+            init_num = 0
         lock.release()
 
 # 递增的imgnum, 用于信息隐藏。imgid=md5(imgnum)
-inc_imgnum_gen = inc_num_genfun(0)
+inc_imgnum_gen = inc_num_genfun(random.randint(0, max_num))
 
 # 线程安全的唯一ID生成器函数
 def unique_id_genfun():
-    import random
     import threading
     
     uniqueNumber = random.random()

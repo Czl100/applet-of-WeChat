@@ -86,6 +86,7 @@ def bind_routes(app):
     @app.route("/ih", methods=["POST"])
     @request_around(app, request, hasSessionId=True)
     def info_hide(sessionId):
+        print("=============== 1 ===============")
         key = unescape(request.form.get("key", None))
         if not key:
             raise CrpException("密钥不能为空")
@@ -95,8 +96,12 @@ def bind_routes(app):
         imgFile = request.files.get('img', None)                    # 图像文件
         if not imgFile:
             raise CrpException("缺少图像文件")
+        imgtitle = unescape(request.form.get("imgtitle", None))     # 图像对外标题
+        imgtitle = imgtitle if imgtitle else None
         # imgid = next(unique_imgid_gen)                              # 获取该次操作的图像ID
         imgnum = next(inc_imgnum_gen)
+        print(imgnum)
+        print("=============== 2 ===============")
         imgid = md5(str(imgnum))
         timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
@@ -106,9 +111,11 @@ def bind_routes(app):
         # maybeImgId = dataExtract(inpImgPath, isdel=False)
         
          # 先插入历史记录
-        imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, path=outImgPath, imgid=imgid, imgtype=1, secret=secret, key=key)
+        print("=============== 3 ===============")
+        imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, path=outImgPath, imgid=imgid, imgtitle=imgtitle, imgtype=1, secret=secret, key=key)
 
          # 信息隐藏 生成载密图像
+        print("=============== 4 ===============")
         data_hide(inpImgPath, outImgPath, imgid)         # 调用C++信息隐藏处理
 
         # 更新数据库finish字段
