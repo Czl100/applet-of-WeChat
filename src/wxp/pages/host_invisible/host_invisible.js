@@ -38,7 +38,7 @@ imgtitle:e.detail.value
     wx.showToast({
       title: '正在处理',
       icon: 'loading',
-      duration: 6000
+      duration: 10000
     });
  //   wx.navigateBack()
  var that=this;
@@ -121,7 +121,7 @@ imgtitle:e.detail.value
     })
     var that=this;
 
-    console.log('图片标题', that.data.imgtitle);
+  console.log('图片标题', that.data.imgtitle);
     var key = Jmd5.hexMD5(that.data.ser);
     console.log('嵌入水印',key);
    var sessionId=wx.getStorageSync('sessionId');

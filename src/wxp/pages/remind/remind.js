@@ -42,6 +42,29 @@ Page({
         'page': that.data.mypage
       },
       success: function (res) {
+        if(res.data.errcode==1000){
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+        if(res.data.errcode==1){
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        else{
         console.log('查询成功', res.data.list);
         //将服务器反馈回来的数据存在数组当中
         //   remind_List:res.data.list;
@@ -50,9 +73,16 @@ Page({
           //    postList: remind_List
           postList: res.data.list
         })
+        }
+        return
       },
       fail: function (res) {
         console.log('查询失败')
+        wx.showToast({
+          title: '请保持网络通畅',
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
@@ -79,6 +109,29 @@ Page({
         'page': that.data.mypage
       },
       success: function (res) {
+        if(res.data.errcode==1000){
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+        if(res.data.errcode==1){
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        else{
         console.log('查询成功', res.data.list);
         //将服务器反馈回来的数据存在数组当中
         //   remind_List:res.data.list;
@@ -87,8 +140,15 @@ Page({
           //    postList: remind_List
           postList: res.data.list
         })
+        return
+        }
       },
       fail: function (res) {
+        wx.showToast({
+          title: '请保持网络通畅',
+          icon: 'none',
+          duration: 2000
+        })
         console.log('查询失败')
       }
     })
@@ -111,7 +171,38 @@ wx.request({
     inviteId: e.currentTarget.id
   },
   success:function(res){
+    if (res.data.errcode == 1000) {
+      wx.showModal({
+        title: '信息提示',
+        content: res.data.errmsg,
+        success: function (res1) {
+          if (res1.confirm) {
+            console.log('用户点击确定')
+          } else if (res1.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+      return
+    }
+    if (res.data.errcode == 1) {
+      wx.showToast({
+        title: '服务器遇到了异常，请稍后再试',
+        icon: 'none',
+        duration: 2000
+      })
+      return
+    }
+    else {
     console.log('标记某个为已读'.res.data)
+    return
+    }
+  },fail:function(res){
+    wx.showToast({
+      title: '请保持网络通畅',
+      icon: 'none',
+      duration: 2000
+    })
   }
 });
     wx.request({
@@ -125,6 +216,29 @@ wx.request({
         'page': that.data.mypage
       },
       success: function (res) {
+        if (res.data.errcode == 1000) {
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+        if (res.data.errcode == 1) {
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        else {
         console.log('查询成功', res.data.list);
         //将服务器反馈回来的数据存在数组当中
         //   remind_List:res.data.list;
@@ -133,8 +247,15 @@ wx.request({
           //    postList: remind_List
           postList: res.data.list
         })
+        return
+        }
       },
       fail: function (res) {
+        wx.showToast({
+          title: '请保持网络通畅',
+          icon: 'none',
+          duration: 2000
+        })
         console.log('查询失败')
       }
     })
@@ -151,8 +272,31 @@ wx.request({
     'sessionId':wx.getStorageSync('sessionId')
   },
   success:function(res){
+    if (res.data.errcode == 1000) {
+      wx.showModal({
+        title: '信息提示',
+        content: res.data.errmsg,
+        success: function (res1) {
+          if (res1.confirm) {
+            console.log('用户点击确定')
+          } else if (res1.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+      return
+    }
+    if (res.data.errcode == 1) {
+      wx.showToast({
+        title: '服务器遇到了异常，请稍后再试',
+        icon: 'none',
+        duration: 2000
+      })
+      return
+    }
+    else {
     console.log('全部已读发送到服务端',res.data)
-    if(res.data)
+    if(res.data) 
   {//如果成功
     that.setData({
       unread:true //将onread设置为true
@@ -186,9 +330,16 @@ wx.request({
         console.log('查询失败')
       }
     })
+    return 
+    }
   },
   fail:function(res){
     console.log('失败')
+    wx.showToast({
+      title: '请保持网络通畅',
+      icon: 'none',
+      duration: 2000
+    })
   }
 })
   },
@@ -223,6 +374,29 @@ wx.request({
         'sessionId': wx.getStorageSync('sessionId'),
       },
       success: function (res) {
+        if (res.data.errcode == 1000) {
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+        if (res.data.errcode == 1) {
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        else {
         console.log('打开消息提醒时未邀请个数', res.data)
         wx.setStorageSync('_number', res.data.number);
         var number = wx.getStorageSync('_number');
@@ -238,6 +412,15 @@ wx.request({
         })
       }
       }
+      return
+      },
+      fail:function(res){
+        wx.showToast({
+          title: '请保持网络通畅',
+          icon: 'none',
+          duration: 2000
+        })
+      }
     })
     wx.request({
       url: 'http://localhost:5000/query-invites',
@@ -250,6 +433,29 @@ wx.request({
         'page':that.data.mypage
       },
       success:function(res){
+        if (res.data.errcode == 1000) {
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+        if (res.data.errcode == 1) {
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        else {
         console.log('查询成功',res.data.list);
         //将服务器反馈回来的数据存在数组当中
      //   remind_List:res.data.list;
@@ -261,9 +467,15 @@ wx.request({
       //    postList: remind_List
           postList: res.data.list
         })
+        return
+        }
       },
       fail:function(res){
         console.log('查询失败')
+        wx.setTabBarBadge({
+          index: 3,
+          text: number + "",
+        })
       }
     })
   },

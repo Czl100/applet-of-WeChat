@@ -82,7 +82,13 @@ wx.navigateBack()
   onShareAppMessage: function () {
     
   },
+
   onsure:function(){
+    wx.showToast({
+      title: '正在处理',
+      icon: 'loading',
+      duration: 10000
+    });
    var  that=this;
    var  sessionId = wx.getStorageSync('sessionId');
     wx.uploadFile({
@@ -95,7 +101,31 @@ wx.navigateBack()
         'imgtitle': that.data.dis
       },
       success: function (res) {
+        wx.hideToast();
         res.data = JSON.parse(res.data);
+        if(res.data.errcode==1000){
+          wx.showModal({
+            title: '提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+        if(res.data.errcode==1){
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        else{
         console.log("图片上传成功", res.data);
       //  console.log("图片上传成功", res.fg);
         app.globalData.userimages.push(that.data.resign_chooseFiles),//将这张图片放在全局变量中（数组—）
@@ -105,9 +135,17 @@ wx.navigateBack()
           icon: 'success',
           duration: 3000
         });
+        return
+        }
       },
       fail: function (res) {
-        console.log("图片上传失败", res.msg)
+        wx.hideToast();
+        console.log("图片上传失败");
+        wx.showToast({
+          title: '绑定失败',
+          icon: 'none',
+          duration: 2000
+        });
       }
     })
   }

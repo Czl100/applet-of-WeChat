@@ -50,6 +50,13 @@ Page({
                icon: 'success',
                duration: 3000
              });
+           },
+           fail:function(res){
+             wx.showToast({
+               title: '不可抗因素导致保存失败',
+               icon:'none',
+               duration:2000
+             })
            }
          })
        }
