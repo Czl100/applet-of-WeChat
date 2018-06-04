@@ -9,6 +9,7 @@ Page({
   data: {
    // pages:1,//初始值总页数是1
    mypage: 1,//默认查找第一页
+
    img_unfinish:"/pages/icon/unfinished.png" ,//如果是未完成时的图片
     postList:[{
       datetime:'',
@@ -57,7 +58,32 @@ Page({
         'sessionId': wx.getStorageSync('sessionId'),
         'page': that.data.mypage
       },
+      
       success: function (res) {
+        if(res.data.errcode==1000){
+          console.log('历史记录界面',res.data.errmsg);
+          wx.showModal({
+            title: '提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+        if(res.data.errcode==1){
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        else{
         console.log('发送查询历史信息请求', res.data),
           List_ = res.data.list
         console.log(List_)  //打印出来看看
@@ -68,6 +94,15 @@ Page({
         })
         console.log('总页数pages', pages);
         console.log('服务器上的总页数', res.data.pages);
+        return 
+        }
+      },
+      fail:function(res){
+        wx.showToast({
+          title: '请保持网络通畅',
+          icon:'none',
+          duration:2000
+        })
       }
     })
   },
@@ -96,6 +131,30 @@ Page({
         'page': that.data.mypage
       },
       success: function (res) {
+        if (res.data.errcode == 1000) {
+          console.log('历史记录界面', res.data.errmsg);
+          wx.showModal({
+            title: '提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+        if (res.data.errcode == 1) {
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        else{
         console.log('发送查询历史信息请求', res.data),
           List_ = res.data.list
         console.log(List_)  //打印出来看看
@@ -106,6 +165,14 @@ Page({
         })
         console.log('总页数pages', pages);
         console.log('服务器上的总页数', res.data.pages);
+      }
+      },
+      fail:function(res){
+        wx.showToast({
+          title: '请保持网络通畅',
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
@@ -130,6 +197,31 @@ wx.request({
       'page':that.data.mypage
   },
   success:function(res){
+ 
+    if (res.data.errcode == 1000) {
+      console.log('历史记录界面', res.data.errmsg);
+      wx.showModal({
+        title: '提示',
+        content: res.data.errmsg,
+        success: function (res1) {
+          if (res1.confirm) {
+            console.log('用户点击确定')
+          } else if (res1.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+      return
+    }
+    if (res.data.errcode == 1) {
+      wx.showToast({
+        title: '服务器遇到了异常，请稍后再试',
+        icon: 'none',
+        duration: 2000
+      })
+      return
+    }
+    else{
     console.log('发送查询历史信息请求',res.data),
     List_=res.data.list
     console.log(List_)  //打印出来看看
@@ -140,6 +232,13 @@ wx.request({
       })
      console.log('总页数pages',pages);
      console.log('服务器上的总页数',res.data.pages);
+  }
+  },fail:function(res){
+    wx.showToast({
+      title: '请保持网络通畅',
+      icon: 'none',
+      duration: 2000
+    })
   }
   
 })
@@ -153,6 +252,30 @@ wx.request({
         'sessionId': wx.getStorageSync('sessionId'),
       },
       success: function (res) {
+        if (res.data.errcode == 1000) {
+          console.log('历史记录界面', res.data.errmsg);
+          wx.showModal({
+            title: '提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+        if (res.data.errcode == 1) {
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        else{
         console.log('打开历史记录时查询未邀请个数', res.data)
         wx.setStorageSync('_number', res.data.number);
         var number = wx.getStorageSync('_number');
@@ -167,6 +290,14 @@ wx.request({
           text: number+"",
         })
       }
+      return
+      }
+      },fail:function(res){
+        wx.showToast({
+          title: '请保持网络通畅',
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
