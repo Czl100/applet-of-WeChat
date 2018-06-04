@@ -117,7 +117,7 @@ def request_around(app, request, requestlog=False, exceptlog=True, limit=True, h
                 rt["errmsg"]=str(e)
                 rt["errcode"]=1
             if (not rt["fg"]) and exceptlog:
-                app.logger.error("【异常】{0}".format(rt["msg"]))
+                app.logger.error("【异常】{0}".format(rt["errmsg"]))
             return Response(json.dumps(rt), mimetype='application/json')
         return deractor
     return innerWrapper
