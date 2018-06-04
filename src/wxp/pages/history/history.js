@@ -24,7 +24,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+  //  wx.setStorageSync('history_list', List_);  //将这个列表存放在缓存中
   },
 
   /**
@@ -46,6 +46,7 @@ Page({
         mypage: 1
       })
     }
+    wx.setStorageSync('history_mypage', this.data.mypage);  //当前页数存入缓存
     var that=this;
     console.log('点击上一页',this.data.mypage)
     wx.request({
@@ -56,7 +57,8 @@ Page({
       },
       data: {
         'sessionId': wx.getStorageSync('sessionId'),
-        'page': that.data.mypage
+       // 'page': that.data.mypage
+        'page':wx.getStorageSync('history_mypage')
       },
       
       success: function (res) {
@@ -89,6 +91,7 @@ Page({
         console.log(List_)  //打印出来看看
         //总页数
         pages = res.data.pages
+       
         that.setData({
           postList: List_
         })
@@ -223,13 +226,19 @@ wx.request({
     }
     else{
     console.log('发送查询历史信息请求',res.data),
-    List_=res.data.list
+
+    List_=res.data.list //列表中的数据，从服务器中读取
+    wx.setStorageSync('history_list', List_);  //将这个列表存放在缓存中
     console.log(List_)  //打印出来看看
     //总页数
       pages=res.data.pages
+      wx.setStorageSync('history_pages', pages);
+      /*
       that.setData({
-        postList:List_  
+        postList:wx.getStorageSync('history_list'),
       })
+      */
+      console.log('数据缓存', wx.getStorageSync('history_list'))
      console.log('总页数pages',pages);
      console.log('服务器上的总页数',res.data.pages);
   }
@@ -239,8 +248,12 @@ wx.request({
       icon: 'none',
       duration: 2000
     })
+  },
+  complete:function(res){
+    that.setData({
+      postList: wx.getStorageSync('history_list'),
+    })
   }
-  
 })
     wx.request({
       url: 'http://localhost:5000/query-unread-number',
