@@ -12,71 +12,45 @@ from crp.exception import CrpException
 
 sp = crp.sessionPool.SessionPool()      # 创建会话池
 
-# 请求参数包装
-class RequestArg:
-    def __init__(self, key, excep=None, default=None, method="get"):
-        self.__key__ = key
-        self.__excep__ = excep
-        self.__default__ = default
-        self.__method__ = method
-        
-    def key(self):
-        return self.__key__
-
-    def val(self, request, method=None):
-        v = None
-        if method==None:
-            method = self.__method__
-        if method == "get" or method == "GET":
-            v = request.args.get(self.__key__, None)
-        elif method == "post" or method == "POST":
-            v = request.form.get(self.__key__, None)
-        if v == None:
-            if self.__excep__ == None:
-                v = self.__default__
-            else:
-                raise CrpException(str(self.__excep__))
-        else:
-            return v
-
-class GetArg(RequestArg):
-    def __init__(self, key, excep=None, default=None):
-        self.__key__ = key
-        self.__excep__ = excep
-        self.__default__ = default
-    def key(self):
-        return self.__key__
-    def val(self, request, method=None):
-        v = request.args.get(self.__key__, None)
-        if v == None:
-            if self.__excep__ == None:
-                v = self.__default__
-            else:
-                raise CrpException(str(self.__excep__))
-        else:
-            return v
-
-class PostArg(RequestArg):
-    def __init__(self, key, excep=None, default=None):
-        self.__key__ = key
-        self.__excep__ = excep
-        self.__default__ = default
-    def key(self):
-        return self.__key__
-    def val(self, request, method=None):
-        v = request.form.get(self.__key__, None)
-        if v == None:
-            if self.__excep__ == None:
-                v = self.__default__
-            else:
-                raise CrpException(str(self.__excep__))
-        else:
-            return v
-
 # 解决反义字符问题
 def unescape(s):
     from html.parser import HTMLParser
     return HTMLParser().unescape(s) if s!=None else None
+
+# 请求参数包装
+class RequestArg:
+    def __init__(self, key, default=None, excep=None):
+        self.__key__ = key
+        self.__excep__ = excep
+        self.__default__ = default
+        
+    def key(self):
+        return self.__key__
+
+    def __val__(self, mapper):
+        v = mapper.get(self.__key__, None)
+        if v == None:
+            if self.__excep__ == None:
+                v = self.__default__
+            else:
+                raise CrpException(str(self.__excep__))
+        if isinstance(v, str) :
+            v = unescape(v)
+        return v
+
+class GetArg(RequestArg):
+    def __init__(self, key, default=None, excep=None):
+        super().__init__(key, default=default, excep=excep)
+
+    def val(self, request):
+        return self.__val__(request.args)
+
+class PostArg(RequestArg):
+    def __init__(self, key, default=None, excep=None):
+        super().__init__(key, default=default, excep=excep)
+
+    def val(self, request):
+        return self.__val__(request.form)
 
 # 提取对象中的特定属性转换为字典数据
 def obj2map(obj, mapper):
@@ -155,8 +129,8 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, li
             if limit:
                 pass
             # 请求处理
-            rt = {}
             try:
+                rt = {"errcode":1}
                 # sessionId的存在测试
                 if hasSessionId:
                     sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
@@ -166,13 +140,13 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, li
                         raise CrpException("未登录，会话不存在，请登录后操作")
                     kws["sessionId"] = sessionId
                 # 装载kw
+                print(args)
                 for arg in args:
                     print(arg)
                     k = arg.key()
                     v = arg.val(request)
                     kws[k] = v
                 # 视图函数处理
-                print(kws)
                 rt = f(*ks, **kws)
             # 后处理(异常日志记录, 返回值JSON化)
                 if not isinstance(rt, dict):

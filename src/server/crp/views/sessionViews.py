@@ -18,7 +18,8 @@ def bind_routes(app):
     @app.route("/session-build")
     @request_around(app, request, args=(
         GetArg("code", "缺少code参数"),
-        GetArg("did", "缺少设备id参数(did)")))
+        GetArg("did", "缺少设备id参数(did)"),
+    ))
     def session_build(code, did):
         url = app.config['CODE_TO_WXID_URL']
         # 获得wxid
