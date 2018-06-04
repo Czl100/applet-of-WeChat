@@ -13,9 +13,8 @@ if(wx.getStorageSync('sessionId')){
     success: res => {
       // 发送 res.code 到后台换取 openId, sessionKey, unionId
       var did = 0
-      var requrl = 'https://crp.shakeel.cn/session-build?code=' + res.code + "&did=" + did
+      var requrl = 'http://localhost:5000/session-build?code=' + res.code + "&did=" + did
       console.log(requrl)
-      return ;
       wx.request({
         url: 'http://localhost:5000/session-build/',
         url: requrl,
