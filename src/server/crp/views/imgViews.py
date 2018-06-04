@@ -75,7 +75,7 @@ def bind_routes(app):
         # 提取图像id
         imgnum = data_extract(inpImgPath)
         imgid = md5(str(imgnum))
-
+        imgid = "de0112fcac8a94819bd6edcad7a070df"
         # 查询库
         exists, imgtitle = imgHistoryServices.query_img_author(app, imgid=imgid)
         if exists : 
