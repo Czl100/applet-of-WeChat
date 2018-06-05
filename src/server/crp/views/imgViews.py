@@ -57,7 +57,9 @@ def bind_routes(app):
 
         # 更新数据库finish字段
         imgHistoryServices.update_finish_img_history(app, imgid=imgid)
-        return {}
+
+        imgurl = app.config['ENABLE_HOST']+outImgPath
+        return {"img":imgurl}
 
     # 作者溯源视图函数
     @app.route("/query-author", methods=["POST"])
@@ -107,7 +109,8 @@ def bind_routes(app):
 
         imgHistoryServices.update_finish_img_history(app, imgid)
 
-        return {}
+        imgurl = app.config['ENABLE_HOST']+outImgPath
+        return {"img":imgurl}
 
     @app.route("/ix", methods=["post"])
     @request_around(app, request, hasSessionId=True, args=(
