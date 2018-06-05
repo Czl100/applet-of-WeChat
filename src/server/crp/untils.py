@@ -39,18 +39,16 @@ class RequestArg:
         return v
 
 class GetArg(RequestArg):
-    def __init__(self, key, default=None, excep=None):
-        super().__init__(key, default=default, excep=excep)
-
     def val(self, request):
         return self.__val__(request.args)
 
 class PostArg(RequestArg):
-    def __init__(self, key, default=None, excep=None):
-        super().__init__(key, default=default, excep=excep)
-
     def val(self, request):
         return self.__val__(request.form)
+
+class FileArg(RequestArg):
+    def val(self, request):
+        return self.__val__(request.files)
 
 # 提取对象中的特定属性转换为字典数据
 def obj2map(obj, mapper):
@@ -140,9 +138,7 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, li
                         raise CrpException("未登录，会话不存在，请登录后操作")
                     kws["sessionId"] = sessionId
                 # 装载kw
-                print(args)
                 for arg in args:
-                    print(arg)
                     k = arg.key()
                     v = arg.val(request)
                     kws[k] = v

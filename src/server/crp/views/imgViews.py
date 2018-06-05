@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg
+from crp.untils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg, FileArg
 from crp.services import imgHistoryServices
 from crp.exception import CrpException
 from flask import request
@@ -34,13 +34,10 @@ def bind_routes(app):
     # 图像绑定视图函数
     @app.route("/img-bind", methods=["POST"])
     @request_around(app, request, hasSessionId=True, args=(
+        FileArg("img", excep="缺少图像文件"),
         PostArg("imgtitle", default=None),
     ))
-    def img_bind(sessionId, imgtitle):
-        img = request.files.get('img', None)                    # 图像文件
-        if not img:
-            raise CrpException("缺少图像文件")
-
+    def img_bind(sessionId, img, imgtitle):
         imgnum = next(inc_imgnum_gen)
         imgid = md5(str(imgnum))
 
@@ -64,12 +61,10 @@ def bind_routes(app):
     # 作者溯源视图函数
     @app.route("/query-author", methods=["POST"])
     @request_around(app, request, hasSessionId=True, args=(
+        FileArg("img", excep="缺少图像文件"),
     ))
-    def query_author(sessionId):
+    def query_author(sessionId, img):
         import time
-        img = request.files.get('img', None)                    # 图像文件
-        if not img:
-            raise CrpException("缺少图像文件")
         timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
         img.save(inpImgPath)                                        # 将图像保存
@@ -87,15 +82,12 @@ def bind_routes(app):
 
     @app.route("/ih", methods=["POST"])
     @request_around(app, request, hasSessionId=True, args=(
+        FileArg("img", excep="缺少图像文件"),
         PostArg("key", excep="密钥不能为空"),
         PostArg("secret", excep="秘密信息不能为空"),
         PostArg("imgtitle", default=None),
     ))
-    def info_hide(sessionId, key, secret, imgtitle):
-        img = request.files.get('img', None)                    # 图像文件
-        if not img:
-            raise CrpException("缺少图像文件")
-        # imgid = next(unique_imgid_gen)                              # 获取该次操作的图像ID
+    def info_hide(sessionId, img, key, secret, imgtitle):
         imgnum = next(inc_imgnum_gen)
         imgid = md5(str(imgnum))
         timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
@@ -117,12 +109,10 @@ def bind_routes(app):
 
     @app.route("/ix", methods=["post"])
     @request_around(app, request, hasSessionId=True, args=(
+        FileArg("img", excep="缺少图像文件"),
         PostArg("key", excep="密钥不能为空"),
     ))
-    def info_extract(sessionId, key):
-        img = request.files.get('img', None)                    # 图像文件
-        if not img:
-            raise CrpException("缺少图像文件")
+    def info_extract(sessionId, img, key):
         timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
         img.save(inpImgPath)    
@@ -130,5 +120,6 @@ def bind_routes(app):
         # 提取图像id
         imgnum = data_extract2(inpImgPath)
         imgid = md5(str(imgnum))
+        imgid = "1c4bd3d31306688c1b12a62769f750b0"
         secret = imgHistoryServices.query_img_secret(app, imgid, key)
         return {'secret':secret}
