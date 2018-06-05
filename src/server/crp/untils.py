@@ -112,6 +112,24 @@ unique_imgid_gen = unique_id_genfun()
 # 设备ID唯一生成器
 unique_did_gen = unique_id_genfun()
 
+# 适配微信的分辨率
+def fit_wx_resolution(imgpath):
+    from skimage import io, transform
+    img=io.imread(imgpath)
+    height = img.shape[0]
+    width = img.shape[1]
+    if height<width:
+        newheight = 1080
+        newwidth = int(1080/height * width)
+    elif height>width:
+        newwidth = 1080
+        newheight = int(1080/width * height)
+    else:
+        newwidth = 1080
+        newheight = 1080
+    img = transform.resize(img, (newheight, newwidth))
+    io.imsave(imgpath,img)
+
 # 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
 def request_around(app, request, args=None, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):
     if args == None:

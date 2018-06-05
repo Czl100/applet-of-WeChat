@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg, FileArg
+from crp.untils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg, FileArg, fit_wx_resolution
 from crp.services import imgHistoryServices
 from crp.exception import CrpException
 from flask import request
@@ -45,6 +45,7 @@ def bind_routes(app):
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
         outImgPath = app.config["IMG_DIR"]+timeStamp+".jpeg"        # 载迷图像输出路径
         img.save(inpImgPath)                                        # 将图像保存
+        fit_wx_resolution(inpImgPath)                               # 修改输入图像的分辨率
         # 提取图像id，查看id是否已经存在
         # maybeImgId = dataExtract(inpImgPath, isdel=False)
 
@@ -94,6 +95,7 @@ def bind_routes(app):
         inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
         outImgPath = app.config["IMG_DIR"]+timeStamp+".jpeg"        # 载迷图像输出路径
         img.save(inpImgPath)                                        # 将图像保存
+        fit_wx_resolution(inpImgPath)                               # 修改输入图像的分辨率
         # 提取图像id，查看id是否已经存在
         # maybeImgId = dataExtract(inpImgPath, isdel=False)
         
