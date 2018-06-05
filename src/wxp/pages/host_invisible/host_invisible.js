@@ -55,10 +55,19 @@ imgtitle:e.detail.value
     })
   },
   onpre:function(){
+    if(wx.getStorageSync(save_img)==""){
       wx.previewImage({
         current: 'app.global.chooseFiles', // 当前显示图片的http链接
         urls: [app.globalData.chooseFiles],
       })
+    }
+    else{
+      //如果已经嵌入了
+      wx.previewImage({
+        current: 'wx.getStorageSync(save_img)', // 当前显示图片的http链接
+        urls: [wx.getStorageSync(save_img)],
+      })
+    }
   },
   onget:function(){  //提取水印信息
     wx.showToast({
@@ -221,7 +230,7 @@ return
         console.log("嵌入水印失败"),
         wx.showToast({
           title: '数据加载中',
-          icon: 'loading',
+          icon: 'none',
           duration: 2000
         });
       }
