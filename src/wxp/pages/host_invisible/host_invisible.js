@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    co_save:false,
     co_get:false,
     start:false,
     invisible_chooseFiles: app.globalData.chooseFiles,
@@ -15,7 +16,10 @@ Page({
     useKeyboardFlag: true,  //默认是键盘输入类型的输入框
   },
   onsave: function () {
+    console.log('co_save',this.data.co_save);
     console.log('保存到手机的图片路径', wx.getStorageSync('save_img'))
+    if(this.data.co_save)  //如果嵌入水印成功可以保存到手机
+    {
     if(wx.getStorageSync('save_img')=="")//如果没有图片的话，
     {
       wx.showToast({
@@ -37,6 +41,14 @@ Page({
       }
     })
     }
+    }
+    else{
+wx.showToast({
+  title: '请正确嵌入水印',
+  icon:'none',
+  duration:2000
+})
+    }
   },
   Input_title:function(e){
 this.setData({
@@ -55,17 +67,33 @@ imgtitle:e.detail.value
     })
   },
   onpre:function(){
-    if(wx.getStorageSync(save_img)==""){
+    var ig = wx.getStorageSync('save_img')
+    console.log('缓存图片save_img',ig);
+    if(this.data.co_save)
+    {
+      console.log('co_save的标记，说明当前的水印已经嵌入好了',this.data.co_save);
+    if(wx.getStorageSync('save_img')==""){
       wx.previewImage({
         current: 'app.global.chooseFiles', // 当前显示图片的http链接
         urls: [app.globalData.chooseFiles],
       })
+      console.log('水印还没有嵌入，预览的图片是没有嵌入水印的')
     }
     else{
       //如果已经嵌入了
+      
       wx.previewImage({
-        current: 'wx.getStorageSync(save_img)', // 当前显示图片的http链接
-        urls: [wx.getStorageSync(save_img)],
+        current: 'ig', // 当前显示图片的http链接
+        urls: [wx.getStorageSync('save_img')],
+      })
+      console.log('水印已经嵌入，预览的图片是有嵌入水印的')
+    }
+    }
+    else{
+      wx.showToast({
+        title: '请准确嵌入水印',
+        icon:'none',
+        duration:2000
       })
     }
   },
@@ -209,6 +237,9 @@ imgtitle:e.detail.value
 return
         }
        else{
+         that.setData({
+           co_save:true
+         })
           console.log("嵌入成功", res.data)
         console.log("嵌入成功",res.data.img)
         wx.setStorageSync('save_img', res.data.img);
@@ -229,7 +260,7 @@ return
         wx.hideToast();
         console.log("嵌入水印失败"),
         wx.showToast({
-          title: '数据加载中',
+          title: '嵌入水印失败',
           icon: 'none',
           duration: 2000
         });
