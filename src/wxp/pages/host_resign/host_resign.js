@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    start:false,
     Image: "/pages/icon/camera.png",
     resign_chooseFiles: app.globalData.chooseFiles, 
     dis: "",
@@ -23,7 +24,25 @@ Page({
  //   console.log(this.data.dis);
   },
   oncancel:function(){
-wx.navigateBack()
+if(this.data.start ){
+  //如果图片已经绑定了就可以存到手机相册
+ if(!wx.getStorageSync('_save_img')=="") //如果缓存不是空的 
+  wx.saveImageToPhotosAlbum({
+    filePath:wx.getStorageSync('_save_img'),
+    success(res) {
+      wx.showToast({
+        title: '已保存至手机相册',
+      })
+    }
+  })
+}
+else{
+  wx.showToast({
+    title: '由于不可抗因素，图片绑定失败',
+    icon:'nine',
+    duration:2000
+  })
+}
   },
   /**
    * 生命周期函数--监听页面加载
@@ -84,6 +103,7 @@ wx.navigateBack()
   },
 
   onsure:function(){
+    if(!this.data.dis==""){
     wx.showToast({
       title: '正在处理',
       icon: 'loading',
@@ -127,6 +147,7 @@ wx.navigateBack()
         }
         else{
         console.log("图片上传成功", res.data);
+        wx.setStorageSync('_save_img', res.data.img);
       //  console.log("图片上传成功", res.fg);
         app.globalData.userimages.push(that.data.resign_chooseFiles),//将这张图片放在全局变量中（数组—）
         wx.setStorageSync('userimages', app.globalData.userimages); //数组放进缓存
@@ -135,6 +156,10 @@ wx.navigateBack()
           icon: 'success',
           duration: 3000
         });
+        //绑定成功
+       this.setData({
+         start:true
+       })
         return
         }
       },
@@ -148,5 +173,15 @@ wx.navigateBack()
         });
       }
     })
+  }
+  
+  else
+  {//如果输入没有东西
+wx.showToast({
+  title: '绑定信息不能为空',
+  icon:'none',
+  duration:2000
+})
+  }
   }
 })
