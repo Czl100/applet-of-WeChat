@@ -118,6 +118,14 @@ onsure:function(){
   context.fillText(this.data.dis, text_x, text_y);
   console.log(text_x,text_y);
   context.setFillStyle('#FFFFFF');
+/*
+  context.setStrokeStyle("#00ff00")
+ 
+  context.stroke()
+  context.setStrokeStyle("#ff0000")
+
+  context.stroke()
+*/
   context.draw()
   //console.log(this.data.imgw,this.data.imgh)
   

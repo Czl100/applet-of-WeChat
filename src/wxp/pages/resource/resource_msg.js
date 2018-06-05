@@ -159,7 +159,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+wx.showModal({
+  title: '温馨提示',
+  content: '为了便于作者与您联系，建议您留下联系方式',
+})
   },
 
   /**

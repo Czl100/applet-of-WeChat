@@ -13,7 +13,7 @@
   <view class="weui-cell">
     <view class="weui-cell__bd">
       <textarea class="weui-textarea" 
-      placeholder="请输入文本\n为了便于作者和你联系，请输入您的联系方式" bindinput='Input_content' style="height: 3.3em" />
+      placeholder="请输入文本" bindinput='Input_content' style="height: 3.3em" />
       <view class="weui-textarea-counter" maxlength='140'>字数不能超过140</view>
     </view>
   </view>

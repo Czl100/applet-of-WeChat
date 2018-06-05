@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    start:false,
     Image: "/pages/icon/add.png",//这是原始的icon
     resource_chooseFiles:null,
     title:'暂无标题',  //追溯到的图片的标题
@@ -19,7 +20,8 @@ Page({
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData({
-           resource_chooseFiles: res.tempFilePaths[0]
+           resource_chooseFiles: res.tempFilePaths[0],
+           start:true
         });
       }
     })
@@ -27,6 +29,7 @@ Page({
   },
   
   onstart:function(){
+    if(this.data.start){
     wx.showToast({
       title: '正在追溯',
       icon: 'loading',
@@ -113,6 +116,15 @@ Page({
           
           }
         })
+    }
+    else {
+      //如果没有选择
+      wx.showToast({
+        title: '请先选择图片',
+        icon: 'none',
+        duration: 2000
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载
