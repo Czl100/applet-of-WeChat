@@ -3,7 +3,7 @@
 
 <view wx:if="{{item.finish}}">  
 <view class='container-a'>
-<image wx:if="{{!finish}}" mode='aspectFit' catchtap='onpre'  src="{{item.img}}"></image>
+<image wx:if="{{!finish}}" mode='aspectFit' catchtap='onpre'  src="{{item.img}}" id="{{idx}}"></image>
 <image wx:if="{{finish}}" mode='aspectFit' catchtap='onpre' src="{{img_unfinish}}"></image>
 <text>{{item.imgtitle}}</text>
 <text wx:if="{{!finish}}">{{item.datetime}}</text>
