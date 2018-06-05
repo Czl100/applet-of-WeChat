@@ -86,8 +86,8 @@ def bind_routes(app):
     @app.route("/ih", methods=["POST"])
     @request_around(app, request, hasSessionId=True, args=(
         FileArg("img", excep="缺少图像文件"),
-        PostArg("key", excep="密钥不能为空"),
-        PostArg("secret", excep="秘密信息不能为空"),
+        PostArg("key", excep="密钥不能为空", allow_empty_string=False),
+        PostArg("secret", excep="秘密信息不能为空", allow_empty_string=False),
         PostArg("imgtitle", default=None),
     ))
     def info_hide(sessionId, img, key, secret, imgtitle):
@@ -115,7 +115,7 @@ def bind_routes(app):
     @app.route("/ix", methods=["post"])
     @request_around(app, request, hasSessionId=True, args=(
         FileArg("img", excep="缺少图像文件"),
-        PostArg("key", excep="密钥不能为空"),
+        PostArg("key", excep="密钥不能为空", allow_empty_string=False),
     ))
     def info_extract(sessionId, img, key):
         timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名

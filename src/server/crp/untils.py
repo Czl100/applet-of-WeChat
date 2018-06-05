@@ -19,16 +19,19 @@ def unescape(s):
 
 # 请求参数包装
 class RequestArg:
-    def __init__(self, key, default=None, excep=None):
+    def __init__(self, key, default=None, excep=None, allow_empty_string=True):
         self.__key__ = key
         self.__excep__ = excep
         self.__default__ = default
+        self.__allow_empty_string__ = allow_empty_string
         
     def key(self):
         return self.__key__
 
     def __val__(self, mapper):
         v = mapper.get(self.__key__, None)
+        if (not self.__allow_empty_string__) and isinstance(v, str) and (not v.strip()):
+            v = None
         if v == None:
             if self.__excep__ == None:
                 v = self.__default__
@@ -129,6 +132,28 @@ def fit_wx_resolution(imgpath):
         newheight = 1080
     img = transform.resize(img, (newheight, newwidth))
     io.imsave(imgpath,img)
+
+# 水印嵌入进程
+def wm_embed(inp_img, out_img, key, value):
+    import subprocess
+    cmd = "water.exe embed {0} {1} {2} {3}".format(inp_img, out_img, key, value)
+    print(cmd)
+    p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
+    p.wait()
+    if p.returncode:
+        raise CrpException("水印嵌入进程执行错误！！")
+
+# 水印提取进程
+def wm_extract(inp_img, out_img, key, value):
+    import subprocess
+    cmd = "water.exe extract {0} {1} {2} {3}".format(inp_img, out_img, key, value)
+    print(cmd)
+    p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
+    p.wait()
+    if p.returncode:
+        raise CrpException("水印提取进程执行错误！！")
+    extret = p.stdout.readline().strip()
+    return int(extret)
 
 # 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
 def request_around(app, request, args=None, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):
