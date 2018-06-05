@@ -1,5 +1,7 @@
 var content;
 var nick;
+var nick_length;
+var content_length;
 Page({
 
   /**
@@ -13,7 +15,15 @@ Page({
   },
   Input_content: function (e) {  //获取留言框中的信息content
     content = e.detail.value
-    if (e.detail.value.length >= 140) {
+   content_length=e.detail.value.length;
+  },
+  Input_nick: function (e) {  //获取留言框中的信息content
+    nick = e.detail.value
+    // console.log(content)
+   nick_length=e.detail.value;
+  },
+  showTopTips: function () {    //这个就是点击确定按键的时候
+    if (content_length >140) {
       wx.showModal({
         title: '注意',
         content: '用户输入字数已经超过140，请控制好留言的字数。',
@@ -26,12 +36,19 @@ Page({
         }
       })
     }
-  },
-  Input_nick: function (e) {  //获取留言框中的信息content
-    nick = e.detail.value
-    // console.log(content)
-  },
-  showTopTips: function () {    //这个就是点击确定按键的时候
+    if (nick_length >10) {
+      wx.showModal({
+        title: '温馨提示',
+        content: '联系人的名字不得超过5个字',
+        success: function (res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+    }
     var that = this;
     var imgid = wx.getStorageSync('imgid');     //从缓存中吧imgid取出来
     var sessionId = wx.getStorageSync('sessionId');
@@ -78,14 +95,16 @@ Page({
           }
           else {
             console.log('发送邀请成功', res.data);
-            wx.showToast({
+         wx.showToast({
               title: '发送邀请成功',
               icon: 'success',
               duration: 2000
             });
-            wx.navigateBack({
-              
-            })
+            content=null;
+            nick=null;
+         setTimeout(function () {
+           wx.navigateBack({})
+         }, 700)
           }
 
         },
