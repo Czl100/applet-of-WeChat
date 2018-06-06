@@ -25,11 +25,29 @@ def insert_notfinish_img_history(app, sessionId, imgid, imgtype, path, secret=No
     dbsession.add(newHistory)
     dbsession.commit()
 
+def insert_finish_img_history(app, sessionId, imgid, imgtype, path, secret=None, key=None, imgtitle=None, success=True):
+    dbsession = app.sessionMaker()
+    wxid = sp.wxid(sessionId)
+    kws = {
+        "imgid":imgid,
+        "wxid":wxid,
+        "imgtitle":imgtitle,
+        "imgtype":imgtype,
+        "path":path,
+        "secret":secret,
+        "key":key,
+        "datetime":datetime.datetime.today(),
+        "finish": 1 if success else 2
+    }
+    newHistory = ImgHistory(**kws)
+    dbsession.add(newHistory)
+    dbsession.commit()
+
 # 当图像处理完成，更新该记录为已处理
-def update_finish_img_history(app, imgid):
+def update_finish_img_history(app, imgid, success=True):
     dbsession = app.sessionMaker()
     tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
-    tmpHistory.finish = True
+    tmpHistory.finish = 1 if success else 2
     dbsession.commit()
 
 # 查询imgid所对应的作者, 正确返回则找到匹配作者
