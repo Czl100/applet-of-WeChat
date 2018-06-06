@@ -1,30 +1,34 @@
-<view class='container-a'>
+<view class='ba'>
 
-<view>
-<image mode='aspectFit' src="{{invisible_chooseFiles}}" catchtap='onpre'></image>
+  <view class='ig'>
+    <image mode='widthFix' src="{{invisible_chooseFiles}}" catchtap='onpre'></image>
+  </view>
+
+
+  <view class='container-a'>
+    <view>
+      <view class='line_'>
+        <input wx:if="{{start}}" placeholder='请输入图片的标题（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_title'></input>
+      </view>
+      <view class='line_'>
+        <input placeholder='请输入密码（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_ser'></input>
+      </view>
+      <view class='line_'>
+        <input wx:if="{{start}}" placeholder='请输入要嵌入的信息…' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_dis'></input>
+      </view>
+
+    </view>
+<view class='bo'>
+    <view class='watermark-line-container3' catchtap='onsure'>
+      <text>嵌入水印信息</text>
+    </view>
+
+    <view wx:if="{{!co_get}}" class='watermark-line-container3' catchtap='onget'>
+      <text>提取水印信息</text>
+    </view>
+    <view wx:if="{{co_get}}" class='watermark-line-container' catchtap='onsave'>
+      <text>保存至手机</text>
+    </view>
 </view>
-
-
- 
-<view>
-<input  wx:if="{{start}}" placeholder='请输入图片的标题（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_title'></input>
-
-<input placeholder='请输入密码（选填）' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input_ser'></input>
-
-<input wx:if="{{start}}" placeholder='请输入要嵌入的信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input_dis'></input>
-</view>
-
-<view class="button-sp-area"  catchtap='onsure'>
-      <button class="weui-btn" type="#40C4FF" plain="true">嵌入水印信息</button>
-</view>
-
-<view wx:if="{{!co_get}}" class="button-sp-area" catchtap='onget'>
-      <button class="weui-btn" type="white" plain="true" >提取水印信息</button>
-</view>
-
-<view wx:if="{{co_get}}" class="button-sp-area" catchtap='onsave'>
-      <button class="weui-btn" type="black" plain="true" >保存至手机</button>
-</view>
-
-
+  </view>
 </view>

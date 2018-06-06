@@ -1,17 +1,26 @@
-<view class='host-container'>
-<view class='choice'>
-  <image mode='aspectFit' class='img'  src="{{resource_chooseFiles?resource_chooseFiles:Image}}" catchtap='chooseImage' ></image>
-  <text catchtap='chooseImage'>选择图片</text>
-</view>
+<view class='ba'>
+<view>
+  <view class='choice'>
+    <image mode='widthFix' class='img' src="{{resource_chooseFiles?resource_chooseFiles:Image}}" catchtap='chooseImage'></image>
    
+  </view>
+  </view>
 
-<view wx:if="{{start}}" class='watermark-line-container' bindtap="onstart">
+<view class='line'>
+<view class='c'>
+<text >追溯图片的创作者与留言</text>
+</view>
+</view>
+
+<view class='host-container'>
+
+
+  <view wx:if="{{start}}" class='watermark-line-container3' bindtap="onstart">
     <text>开始追溯</text>
   </view>
   <view wx:if="{{!start}}" class='watermark-line-container2' bindtap="onstart">
     <text>开始追溯</text>
   </view>
 
-  </view>
- 
- 
+</view>
+</view>

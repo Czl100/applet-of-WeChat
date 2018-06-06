@@ -1,14 +1,19 @@
-<view class='host-container'>
-  <view class='choice'>
-    <image mode='aspectFit' bindload="imageLoad" src="{{chooseFiles?chooseFiles:Image}}" catchtap='chooseImage'></image>
-    <text catchtap='chooseImage'>选择图片</text>
+ <view class='choice'>
+    <image  mode='widthFix' bindload="imageLoad" src="{{chooseFiles?chooseFiles:Image}}" catchtap='chooseImage'></image>
   </view>
 
+<view class='line'>
+<view class='c'>
+<text >版权护卫</text>
+</view>
+</view>
+
+<view class='host-container'>
   <view wx:if="{{start}}" class='watermark-line-container' catchtap='onJump_host_visible' bindload="imageLoad">
     <text>可见水印-离线支持</text>
   </view>
 
-   <view wx:if="{{!start}}" class='watermark-line-container2' catchtap='onJump_host_visible' bindload="imageLoad">
+  <view wx:if="{{!start}}" class='watermark-line-container2' catchtap='onJump_host_visible' bindload="imageLoad">
     <text>可见水印-离线支持</text>
   </view>
 

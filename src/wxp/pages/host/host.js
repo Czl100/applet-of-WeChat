@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+   
     start:false,       //默认是不能开始的
     Image: "/pages/icon/camera.png",//这是原始的icon
     imageWidth: 0,

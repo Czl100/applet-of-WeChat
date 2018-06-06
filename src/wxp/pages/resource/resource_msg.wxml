@@ -1,3 +1,4 @@
+<view class='ba'>
 <view class="weui-cells__title">联系人</view>
 <view class="weui-cells weui-cells_after-title">
   <view class="weui-cell weui-cell_input">
@@ -20,5 +21,7 @@
 </view>
  
  <view class="weui-btn-area">
-            <button class="weui-btn"  bindtap="showTopTips">确定</button>
+            <button class="weui-btn"  bindtap="showTopTips"><text>确定</text></button>
+        </view>
+
         </view>

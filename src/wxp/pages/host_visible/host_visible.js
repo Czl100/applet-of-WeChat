@@ -145,8 +145,8 @@ start:true
   context.fillText(this.data.dis, text_x, text_y);
   //for(var k=0;k<5;k++){
   //  text_x = text_x -this.data.text_length * 20 + 3;
-  text_x = (350 - w) / 2-50;
-  for(var j=0;j<5;j++){
+  text_x = (350 - w) / 2;
+  for(var j=0;j<25;j++){
     text_x=text_x+this.data.text_length*20+3;
     console.log(text_x)
   for(var i=0;i<20;i++){

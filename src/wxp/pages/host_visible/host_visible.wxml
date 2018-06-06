@@ -1,20 +1,17 @@
-<view class='container-a'>
+<view class='ba'>
 
-<view >
+
+<view class='container-a'>
 <canvas style=' width:350px;height:350px;' class='c' canvas-id='canvas'></canvas>
-</view>
- 
-<view>
+<view class='line_'>
 <input placeholder='请输入水印信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input'></input>
 </view>
 
-<view class="button-sp-area">
-      <button class="weui-btn" type="#40C4FF" plain="true" catchtap='onsure'>加入可见水印</button>
+<view class='watermark-line-container3'  catchtap='onsure' >
+    <text>加入可见水印</text>
+  </view>
+<view class='watermark-line-container'  catchtap='onsave' >
+    <text>保存图片</text>
+  </view>
 </view>
-
-<view class="button-sp-area">
-      <button class="weui-btn" type="black" plain="true" catchtap='onsave'>保存图片</button>
-</view>
-
-
 </view>

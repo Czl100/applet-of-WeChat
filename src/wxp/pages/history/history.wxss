@@ -1,4 +1,6 @@
-
+.ba{
+  background-color: #fff
+}
 .container-b{
  width: 100%;
  bottom: 0rpx;

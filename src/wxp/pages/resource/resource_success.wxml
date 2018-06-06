@@ -9,7 +9,7 @@
         </view>
         <view class="weui-msg__opr-area">
             <view class="weui-btn-area">
-                <button class="weui-btn"  catchtap='onyes'>粉丝留言</button>
+                <button class="weui-btn"  catchtap='onyes'><text>粉丝留言</text></button>
                 <button class="weui-btn" type="default" catchtap='onno'>暂不留言</button>
             </view>
         </view>

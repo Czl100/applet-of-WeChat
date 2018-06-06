@@ -4,27 +4,43 @@
   font-family: Microsoft YaHei;
   color: #000;
 }
-.watermark-line-container{
-  margin-top:80rpx;
-  border:1px solid #000;
-  width: 450rpx;
-  height: 90rpx;
-  border-radius: 5px;
-  text-align: center;
+.ba{
+  background-color: #fff
+}
+.watermark-line-container text{
+  font-size: 40rpx;
+  line-height: 80rpx;
+  font-family: Microsoft YaHei;
+  color: #000;
 }
 .watermark-line-container2{
-  margin-top:80rpx;
-  border:1px solid #90A4AE;
-  width: 450rpx;
-  height: 90rpx;
+  margin-top:40rpx;
+  border:1px solid #bfbfbf;
+  width: 650rpx;
+  height: 80rpx;
   border-radius: 5px;
   text-align: center;
+
+}
+.watermark-line-container{
+  margin-top:40rpx;
+  border:1px solid #000;
+  width: 650rpx;
+  height: 80rpx;
+  border-radius: 5px;
+  text-align: center;
+
 }
 .watermark-line-container2 text{
   font-size: 40rpx;
   line-height: 80rpx;
   font-family: Microsoft YaHei;
-  color: #90A4AE;
+  color: #bfbfbf;
+}
+.line_
+{
+  width:540rpx;
+  margin-bottom: 0; 
 }
 .img{
   width: 400rpx;
@@ -41,26 +57,56 @@
     margin-right: 5px;
 }
 
-.watermark-line-container{
-  margin-top:80rpx;
-  border:1px solid #000;
-  width: 450rpx;
-  height: 90rpx;
-  border-radius: 5px;
-  text-align: center;
-}
+
 .choice{
-  display: flex;
-  margin: 0 auto;
-  flex-direction: column;
-  align-items: center;
-  width: 500rpx;
-  height: 500rpx;
-  padding-top: 250rpx;
+  margin-top:0;
+  margin-bottom: 10rpx;
+  width: 100%;
+}
+.choice image{
+  width: 100%;
 }
 
 .host-container{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.line{
+  margin-top: 3rpx;
+  background-color: #bfbfbf;
+  height:60rpx;
+  margin-bottom: 50rpx;
+  text-align: center;
+  font-family: Microsoft YaHei;
+}
+.c{
+  display: flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+
+}
+.line text{
+  color: #fff;
+  text-align: center;
+  justify-content:space-around;
+  height: 100%;
+  font-size: 35rpx;
+}
+.watermark-line-container3 text{
+  font-size: 40rpx;
+  line-height: 80rpx;
+  font-family: Microsoft YaHei;
+  color: #fff;
+}
+.watermark-line-container3{
+  margin-top:40rpx;
+  border:1px solid #0091EA;
+  width: 650rpx;
+  height: 80rpx;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #0091EA
+
 }

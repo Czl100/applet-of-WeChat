@@ -14,6 +14,8 @@
   
   ],
   "window":{
+    "setNavigationBarStyle":"#fff",
+    "backgroundColor": "#fff",
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "版权护卫",
@@ -22,7 +24,8 @@
   
   "tabBar":{
     "borderStyle":"black",
-    "selectcolor":"#40C4FF",
+    "selectcolor":"#0091EA",
+    "selectedColor": "#0091EA",
     "color":"#333",
     "backgroundColor":"#fff",
     "position":"bottom",

@@ -5,5 +5,11 @@
 }
 .weui-btn {
   margin-top: 15px;
-  background-color: #40C4FF
+  background-color: #0091EA
+}
+.weui-btn text{
+  color: #fff
+}
+.ba{
+  background-color: #fff
 }
