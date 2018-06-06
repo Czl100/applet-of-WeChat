@@ -125,6 +125,6 @@ def bind_routes(app):
         # 提取图像id
         imgnum = data_extract2(inpImgPath)
         imgid = md5(str(imgnum))
-        imgid = "1c4bd3d31306688c1b12a62769f750b0"
+        imgid = "7b6537de06b8ec025bbb9a931ed3f5bf"
         secret = imgHistoryServices.query_img_secret(app, imgid, key)
         return {'secret':secret}

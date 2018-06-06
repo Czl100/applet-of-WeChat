@@ -23,7 +23,7 @@ class SessionPool:
         self.__lock__.acquire()
         self.__sessionNumber__+=1
         self.__lock__.release()
-
+        print("sessionNumber:", self.__sessionNumber__)
         self.__md5__.update(str(self.__sessionNumber__).encode("utf-8"))
         sessionId = self.__md5__.hexdigest()
         self.__cache__.set(sessionId, {"__wxid__":wxid})        # 为该会话创建字典
