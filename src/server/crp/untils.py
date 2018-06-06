@@ -134,26 +134,36 @@ def fit_wx_resolution(imgpath):
     io.imsave(imgpath,img)
 
 # 水印嵌入进程
-def wm_embed(inp_img, out_img, key, value):
+def wm_embed(app, inp_img, out_img, imgnum, isdel=True):
     import subprocess
-    cmd = "water.exe embed {0} {1} {2} {3}".format(inp_img, out_img, key, value)
+    import os
+    wm_exe = app.config['WATERMARK_EXE']
+    wm_key = app.config['WATERMARK_KEY']
+    cmd = "{0} {1} {2} {3} {4}".format(wm_exe, inp_img, wm_key, imgnum, out_img)
     print(cmd)
     p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
     p.wait()
+    if isdel:
+        os.remove(inp_img)
     if p.returncode:
         raise CrpException("水印嵌入进程执行错误！！")
 
 # 水印提取进程
-def wm_extract(inp_img, out_img, key, value):
+def wm_extract(app, inp_img, isdel=True):
     import subprocess
-    cmd = "water.exe extract {0} {1} {2} {3}".format(inp_img, out_img, key, value)
+    import os
+    wm_exe = app.config['WATERMARK_EXE']
+    wm_key = app.config['WATERMARK_KEY']
+    cmd = "{0} {1} {2}".format(wm_exe, inp_img, wm_key)
     print(cmd)
     p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
     p.wait()
+    if isdel:
+        os.remove(inp_img)
     if p.returncode:
         raise CrpException("水印提取进程执行错误！！")
-    extret = p.stdout.readline().strip()
-    return int(extret)
+    extret = p.stdout.readline().strip().decode("utf-8")
+    return extret
 
 # 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
 def request_around(app, request, args=None, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):

@@ -12,7 +12,8 @@ class __BaseConfig__:
     MAX_CONTENT_LENGTH = 200 * 1024 * 1024
     PERPAGE_SIZE = 10
     WATERMARK_KEY = "12345"
-    
+    WATERMARK_EXE = "../wm/main.exe"        # 因为当前工作路径为crp
+
 class __DevConfig__(__BaseConfig__):
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:HELLOworld0@111.230.92.161:3306/crp_dev?charset=utf8"

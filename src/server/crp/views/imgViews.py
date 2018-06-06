@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg, FileArg, fit_wx_resolution
+from crp.untils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg, FileArg, fit_wx_resolution, wm_embed, wm_extract
 from crp.services import imgHistoryServices
 from crp.exception import CrpException
 from flask import request
@@ -53,7 +53,8 @@ def bind_routes(app):
         imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, imgid=imgid, path=outImgPath, imgtitle=imgtitle, imgtype=0)
 
         # 信息隐藏 生成载密图像
-        data_hide(inpImgPath, outImgPath, imgnum)         # 调用C++信息隐藏处理
+        print("embed_imgnum:", imgnum)
+        wm_embed(app, inpImgPath, outImgPath, imgnum)
 
         # 更新数据库finish字段
         imgHistoryServices.update_finish_img_history(app, imgid=imgid)
@@ -73,9 +74,9 @@ def bind_routes(app):
         img.save(inpImgPath)                                        # 将图像保存
 
         # 提取图像id
-        imgnum = data_extract(inpImgPath)
+        imgnum = wm_extract(app, inpImgPath)
+        print("extract_imgnum:", imgnum)
         imgid = md5(str(imgnum))
-        imgid = "de0112fcac8a94819bd6edcad7a070df"
         # 查询库
         exists, imgtitle = imgHistoryServices.query_img_author(app, imgid=imgid)
         if exists : 
@@ -105,7 +106,8 @@ def bind_routes(app):
         imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, path=outImgPath, imgid=imgid, imgtitle=imgtitle, imgtype=1, secret=secret, key=key)
 
          # 信息隐藏 生成载密图像
-        data_hide(inpImgPath, outImgPath, imgid)         # 调用C++信息隐藏处理
+        print("embed_imgnum:", imgnum)
+        wm_embed(app, inpImgPath, outImgPath, imgnum)
 
         imgHistoryServices.update_finish_img_history(app, imgid)
 
@@ -123,8 +125,8 @@ def bind_routes(app):
         img.save(inpImgPath)    
 
         # 提取图像id
-        imgnum = data_extract2(inpImgPath)
+        imgnum = wm_extract(app, inpImgPath)
+        print("extract_imgnum:", imgnum)
         imgid = md5(str(imgnum))
-        imgid = "7b6537de06b8ec025bbb9a931ed3f5bf"
         secret = imgHistoryServices.query_img_secret(app, imgid, key)
         return {'secret':secret}
