@@ -3,11 +3,11 @@
 
     <view wx:if="{{item.finish}}">
       <view class='container-a'>
-        <image wx:if="{{!finish}}" mode='aspectFit' catchtap='onpre' src="{{item.img}}" id="{{idx}}"></image>
-        <image wx:if="{{finish}}" mode='aspectFit' catchtap='onpre' src="{{img_unfinish}}"></image>
+        <image wx:if="{{item.finish}}" mode='aspectFit' catchtap='onpre' src="{{item.img}}" id="{{idx}}"></image>
+        <image wx:if="{{!item.finish}}" mode='aspectFit' catchtap='onpre' src="{{img_unfinish}}"></image>
         <text>{{item.imgtitle}}</text>
-        <text wx:if="{{!finish}}">{{item.datetime}}</text>
-        <text wx:if="{{finish}}">未完成</text>
+        <text wx:if="{{item.finish}}">{{item.datetime}}</text>
+        <text wx:if="{{!item.finish}}">未完成</text>
       </view>
     </view>
   </block>

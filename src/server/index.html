@@ -19,19 +19,19 @@
         <br>
         <br>
         <h2>发送邀请</h2>
-        <form action="http://localhost:5000/invite" method="POST">
+        <form action="http://localhost:5000/send-message" method="POST">
             sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br>
             nick : <input type="input" name="nick">
-            imgid : <input type="input" name="imgid" value="806490856ee2f580da779d1ba8619da1"><br>
+            imgid : <input type="input" name="imgid" value="f15be9039700ebb24eba924e29994da4"><br>
             content : <input type="input" name="content">
             <input type="submit" value="Upload">
         </form>
         <br>
         <br>
         <h2>读取邀请</h2>
-        <form action="http://localhost:5000/read-invite" method="get">
+        <form action="http://localhost:5000/read-message" method="post">
             sessionId : <input type="input" name="sessionId" value="c4ca4238a0b923820dcc509a6f75849b"><br>
-            inviteId : <input type="input" name="inviteId" value="1"><br>
+            messageId : <input type="input" name="messageId" value="1"><br>
             <input type="submit" value="Upload">
         </form>
         <br>
