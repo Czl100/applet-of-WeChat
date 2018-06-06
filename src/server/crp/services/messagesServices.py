@@ -1,25 +1,25 @@
 # coding=utf-8
 
-from crp.models import Invites, User
+from crp.models import Messages, User
 from sqlalchemy import desc
 from crp.exception import CrpException
 import datetime
 import math
 
 # 添加一条邀请，邀请中需要包含图像相关信息
-def add_invite(app, imgtitle, imgurl, nick, inviterId, authorId, content):
+def add_message(app, imgtitle, imgurl, nick, senderId, authorId, content):
     dbsession = app.sessionMaker()
-    oneInvite = Invites(imgurl=imgurl, imgtitle=imgtitle, inviterNick=nick, inviterId=inviterId, authorId=authorId, content=content, datetime=datetime.datetime.today())
+    oneMessage = Messages(imgurl=imgurl, imgtitle=imgtitle, senderNick=nick, senderId=senderId, authorId=authorId, content=content, datetime=datetime.datetime.today())
     try:
-        dbsession.add(oneInvite)        # 邀请入库
+        dbsession.add(oneMessage)        # 邀请入库
     finally:
         dbsession.commit()
 
 # 查询邀请页
-def query_invites_page(app, authorId, perpage, page):
+def query_messages_page(app, authorId, perpage, page):
     dbsession = app.sessionMaker()
     try:
-        allItems = dbsession.query(Invites).filter_by(authorId=authorId).order_by(desc(Invites.unread)).order_by(desc(Invites.datetime)).all()
+        allItems = dbsession.query(Messages).filter_by(authorId=authorId).order_by(desc(Messages.unread)).order_by(desc(Messages.datetime)).all()
     finally:
         dbsession.commit()
 
@@ -33,9 +33,9 @@ def query_invites_page(app, authorId, perpage, page):
     itemList = []
     for item in items:
         dicitem = {
-            "inviteId":item.id,
+            "messageId":item.id,
             "unread": item.unread,
-            "inviter":item.inviterNick,
+            "sender":item.senderNick,
             "img":item.imgurl,
             "imgtitle":item.imgtitle,
             "content":item.content,
@@ -44,29 +44,29 @@ def query_invites_page(app, authorId, perpage, page):
         itemList.append(dicitem)
     return totalpage, itemList
 
-def invite_unread_number(app, wxid):
+def message_unread_number(app, wxid):
     dbsession = app.sessionMaker()
     try:
-        count = dbsession.query(Invites).filter_by(authorId=wxid).filter_by(unread=1).count()
+        count = dbsession.query(Messages).filter_by(authorId=wxid).filter_by(unread=1).count()
     finally:
         dbsession.commit()
     return count
 
-def invite_have_read(app, wxid, inviteId):
+def message_have_read(app, wxid, messageId):
     dbsession = app.sessionMaker()
     try:
-        inviteItem = dbsession.query(Invites).filter_by(id=inviteId).first()
-        if not inviteItem:
+        messageItem = dbsession.query(Messages).filter_by(id=messageId).first()
+        if not messageItem:
             raise CrpException("邀请项不存在")
-        inviteItem.unread=0
+        messageItem.unread=0
     finally:
         dbsession.commit()
 
-def invite_all_read(app, wxid):
+def messages_all_read(app, wxid):
     dbsession = app.sessionMaker()
     try:
-        inviteList = dbsession.query(Invites).filter_by(authorId=wxid).filter_by(unread=1).all()
-        for item in inviteList:
+        messageList = dbsession.query(Messages).filter_by(authorId=wxid).filter_by(unread=1).all()
+        for item in messageList:
             item.unread = 0
     finally:
         dbsession.commit()

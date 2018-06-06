@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from crp.untils import sp, urlget, request_around
-from crp.views import sessionViews, imgViews, inviteViews, historyViews
+from crp.views import sessionViews, imgViews, messagesViews, historyViews
 from flask import request
 import json
 
@@ -31,4 +31,4 @@ def bind_routes(app):
     historyViews.bind_routes(app)
 
     # 绑定邀请提醒视图函数
-    inviteViews.bind_routes(app)
+    messagesViews.bind_routes(app)

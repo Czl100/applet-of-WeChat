@@ -33,8 +33,8 @@ class ImgHistory(Base):
     imgtype = Column(Integer, default=0)                   # 图像记录类型, 0-图像注册, 1-信息隐藏
     datetime  = Column(DateTime)                            # 创建日期
 
-class Invites(Base):
-    __tablename__='invites'     # 表名
+class Messages(Base):
+    __tablename__='messages'     # 表名
     __table_args__ = {"mysql_charset" : "utf8"}
 
     # 字段
@@ -42,8 +42,8 @@ class Invites(Base):
     unread = Column(Integer, default=1)                     # 是否未读(0:已读，1:未读)
     imgurl = Column(String(128))                            # 图片url
     imgtitle = Column(String(64))                           # 图片名称
-    inviterNick = Column(String(128))                       # 用户昵称
-    inviterId = Column(String(32))
+    senderNick = Column(String(128))                        # 用户昵称
+    senderId = Column(String(32))
     authorId = Column(String(32))
     content = Column(String(300))
     datetime = Column(DateTime)                             # 邀请时间
