@@ -1,16 +1,30 @@
-#include<iostream>
+#include <opencv2/opencv.hpp>
+#include <iostream>
+#include<vector>
+#include<cmath>
 #include"transf.h"
+
 using namespace std;
-int main(){
+using namespace cv;
 
-	const std::string infile = "lena.jpg";
-	const std::string outfile = "outfile.jpg";
-	unsigned int Key=392142;
-	long long watersrc = 9348314;
-	//embed(infile, outfile,Key , watersrc);
+int main(int argc, char *argv[]){		
+	std::string infile = argv[1];	
+	int key = atol(argv[2]);
+	long long waterId = 0;	
+	std::string outfile;	
 
-	long long value = 0;
-	extract(outfile, Key, value);
-	std::cout << "sucess:" << value << std::endl;
-	std::cin.get();
+	if (argc == 5){
+		waterId = atol(argv[3]);
+		outfile = argv[4];
+		embed(infile, outfile, key, waterId);		
+		return 0;
+	}
+	else if (argc == 3){
+		unsigned long long value = extract(infile, key);
+		std::cout << value;
+		return 0;
+	}
+	else{		
+		return -1;
+	}
 }

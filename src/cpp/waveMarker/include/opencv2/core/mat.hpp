@@ -874,11 +874,11 @@ public:
     Mat(const Mat& m, const Rect& roi);
 
     /** @overload
-			@param m Array that (as a whole or partly) is assigned to the constructed matrix. No data is copied
-			by these constructors. Instead, the header pointing to m data or its sub-array is constructed and
-			associated with it. The reference counter, if any, is incremented. So, when you modify the matrix
-			formed using such a constructor, you also modify the corresponding elements of m . If you want to
-			have an independent copy of the sub-array, use Mat::clone() .
+    @param m Array that (as a whole or partly) is assigned to the constructed matrix. No data is copied
+    by these constructors. Instead, the header pointing to m data or its sub-array is constructed and
+    associated with it. The reference counter, if any, is incremented. So, when you modify the matrix
+    formed using such a constructor, you also modify the corresponding elements of m . If you want to
+    have an independent copy of the sub-array, use Mat::clone() .
     @param ranges Array of selected ranges of m along each dimensionality.
     */
     Mat(const Mat& m, const Range* ranges);

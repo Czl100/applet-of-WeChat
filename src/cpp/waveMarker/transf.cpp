@@ -258,7 +258,7 @@ int mydwt(cv::Mat& _src,int _nlayer)
 		// 小波变换图象
 		cvSetImageROI(pWavelet, cvRect(0, 0, pSrc->width, pSrc->height));
 		cvConvertScale(pWavelet, pSrc, 1, 128);		
-		cvResetImageROI(pWavelet);					// 本行代码有点多余，但有利用养成良好的编程习惯
+		cvResetImageROI(pWavelet);					
 
 		/*cvNamedWindow("pWavelet", WINDOW_NORMAL);
 		cvShowImage("pWavelet", pSrc);*/
@@ -322,7 +322,7 @@ int myidwt(cv::Mat& _src, int _nlayer)
 	return 0;
 }
 
-void embed(const std::string& infile, const std::string& outfile, unsigned int Key, long long watersrc, int lengthOfId, int strengthEmbed, int layTransf){
+void embed(const std::string& infile, const std::string& outfile, unsigned int Key,unsigned long long watersrc, int lengthOfId, int strengthEmbed, int layTransf){
 	cv::Mat src = imread(infile, CV_LOAD_IMAGE_ANYDEPTH | CV_LOAD_IMAGE_ANYCOLOR);	//src.type()==CV_8UC3		
 	if (src.empty())		throw;
 
@@ -332,11 +332,8 @@ void embed(const std::string& infile, const std::string& outfile, unsigned int K
 
 	cv::Mat srcBfloat;
 	srcB.convertTo(srcBfloat, CV_32FC1);		//拷贝	
-	namedWindow("src0", WINDOW_NORMAL);
-	imshow("src0", src);
 	//--小波变换
-	mydwt(srcBfloat, layTransf);				//在src图上做DWT，没有拷贝,得到系数都是正数吗？？？
-	//cout << "srcB1:\n" << srcB << endl;
+	mydwt(srcBfloat, layTransf);				//在src图上做DWT，没有拷贝,得到系数都是正数吗？？？	
 
 	//--提取ROI,没有拷贝
 	CvSize sizeLL;
@@ -399,20 +396,12 @@ void embed(const std::string& infile, const std::string& outfile, unsigned int K
 	//srcBfloat.convertTo(srcB, CV_8UC1, 255.0 / (maxRange - minRange), -(minRange*255.0)/(maxRange-minRange));
 	srcBfloat.convertTo(srcB, CV_8UC1);
 	minMaxIdx(srcB, &minRange, &maxRange);
-	namedWindow("srcBfloat", WINDOW_NORMAL);
-	imshow("srcBfloat", srcB);
 
-	merge(BGR, src);
-	namedWindow("dst", WINDOW_NORMAL);
-	imshow("dst", src);
-
+	merge(BGR, src);	
 	imwrite(outfile, src);
-
-	//waitKey();
-	//return;
 }
 
-void embedAlgorithm(cv::Mat& _src, const int water, const int& t){
+int embedAlgorithm(cv::Mat& _src, const int water, const int& t){
 	//--再分成2*2块		
 	//Mat dataA(_src, rectA);	
 	Mat dataA(_src, Range(0, 2), Range(0, 2));			//dataA的地址与_src相同，dataB不同
@@ -426,7 +415,7 @@ void embedAlgorithm(cv::Mat& _src, const int water, const int& t){
 
 	if (water == 1){			//(m1>= m2)
 		if (m1 >= m2){
-			return;
+			return 0;
 		}
 		//--修改dataA
 		if (dataA.isContinuous()){
@@ -453,7 +442,7 @@ void embedAlgorithm(cv::Mat& _src, const int water, const int& t){
 	}
 	else if (water == 0){			//m1<m2
 		if (m1 < m2){
-			return;
+			return 0;
 		}
 		//--修改dataA
 		if (dataA.isContinuous()){
@@ -478,13 +467,13 @@ void embedAlgorithm(cv::Mat& _src, const int water, const int& t){
 			}
 		}
 	}
-	else{
-		std::cout << "water is not 0 or 1\n";
-		return;
-	}
+	else	return -1;
+
+	return 0;
 }
 
-void extract(const string& infile, int key, long long& value){
+unsigned long long extract(const std::string& infile, int key){
+	unsigned long long value = 0;
 	cv::Mat src_t = imread(infile, CV_LOAD_IMAGE_ANYDEPTH | CV_LOAD_IMAGE_ANYCOLOR);	//src.type()==CV_8UC3
 	if (src_t.empty())		throw;
 	std::vector<int> waterDst(64);
@@ -497,6 +486,7 @@ void extract(const string& infile, int key, long long& value){
 		if (waterDst[i] == 0)	continue;
 		value = waterDst[i] * pow(2, i) + value;
 	}
+	return value;
 }
 
 const int extractAlgorithm(const cv::Mat& _src)
