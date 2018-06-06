@@ -4,6 +4,28 @@
   font-family: Microsoft YaHei;
   color: #000;
 }
+.watermark-line-container{
+  margin-top:80rpx;
+  border:1px solid #000;
+  width: 450rpx;
+  height: 90rpx;
+  border-radius: 5px;
+  text-align: center;
+}
+.watermark-line-container2{
+  margin-top:80rpx;
+  border:1px solid #90A4AE;
+  width: 450rpx;
+  height: 90rpx;
+  border-radius: 5px;
+  text-align: center;
+}
+.watermark-line-container2 text{
+  font-size: 40rpx;
+  line-height: 80rpx;
+  font-family: Microsoft YaHei;
+  color: #90A4AE;
+}
 .img{
   width: 400rpx;
   height: 400rpx;

@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    start:false,
     Image: "/pages/icon/add.png",//这是原始的icon
     resource_chooseFiles:null,
     title:'暂无标题',  //追溯到的图片的标题
@@ -19,7 +20,8 @@ Page({
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData({
-           resource_chooseFiles: res.tempFilePaths[0]
+           resource_chooseFiles: res.tempFilePaths[0],
+           start:true
         });
       }
     })
@@ -27,6 +29,12 @@ Page({
   },
   
   onstart:function(){
+    if(this.data.start){
+    wx.showToast({
+      title: '正在追溯',
+      icon: 'loading',
+      duration: 10000
+    });
     var that=this;
     var sessionId = wx.getStorageSync('sessionId');
         wx.uploadFile({
@@ -38,8 +46,32 @@ Page({
             'sessionId': sessionId
           },
           success: function (res) {
+            wx.hideToast();
             res.data = JSON.parse(res.data)
-            console.log("图片可开始追溯", res.data.fg)
+            if(res.data.errcode==1000){
+              wx.showModal({
+                title: '提示',
+                content: res.data.errmsg,
+                success: function (res1) {
+                  if (res1.confirm) {
+                    console.log('用户点击确定')
+                  } else if (res1.cancel) {
+                    console.log('用户点击取消')
+                  }
+                }
+              })
+              return
+            }
+            if(res.data.errcode==1){
+              wx.showToast({
+                title: '服务器遇到了异常，请稍后再试',
+                icon: 'none',
+                duration: 2000
+              })
+              return
+            }
+            else{
+            console.log("图片可开始追溯", res.data)
             //如果图片可以开始进行追溯，那么就将信息放在缓存中
       
             console.log('追溯图片是',that.data.resource_chooseFiles)
@@ -70,17 +102,29 @@ Page({
               //如果作者的信息可以找到，那么可以把这个图片的id放在缓存中，
               wx.setStorageSync('imgid',res.data.imgid);
             }
+            return
+            }
           },
           fail: function (res) {
-            console.log("图片追溯上传失败", res.data.msg)         
+            wx.hideToast();
+            console.log("图片追溯上传失败")         
               wx.showToast({
-                title: '数据加载中',
-                icon: 'loading',
-                duration: 3000
-              });
+                title: '请保持网络通畅',
+                icon:'none',
+                duration:2000
+              })
           
           }
         })
+    }
+    else {
+      //如果没有选择
+      wx.showToast({
+        title: '请先选择图片',
+        icon: 'none',
+        duration: 2000
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -112,6 +156,29 @@ Page({
         'sessionId': wx.getStorageSync('sessionId'),
       },
       success: function (res) {
+        if(res.data.errcode==1000){
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+        if(res.data.errcode==1){
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        else{
         console.log('打开追溯界面时刷新未邀请个数', res.data)
         wx.setStorageSync('_number', res.data.number);
         var number = wx.getStorageSync('_number');
@@ -126,6 +193,16 @@ Page({
           text: number+"",
         })
       }
+      return
+      }
+
+      },
+      fail:function(res){
+wx.showToast({
+  title: '请保持网络通畅',
+  icon:'none',
+  duration:2000
+})
       }
     })
   },

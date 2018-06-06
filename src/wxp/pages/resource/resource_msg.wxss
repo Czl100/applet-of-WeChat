@@ -1,1 +1,5 @@
 /* pages/resource/resource_msg.wxss */
+.input-counter {
+  color: #b2b2b2;
+  text-align: right;
+}

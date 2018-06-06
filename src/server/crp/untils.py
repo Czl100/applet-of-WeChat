@@ -17,6 +17,42 @@ def unescape(s):
     from html.parser import HTMLParser
     return HTMLParser().unescape(s) if s!=None else None
 
+# 请求参数包装
+class RequestArg:
+    def __init__(self, key, default=None, excep=None, allow_empty_string=True):
+        self.__key__ = key
+        self.__excep__ = excep
+        self.__default__ = default
+        self.__allow_empty_string__ = allow_empty_string
+        
+    def key(self):
+        return self.__key__
+
+    def __val__(self, mapper):
+        v = mapper.get(self.__key__, None)
+        if (not self.__allow_empty_string__) and isinstance(v, str) and (not v.strip()):
+            v = None
+        if v == None:
+            if self.__excep__ == None:
+                v = self.__default__
+            else:
+                raise CrpException(str(self.__excep__))
+        if isinstance(v, str) :
+            v = unescape(v)
+        return v
+
+class GetArg(RequestArg):
+    def val(self, request):
+        return self.__val__(request.args)
+
+class PostArg(RequestArg):
+    def val(self, request):
+        return self.__val__(request.form)
+
+class FileArg(RequestArg):
+    def val(self, request):
+        return self.__val__(request.files)
+
 # 提取对象中的特定属性转换为字典数据
 def obj2map(obj, mapper):
     map = {}
@@ -43,8 +79,8 @@ def md5(s):
     return hasher.hexdigest()
 
 # 线程安全的递增生成器函数
-max_num = 4294967295
-def inc_num_genfun(init_num):
+max_num = 2147483647
+def inc_num_genfun(init_num, maxn):
     import threading
     
     lock = threading.Lock()
@@ -53,12 +89,12 @@ def inc_num_genfun(init_num):
         # 避免多线程读写竞争
         lock.acquire()
         init_num+=1
-        if init_num >= max_num:
+        if init_num > maxn:
             init_num = 0
         lock.release()
 
 # 递增的imgnum, 用于信息隐藏。imgid=md5(imgnum)
-inc_imgnum_gen = inc_num_genfun(random.randint(0, max_num))
+inc_imgnum_gen = inc_num_genfun(random.randint(0, max_num), max_num)
 
 # 线程安全的唯一ID生成器函数
 def unique_id_genfun():
@@ -79,11 +115,65 @@ unique_imgid_gen = unique_id_genfun()
 # 设备ID唯一生成器
 unique_did_gen = unique_id_genfun()
 
+# 适配微信的分辨率
+def fit_wx_resolution(imgpath):
+    from skimage import io, transform
+    img=io.imread(imgpath)
+    height = img.shape[0]
+    width = img.shape[1]
+    if height<width:
+        newheight = 1080
+        newwidth = int(1080/height * width)
+    elif height>width:
+        newwidth = 1080
+        newheight = int(1080/width * height)
+    else:
+        newwidth = 1080
+        newheight = 1080
+    img = transform.resize(img, (newheight, newwidth))
+    io.imsave(imgpath,img)
+
+# 水印嵌入进程
+def wm_embed(app, inp_img, out_img, imgnum, isdel=True):
+    import subprocess
+    import os
+    import platform
+    wm_exe = app.config['WATERMARK_WIN'] if "Windows" in platform.platform() else app.config['WATERMARK_LINUX']
+    wm_key = app.config['WATERMARK_KEY']
+    cmd = "{0} {1} {2} {3} {4}".format(wm_exe, inp_img, wm_key, imgnum, out_img)
+    print(cmd)
+    p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
+    p.wait()
+    if isdel:
+        os.remove(inp_img)
+    if p.returncode:
+        raise CrpException("水印嵌入进程执行错误！！")
+
+# 水印提取进程
+def wm_extract(app, inp_img, isdel=True):
+    import subprocess
+    import os
+    import platform
+    wm_exe = app.config['WATERMARK_WIN'] if "Windows" in platform.platform() else app.config['WATERMARK_LINUX']
+    wm_key = app.config['WATERMARK_KEY']
+    cmd = "{0} {1} {2}".format(wm_exe, inp_img, wm_key)
+    print(cmd)
+    p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
+    p.wait()
+    if isdel:
+        os.remove(inp_img)
+    if p.returncode:
+        raise CrpException("水印提取进程执行错误！！")
+    extret = p.stdout.readline().strip().decode("utf-8")
+    return extret
+
 # 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
-def request_around(app, request, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):
+def request_around(app, request, args=None, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):
+    if args == None:
+        args = ()
     def innerWrapper(f):
         @wraps(f)
-        def deractor(*args, **kw):
+        def deractor(*ks, **kws):
             # 预处理(请求记录, 限流, sessionId测试)
             if requestlog:
                 ip = request.remote_addr
@@ -92,18 +182,23 @@ def request_around(app, request, requestlog=False, exceptlog=True, limit=True, h
             if limit:
                 pass
             # 请求处理
-            rt = {}
             try:
+                rt = {"errcode":1}
                 # sessionId的存在测试
                 if hasSessionId:
                     sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
                     if sessionId == None:
-                        raise CrpException("缺少sessionId操作")
+                        raise CrpException("缺少sessionId参数")
                     elif sp.getSessionData(sessionId) == None:
                         raise CrpException("未登录，会话不存在，请登录后操作")
-                    kw["sessionId"] = sessionId
+                    kws["sessionId"] = sessionId
+                # 装载kw
+                for arg in args:
+                    k = arg.key()
+                    v = arg.val(request)
+                    kws[k] = v
                 # 视图函数处理
-                rt = f(*args, **kw)
+                rt = f(*ks, **kws)
             # 后处理(异常日志记录, 返回值JSON化)
                 if not isinstance(rt, dict):
                     raise CrpException("视图函数正在尝试返回非字典类型数据")

@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    start:false,       //默认是不能开始的
     Image: "/pages/icon/camera.png",//这是原始的icon
     imageWidth: 0,
     imageHeight: 0  
@@ -17,6 +18,7 @@ Page({
   
   },
   chooseImage: function (event) {
+    
      var that = this;
     wx.chooseImage({
       count: 1, // 默认9
@@ -26,7 +28,8 @@ Page({
         
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         that.setData({
-         chooseFiles:res.tempFilePaths[0]
+         chooseFiles:res.tempFilePaths[0],
+         start:true
         });
         app.globalData.chooseFiles=res.tempFilePaths[0]
         //获取图片的宽高
@@ -71,6 +74,7 @@ that.setData({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    
     wx.request({
       url: 'http://localhost:5000/query-unread-number',
       method: 'GET',
@@ -184,6 +188,8 @@ that.setData({
 
  
   onJump_host_visible:function(event){
+    if (this.data.start) //如果选择了图片
+    {
     var that=this;
     wx.navigateTo({
       url: '../host_visible/host_visible?imgw=' + that.data.imageWidth + '&imgh=' + that.data.imageHeight,  
@@ -199,8 +205,19 @@ that.setData({
       }
     });
     console.log(that.data.imageWidth, that.data.imageHeight);
+    }
+    else{
+      //如果没有选择
+      wx.showToast({
+        title: '请先选择图片',
+        icon:'none',
+        duration:2000
+      })
+    }
   },
   onJump_host_invisible: function (event) {
+    if(this.data.start)
+    {
     wx.navigateTo({
       url: '../host_invisible/host_invisible',
       success: function () {
@@ -213,8 +230,19 @@ that.setData({
         console.log("不可见水印页面","jump complete")
       }
     });
+    }
+    else {
+      //如果没有选择
+      wx.showToast({
+        title: '请先选择图片',
+        icon: 'none',
+        duration: 2000
+      })
+    }
   },
   onJump_host_resign: function (event) {
+    if(this.data.start)
+    {
     wx.navigateTo({
       url: '../host_resign/host_resign',
       success: function () {
@@ -227,5 +255,14 @@ that.setData({
         console.log("注册绑定","jump complete")
       }
     });
+  }
+    else {
+      //如果没有选择
+      wx.showToast({
+        title: '请先选择图片',
+        icon: 'none',
+        duration: 2000
+      })
+    }
   }
 })

@@ -60,6 +60,17 @@ def query_img_secret(app, imgid, key):
         dbsession.commit()
     return secret
 
+def query_imgid_exists(app, imgid):
+    dbsession = app.sessionMaker()
+    exists=False
+    try:
+        # one，查找不到抛出异常. first，查找不到不会抛出异常    
+        item = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
+        exists = True if item else False
+    finally:
+        dbsession.commit()
+    return exists
+
 # 查询指定指定微信用户，指定页面的历史记录
 def query_history_page(app, wxid, page, perpage):
     # 数据库提取出该用户的所有图像

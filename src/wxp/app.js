@@ -122,6 +122,13 @@ if(wx.getStorageSync('sessionId')){
   globalData: {  //全局变量
     userInfo:wx.getStorageSync('user'),  //记录用户信息
     chooseFiles:null,//保存已经选择的图片
-   userimages:[]  //用于作为该用户的本地缓存
+   userimages:[],  //用于作为该用户的本地缓存
+   color_1:'#0091EA',
+   color_2:'#00B0FF',
+   color_3:'#40C4FF',
+   color_4:'#80D8FF',
+   color_5:'#81D4FA',
+   color_6:'#B3E5FC',
+   color_7:'#E1F5FE',
   }
 })

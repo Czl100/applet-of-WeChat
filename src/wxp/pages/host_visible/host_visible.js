@@ -50,6 +50,13 @@ Page({
                icon: 'success',
                duration: 3000
              });
+           },
+           fail:function(res){
+             wx.showToast({
+               title: '不可抗因素导致保存失败',
+               icon:'none',
+               duration:2000
+             })
            }
          })
        }
@@ -111,6 +118,14 @@ onsure:function(){
   context.fillText(this.data.dis, text_x, text_y);
   console.log(text_x,text_y);
   context.setFillStyle('#FFFFFF');
+/*
+  context.setStrokeStyle("#00ff00")
+ 
+  context.stroke()
+  context.setStrokeStyle("#ff0000")
+
+  context.stroke()
+*/
   context.draw()
   //console.log(this.data.imgw,this.data.imgh)
   

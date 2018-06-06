@@ -6,11 +6,49 @@ Page({
    * 页面的初始数据
    */
   data: {
+    co_save:false,
+    co_get:false,
+    start:false,
     invisible_chooseFiles: app.globalData.chooseFiles,
     imgtitle:"",
     dis: "",     //这个是水印的文字信息
     ser: "",     //这是嵌入的密码
     useKeyboardFlag: true,  //默认是键盘输入类型的输入框
+  },
+  onsave: function () {
+    console.log('co_save',this.data.co_save);
+    console.log('保存到手机的图片路径', wx.getStorageSync('save_img'))
+    if(this.data.co_save)  //如果嵌入水印成功可以保存到手机
+    {
+    if(wx.getStorageSync('save_img')=="")//如果没有图片的话，
+    {
+      wx.showToast({
+        title: '由于不可抗因素，信息嵌入失败',
+        icon:'none',
+        duration:2000
+      })
+    }
+    else{
+      console.log('保存到手机的图片路径', wx.getStorageSync('save_img'))
+    wx.saveImageToPhotosAlbum({
+      filePath:wx.getStorageSync('save_img'),
+      success(res) {
+        wx.showToast({
+          title: '已保存至手机相册',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    })
+    }
+    }
+    else{
+wx.showToast({
+  title: '请正确嵌入水印',
+  icon:'none',
+  duration:2000
+})
+    }
   },
   Input_title:function(e){
 this.setData({
@@ -29,16 +67,41 @@ imgtitle:e.detail.value
     })
   },
   onpre:function(){
+    var ig = wx.getStorageSync('save_img')
+    console.log('缓存图片save_img',ig);
+    if(this.data.co_save)
+    {
+      console.log('co_save的标记，说明当前的水印已经嵌入好了',this.data.co_save);
+    if(wx.getStorageSync('save_img')==""){
       wx.previewImage({
         current: 'app.global.chooseFiles', // 当前显示图片的http链接
         urls: [app.globalData.chooseFiles],
       })
+      console.log('水印还没有嵌入，预览的图片是没有嵌入水印的')
+    }
+    else{
+      //如果已经嵌入了
+      
+      wx.previewImage({
+        current: 'ig', // 当前显示图片的http链接
+        urls: [wx.getStorageSync('save_img')],
+      })
+      console.log('水印已经嵌入，预览的图片是有嵌入水印的')
+    }
+    }
+    else{
+      wx.showToast({
+        title: '请准确嵌入水印',
+        icon:'none',
+        duration:2000
+      })
+    }
   },
   onget:function(){  //提取水印信息
     wx.showToast({
       title: '正在处理',
       icon: 'loading',
-      duration: 6000
+      duration: 10000
     });
  //   wx.navigateBack()
  var that=this;
@@ -113,7 +176,16 @@ imgtitle:e.detail.value
    }
  })
   },
+
   onsure: function () {
+    this.setData({
+      start:true,
+      co_get:true
+    })
+    
+    if((!this.data.ser=="")&&(!this.data.dis=="") ) //这个时候没有输入水印
+    {
+      
     wx.showToast({
       title: '正在处理',
       icon:'loading',
@@ -121,7 +193,7 @@ imgtitle:e.detail.value
     })
     var that=this;
 
-    console.log('图片标题', that.data.imgtitle);
+  console.log('图片标题', that.data.imgtitle);
     var key = Jmd5.hexMD5(that.data.ser);
     console.log('嵌入水印',key);
    var sessionId=wx.getStorageSync('sessionId');
@@ -165,8 +237,13 @@ imgtitle:e.detail.value
 return
         }
        else{
-       
-        console.log("嵌入成功",res.data)
+         that.setData({
+           co_save:true
+         })
+          console.log("嵌入成功", res.data)
+        console.log("嵌入成功",res.data.img)
+        wx.setStorageSync('save_img', res.data.img);
+        console.log('缓存的照片',wx.getStorageSync('save_img'))
         app.globalData.userimages.push(that.data.invisible_chooseFiles);//当用户点击确定之后，将图片保存在本地缓存
        var ss= wx.setStorageSync('userimages',app.globalData.userimages);
         console.log(ss);
@@ -183,12 +260,21 @@ return
         wx.hideToast();
         console.log("嵌入水印失败"),
         wx.showToast({
-          title: '数据加载中',
-          icon: 'loading',
+          title: '嵌入水印失败',
+          icon: 'none',
           duration: 2000
         });
       }
     })
+    }
+    else{
+      wx.showToast({
+        title: '嵌入的不可见水印信息和密码不得为空',
+        icon:'none',
+
+        duration:2000
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载

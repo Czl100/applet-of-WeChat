@@ -1,14 +1,16 @@
 <view class='host-container'>
 <view class='choice'>
   <image mode='aspectFit' class='img'  src="{{resource_chooseFiles?resource_chooseFiles:Image}}" catchtap='chooseImage' ></image>
-  <text >选择图片</text>
+  <text catchtap='chooseImage'>选择图片</text>
 </view>
-  
-  
-  
-<view class="button-sp-area"  bindtap="onstart">
-      <button class="weui-btn" type="#40C4FF" plain="true" >开始追溯</button>
-</view>
+   
+
+<view wx:if="{{start}}" class='watermark-line-container' bindtap="onstart">
+    <text>开始追溯</text>
+  </view>
+  <view wx:if="{{!start}}" class='watermark-line-container2' bindtap="onstart">
+    <text>开始追溯</text>
+  </view>
 
   </view>
  

@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, request_around
+from crp.untils import sp, request_around, GetArg
 from crp.models import ImgHistory
 from flask import request
 from sqlalchemy import desc
@@ -8,9 +8,10 @@ from crp.services import imgHistoryServices
 
 def bind_routes(app):
     @app.route("/query-history")
-    @request_around(app, request, hasSessionId=True)
-    def history(sessionId):
-        page = request.args.get("page", 1)          # 默认取第一页
+    @request_around(app, request, hasSessionId=True, args=(
+        GetArg("page", default=1),   # 默认取第一页
+    ))
+    def history(sessionId, page):
         wxid = sp.wxid(sessionId)
         page = int(page)
         perpage = int(app.config["PERPAGE_SIZE"])
