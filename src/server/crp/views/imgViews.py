@@ -6,7 +6,7 @@ from crp.exception import CrpException
 from flask import request
 import time
 
-def img_emb(app, sessionId, img, imgtitle, key=None, secret=None):
+def img_emb(app, sessionId, img, imgtitle, imgtype=0, key=None, secret=None):
     imgnum = next(inc_imgnum_gen)
     imgid = md5(str(imgnum))
 
@@ -22,19 +22,28 @@ def img_emb(app, sessionId, img, imgtitle, key=None, secret=None):
             raise CrpException("该图像已经经过注册")
         else:
             raise CrpException("该图像已经是含水印图像")
-
-    # 先插入历史记录
-    if secret == None:
-        imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, imgid=imgid, path=outImgPath, imgtitle=imgtitle, imgtype=0)
-    else:
-        imgHistoryServices.insert_notfinish_img_history(app, sessionId=sessionId, path=outImgPath, imgid=imgid, imgtitle=imgtitle, imgtype=1, secret=secret, key=key)
-
     # 信息隐藏 生成载密图像
     print("embed_imgnum:", imgnum)
-    wm_embed(app, inpImgPath, outImgPath, imgnum)
+    success=True
+    try:
+        wm_embed(app, inpImgPath, outImgPath, imgnum)
+    except Exception:
+        # 失败暂不入库
+        # success=False 
+        raise CrpException("图片处理发生异常")
 
-    # 更新数据库finish字段
-    imgHistoryServices.update_finish_img_history(app, imgid=imgid)
+    # 入库
+    kws = {
+        "success":success, 
+        "sessionId":sessionId,
+        "path":outImgPath, 
+        "imgid":imgid,
+        "imgtitle":imgtitle,
+        "imgtype":imgtype,
+        "secret":secret,
+        "key":key        
+    }
+    imgHistoryServices.insert_finish_img_history(app, **kws)
 
     imgurl = app.config['ENABLE_HOST']+outImgPath
     return {"img":imgurl}
@@ -59,7 +68,7 @@ def bind_routes(app):
         PostArg("imgtitle", default=None),
     ))
     def img_bind(sessionId, img, imgtitle):
-        return img_emb(app, sessionId, img, imgtitle)
+        return img_emb(app, sessionId, img=img, imgtitle=imgtitle)
 
     # 作者溯源视图函数
     @app.route("/query-author", methods=["POST"])
@@ -84,7 +93,7 @@ def bind_routes(app):
         PostArg("imgtitle", default=None),
     ))
     def info_hide(sessionId, img, key, secret, imgtitle):
-        return img_emb(app, sessionId, img, imgtitle, key, secret)
+        return img_emb(app, sessionId=sessionId, img=img, imgtitle=imgtitle, imgtype=1, key=key, secret=secret)
 
     @app.route("/ix", methods=["post"])
     @request_around(app, request, hasSessionId=True, args=(
