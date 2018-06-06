@@ -10,9 +10,9 @@ Page({
     _number: 0,//未邀请个数
     //  onread:false,//这是设置数据是否已读，默认是未读
     postList: [{
-      inviteId: '',
+      messageId: '',
       unread: false,
-      inviter: '',
+      sender: '',
       imgtitle: '',
       img: "",
       datetime: '',
@@ -34,7 +34,7 @@ Page({
     var that = this;
     wx.setStorageSync('re_mypage', that.data.mypage);   //将当前的页数存入缓存
     wx.request({
-      url: 'http://localhost:5000/query-invites',
+      url: 'http://localhost:5000/query-messages',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
@@ -109,7 +109,7 @@ Page({
     var that = this;
     wx.setStorageSync('re_mypage', that.data.mypage);   //将当前的页数存入缓存
     wx.request({
-      url: 'http://localhost:5000/query-invites',
+      url: 'http://localhost:5000/query-messages',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
@@ -177,14 +177,14 @@ Page({
       unread: true
     });
     wx.request({    
-      url: 'http://localhost:5000/read-invite',
+      url: 'http://localhost:5000/read-message',
       method: 'POSt',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
       data: {
         sessionId: wx.getStorageSync('sessionId'),
-        inviteId: e.currentTarget.id
+        messageId: e.currentTarget.id
       },
       success: function (res) {
         if (res.data.errcode == 1000) {
@@ -234,7 +234,7 @@ Page({
       }
     });
     wx.request({   //一进来消息提醒界面的服务端请求，意思是缓存一些新的数据
-      url: 'http://localhost:5000/query-invites',
+      url: 'http://localhost:5000/query-messages',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
@@ -297,7 +297,7 @@ Page({
   onget: function () { //点击全部已读,意思就是说告诉后台，这些数据用户已经读了
     var that = this;
     wx.request({
-      url: 'http://localhost:5000/read-all-invites',
+      url: 'http://localhost:5000/read-all-messages',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -340,7 +340,7 @@ Page({
             });
           }
           wx.request({
-            url: 'http://localhost:5000/query-invites',
+            url: 'http://localhost:5000/query-messages',
             header: {
               'content-type': 'application/x-www-form-urlencoded' // 默认值
             },
@@ -457,7 +457,7 @@ Page({
       }
     })
     wx.request({
-      url: 'http://localhost:5000/query-invites',   
+      url: 'http://localhost:5000/query-messages',   
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
