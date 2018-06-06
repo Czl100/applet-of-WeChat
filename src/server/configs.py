@@ -11,6 +11,7 @@ class __BaseConfig__:
     TMP_DIR = "static/tmp/"
     MAX_CONTENT_LENGTH = 200 * 1024 * 1024
     PERPAGE_SIZE = 10
+    WATERMARK_KEY = "12345"
     
 class __DevConfig__(__BaseConfig__):
     DEBUG = False
