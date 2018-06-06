@@ -1,3 +1,11 @@
 page{
     background-color: #FFFFFF;
 }
+
+.weui-btn {
+  margin-top: 15px;
+  background-color: #40C4FF
+}
+.img{
+  height: 150rpx
+}

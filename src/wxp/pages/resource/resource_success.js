@@ -4,6 +4,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    Image: "/pages/icon/yes.png",
     title:'暂无标题',
   },
 onno:function(){

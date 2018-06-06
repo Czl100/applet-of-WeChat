@@ -15,8 +15,8 @@
 
 <view class='a'>
   <view class='container-b'>
-    <button class="weui-btn mini-btn" type="primary" size="mini" catchtap='onbefore'>上一页</button>
+    <button class="weui-btn mini-btn" class='before' size="mini" catchtap='onbefore'>上一页</button>
     <button class="weui-btn mini-btn" type="default" size="mini">{{mypage}}</button>
-    <button class="weui-btn mini-btn" type="warn" size="mini" catchtap='onafter'>下一页</button>
+    <button class="weui-btn mini-btn" class='after' size="mini" catchtap='onafter'>下一页</button>
   </view>
 </view>

@@ -33,7 +33,7 @@ width: 100%;
 height: 40rpx;
  position: absolute;
  top: 0rpx;
- text-align: right;
+ text-align: left;
 }
 .image{
   width: 20%;
@@ -72,4 +72,12 @@ height: 40rpx;
   width: 90%;
   margin-left: 20rpx;
   margin-top: 20rpx;
+}
+
+.before
+{
+  background-color: #B3E5FC
+}
+.after{
+  background-color: #B0BEC5
 }

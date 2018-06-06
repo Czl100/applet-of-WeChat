@@ -1,6 +1,6 @@
 
 <view class='container-d'>
-  <button class="weui-btn mini-btn" type="primary" size="mini" catchtap='onget'>全部已读</button>
+  <button class="weui-btn mini-btn" type="default" size="mini" catchtap='onget'>全部已读</button>
 </view>
 <view class='g'>
 <block wx:for="{{postList}}" wx:for-item="item" wx:for-index="idx" wx:key="2" >
@@ -30,7 +30,7 @@
 </block>
 </view>
 <view class='container-b'>
-  <button class="weui-btn mini-btn" type="primary" size="mini" catchtap='onbefore'>上一页</button>
+  <button class="weui-btn mini-btn" class='before' size="mini" catchtap='onbefore'>上一页</button>
   <button class="weui-btn mini-btn" type="default" size="mini">{{mypage}}</button>
-  <button class="weui-btn mini-btn" type="warn" size="mini" catchtap='onafter'>下一页</button>
+  <button class="weui-btn mini-btn" class='after' size="mini" catchtap='onafter'>下一页</button>
 </view>

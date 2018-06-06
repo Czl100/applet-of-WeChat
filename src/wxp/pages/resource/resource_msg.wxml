@@ -20,5 +20,5 @@
 </view>
  
  <view class="weui-btn-area">
-            <button class="weui-btn" type="primary" bindtap="showTopTips">确定</button>
+            <button class="weui-btn"  bindtap="showTopTips">确定</button>
         </view>

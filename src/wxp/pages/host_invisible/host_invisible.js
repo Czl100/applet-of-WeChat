@@ -105,7 +105,13 @@ imgtitle:e.detail.value
     });
  //   wx.navigateBack()
  var that=this;
- var key = Jmd5.hexMD5(that.data.ser);
+ if(this.data.ser=="")
+ {
+   var key=this.data.ser
+ }
+ else{
+   var key = Jmd5.hexMD5(that.data.ser);
+ }
  //var sessionId=wx.getStorageSync(sessionId);
  console.log('提取水印',key);
  var file=app.globalData.chooseFiles;
@@ -182,8 +188,13 @@ imgtitle:e.detail.value
       start:true,
       co_get:true
     })
-    
-    if((!this.data.ser=="")&&(!this.data.dis=="") ) //这个时候没有输入水印
+    if(this.data.imgtitle==""){
+      this.setData({
+        imgtitle:'暂无标题'
+      })
+    }
+  //  if((!this.data.ser=="")&&(!this.data.dis=="") ) //这个时候没有输入水印
+  if(!this.data.dis=="")  //如果嵌入的水印信息是空的
     {
       
     wx.showToast({
@@ -194,7 +205,13 @@ imgtitle:e.detail.value
     var that=this;
 
   console.log('图片标题', that.data.imgtitle);
+  if (this.data.ser == "") {
+    var key = this.data.ser
+  }
+  else {
     var key = Jmd5.hexMD5(that.data.ser);
+  }
+   // var key = Jmd5.hexMD5(that.data.ser);
     console.log('嵌入水印',key);
    var sessionId=wx.getStorageSync('sessionId');
    console.log(that.data.invisible_chooseFiles);
@@ -269,7 +286,7 @@ return
     }
     else{
       wx.showToast({
-        title: '嵌入的不可见水印信息和密码不得为空',
+        title: '嵌入的不可见水印信息不得为空',
         icon:'none',
 
         duration:2000

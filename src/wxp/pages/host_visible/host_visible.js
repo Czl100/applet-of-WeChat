@@ -6,9 +6,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    start:false,
     useKeyboardFlag:true,  //默认是键盘输入类型的输入框
     visible_chooseFiles:app.globalData.chooseFiles,
-    dis:null,
+    dis:"",
    imgw:null,
    imgh:null,
    text_length:null
@@ -36,6 +37,7 @@ Page({
 
    },
    onsave: function () {
+     if(this.data.start){
      //点击保存图片的时候
      wx.canvasToTempFilePath({
        canvasId: 'canvas',
@@ -61,13 +63,30 @@ Page({
          })
        }
      })
-
+     }
+     else{
+       wx.showToast({
+         title: '请先加入水印信息',
+         icon:'none',
+         duration:2000
+       })
+     }
     
      },
 
 onsure:function(){
+  if(this.data.dis==""){  //如果水印的信息是空的话
+wx.showToast({
+  title: '请输入水印信息',
+  icon:'none',
+  duration:2000
+})
+  }
+  else{
   var that=this;
- 
+ that.setData({
+start:true
+ });
   var w;
   var h;
   //this.data.imgw和imgh分别是图片的宽高
@@ -113,22 +132,34 @@ onsure:function(){
     })
   }
   else{
+   
   context.drawImage(this.data.visible_chooseFiles, start_x, start_y, w,h);
+
+  context.rotate(20 * Math.PI / 180);
+  context.translate(10, 20);
+
   context.setFontSize(20);
-  context.fillText(this.data.dis, text_x, text_y);
+
   console.log(text_x,text_y);
   context.setFillStyle('#FFFFFF');
-/*
-  context.setStrokeStyle("#00ff00")
- 
-  context.stroke()
-  context.setStrokeStyle("#ff0000")
-
-  context.stroke()
-*/
+  context.fillText(this.data.dis, text_x, text_y);
+  //for(var k=0;k<5;k++){
+  //  text_x = text_x -this.data.text_length * 20 + 3;
+  text_x = (350 - w) / 2-50;
+  for(var j=0;j<5;j++){
+    text_x=text_x+this.data.text_length*20+3;
+    console.log(text_x)
+  for(var i=0;i<20;i++){
+  context.fillText(this.data.dis, text_x-20*i, text_y-50*i);
+  }
+  
+ // }
+  }
+console.log('加入')
   context.draw()
   //console.log(this.data.imgw,this.data.imgh)
   
+  }
   }
 },
 /*
@@ -167,6 +198,7 @@ oncancel:function(){
     }
     context = wx.createCanvasContext('canvas');
     context.drawImage(this.data.visible_chooseFiles, start_x, start_y, w, h);
+
     context.draw()
   },
 

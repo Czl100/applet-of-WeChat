@@ -79,8 +79,8 @@ def md5(s):
     return hasher.hexdigest()
 
 # 线程安全的递增生成器函数
-max_num = 4294967295
-def inc_num_genfun(init_num):
+max_num = 2147483647
+def inc_num_genfun(init_num, maxn):
     import threading
     
     lock = threading.Lock()
@@ -89,12 +89,12 @@ def inc_num_genfun(init_num):
         # 避免多线程读写竞争
         lock.acquire()
         init_num+=1
-        if init_num >= max_num:
+        if init_num > maxn:
             init_num = 0
         lock.release()
 
 # 递增的imgnum, 用于信息隐藏。imgid=md5(imgnum)
-inc_imgnum_gen = inc_num_genfun(random.randint(0, max_num))
+inc_imgnum_gen = inc_num_genfun(random.randint(0, max_num), max_num)
 
 # 线程安全的唯一ID生成器函数
 def unique_id_genfun():
@@ -137,7 +137,8 @@ def fit_wx_resolution(imgpath):
 def wm_embed(app, inp_img, out_img, imgnum, isdel=True):
     import subprocess
     import os
-    wm_exe = app.config['WATERMARK_EXE']
+    import platform
+    wm_exe = app.config['WATERMARK_WIN'] if "Windows" in platform.platform() else app.config['WATERMARK_LINUX']
     wm_key = app.config['WATERMARK_KEY']
     cmd = "{0} {1} {2} {3} {4}".format(wm_exe, inp_img, wm_key, imgnum, out_img)
     print(cmd)
@@ -152,7 +153,8 @@ def wm_embed(app, inp_img, out_img, imgnum, isdel=True):
 def wm_extract(app, inp_img, isdel=True):
     import subprocess
     import os
-    wm_exe = app.config['WATERMARK_EXE']
+    import platform
+    wm_exe = app.config['WATERMARK_WIN'] if "Windows" in platform.platform() else app.config['WATERMARK_LINUX']
     wm_key = app.config['WATERMARK_KEY']
     cmd = "{0} {1} {2}".format(wm_exe, inp_img, wm_key)
     print(cmd)

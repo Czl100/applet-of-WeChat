@@ -3,3 +3,7 @@
   color: #b2b2b2;
   text-align: right;
 }
+.weui-btn {
+  margin-top: 15px;
+  background-color: #40C4FF
+}
