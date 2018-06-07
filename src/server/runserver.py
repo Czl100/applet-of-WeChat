@@ -5,8 +5,8 @@ import configs
 
 
 # 创建http-app
-app = crp.create_app(configs.devConfig)
-#app = crp.create_app(configs.produceConfig)
+#app = crp.create_app(configs.devConfig)
+app = crp.create_app(configs.produceConfig)
 
 if __name__ == '__main__':
     #simple_server

@@ -13,7 +13,7 @@ class __BaseConfig__:
     PERPAGE_SIZE = 10
     WATERMARK_KEY = "12345"
     WATERMARK_WIN = "../wm/win64/main.exe"          # 因为当前工作路径为crp，所以要往前一个路径
-    WATERMARK_LINUX = "../wm/linux/main.exe"        # 因为当前工作路径为crp，所以要往前一个路径
+    WATERMARK_LINUX = "../wm/linux/waterMarker"     # 因为当前工作路径为crp，所以要往前一个路径
 
 class __DevConfig__(__BaseConfig__):
     DEBUG = False

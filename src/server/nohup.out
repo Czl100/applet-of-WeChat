@@ -1,0 +1,37 @@
+ * Serving Flask app "crp" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+127.0.0.1 - - [07/Jun/2018 18:02:18] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [07/Jun/2018 18:03:27] "GET /session-build?code=061ss5o205Ka4D1Puil20jGqo20ss5o6&did=0 HTTP/1.0" 200 -
+127.0.0.1 - - [07/Jun/2018 18:03:31] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [07/Jun/2018 18:03:38] "GET /debug-sessions HTTP/1.0" 200 -
+127.0.0.1 - - [07/Jun/2018 18:03:47] "GET /debug-requests HTTP/1.0" 200 -
+/usr/local/python3/lib/python3.6/site-packages/skimage/transform/_warps.py:105: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
+  warn("The default mode, 'constant', will be changed to 'reflect' in "
+/usr/local/python3/lib/python3.6/site-packages/skimage/transform/_warps.py:110: UserWarning: Anti-aliasing will be enabled by default in skimage 0.15 to avoid aliasing artifacts when down-sampling images.
+  warn("Anti-aliasing will be enabled by default in skimage 0.15 to "
+/usr/local/python3/lib/python3.6/site-packages/skimage/util/dtype.py:130: UserWarning: Possible precision loss when converting from float64 to uint8
+  .format(dtypeobj_in, dtypeobj_out))
+[2018-06-07 18:06:14,030] ERROR in utils: 【异常】[Errno 2] No such file or directory: '../wm/linux/main.exe static/tmp/1528365966072620.jpeg 12345'
+127.0.0.1 - - [07/Jun/2018 18:06:14] "POST /img-bind HTTP/1.0" 200 -
+ * Serving Flask app "crp" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+127.0.0.1 - - [07/Jun/2018 18:08:46] "GET / HTTP/1.0" 200 -
+[2018-06-07 18:08:50,988] ERROR in utils: 【异常】未登录，会话不存在，请登录后操作
+127.0.0.1 - - [07/Jun/2018 18:08:50] "POST /img-bind HTTP/1.0" 200 -
+127.0.0.1 - - [07/Jun/2018 18:09:26] "GET /session-build?code=061iu1a20pFxjF1se2c20W9E920iu1an&did=0 HTTP/1.0" 200 -
+/usr/local/python3/lib/python3.6/site-packages/skimage/transform/_warps.py:105: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
+  warn("The default mode, 'constant', will be changed to 'reflect' in "
+/usr/local/python3/lib/python3.6/site-packages/skimage/transform/_warps.py:110: UserWarning: Anti-aliasing will be enabled by default in skimage 0.15 to avoid aliasing artifacts when down-sampling images.
+  warn("Anti-aliasing will be enabled by default in skimage 0.15 to "
+/usr/local/python3/lib/python3.6/site-packages/skimage/util/dtype.py:130: UserWarning: Possible precision loss when converting from float64 to uint8
+  .format(dtypeobj_in, dtypeobj_out))
+[2018-06-07 18:09:33,015] ERROR in utils: 【异常】[Errno 2] No such file or directory: '../wm/linux/waterMarker static/tmp/1528366171833842.jpeg 12345'
+127.0.0.1 - - [07/Jun/2018 18:09:33] "POST /img-bind HTTP/1.0" 200 -
