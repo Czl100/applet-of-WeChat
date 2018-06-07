@@ -5,7 +5,7 @@ import hashlib
 
 class SessionPool:
     # 建立session缓存
-    __cache__ = SimpleCache(default_timeout=10)
+    __cache__ = SimpleCache(default_timeout=600)
     # 建立wxid到sessionId和did的映射
     __wx2ids__ = SimpleCache()
     # 服务器建立以来session的总个数(已经不存在的session+仍然存在的session)
