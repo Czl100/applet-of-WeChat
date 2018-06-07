@@ -12,8 +12,8 @@ class __BaseConfig__:
     MAX_CONTENT_LENGTH = 200 * 1024 * 1024
     PERPAGE_SIZE = 10
     WATERMARK_KEY = "12345"
-    WATERMARK_WIN = "../wm/win64/main.exe"          # 因为当前工作路径为crp，所以要往前一个路径
-    WATERMARK_LINUX = "../wm/linux/waterMarker"     # 因为当前工作路径为crp，所以要往前一个路径
+    WATERMARK_WIN = "../wm/win64/main.exe"                        	# 因为当前工作路径为crp，所以要往前一个路径
+    WATERMARK_LINUX = "/root/crp/src/server/wm/linux/waterMarker"       # 因为当前工作路径为crp，所以要往前一个路径
 
 class __DevConfig__(__BaseConfig__):
     DEBUG = False
