@@ -22,8 +22,8 @@ pip install Flask-Limiter           # 安装flask限流插件
 |errcode|异常类|异常描述|
 |:-|:-|:-|
 |0|-|业务处理成功，非异常|
-|1|Exception|在Crp平台可以预期的异常之外|
-|1000|CrpException|Crp平台预期的异常|
+|1|Exception|在crp平台预期外的异常|
+|1000|CrpException|Crp平台预期内的异常|
 |1001|MissSessionIdException|请求中缺少sessionId参数|
 |1002|MissSessionIdException|请求中的sessionId所对应的会话不存在|
 |1003|MissArgumentException|请求中缺少必需的参数|
