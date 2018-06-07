@@ -1,5 +1,5 @@
 from werkzeug.contrib.cache import SimpleCache
-from crp.exception import CrpException
+from crp.exception import DeviceConflictException
 import threading
 import hashlib
 
@@ -48,7 +48,7 @@ class SessionPool:
                 cache.set(sessionId, cache.get(sessionId))
                 return sessionId
             else:
-                raise CrpException("您已在其他设备上登陆，无法再次登录")
+                raise DeviceConflictException()
         locker.acquire()
         self.__sessionNumber__+=1
         locker.release()

@@ -2,7 +2,7 @@
 
 from crp.models import Messages, User
 from sqlalchemy import desc
-from crp.exception import CrpException
+from crp.exception import NotExistMessageidException
 import datetime
 import math
 
@@ -57,7 +57,7 @@ def message_have_read(app, wxid, messageId):
     try:
         messageItem = dbsession.query(Messages).filter_by(id=messageId).first()
         if not messageItem:
-            raise CrpException("邀请项不存在")
+            raise NotExistMessageidException(messageId)
         messageItem.unread=0
     finally:
         dbsession.commit()
