@@ -8,7 +8,7 @@ from werkzeug.contrib.cache import SimpleCache
 from functools import wraps
 from flask import request, Response
 from threading import Lock
-from crp.exception import CrpException
+from crp.exception import CrpException, MissArgumentException, MissSessionIdException, NotExistsSessionException, AlgorithmProcessException
 
 
 sp = crp.sessionPool.SessionPool()      # 创建会话池
@@ -37,7 +37,7 @@ class RequestArg:
             if self.__excep__ == None:
                 v = self.__default__
             else:
-                raise CrpException(str(self.__excep__))
+                raise MissArgumentException(str(self.__excep__))
         if isinstance(v, str) :
             v = unescape(v)
         return v
@@ -97,8 +97,6 @@ inc_imgnum_gen = inc_num_genfun(random.randint(0, max_num), max_num)
 
 # 线程安全的唯一ID生成器函数
 def unique_id_genfun():
-    
-    
     uniqueNumber = random.random()
     lock = threading.Lock()
     while True:
@@ -146,7 +144,7 @@ def wm_embed(app, inp_img, out_img, imgnum, isdel=True):
     if isdel:
         os.remove(inp_img)
     if p.returncode:
-        raise CrpException("水印嵌入进程执行错误！！")
+        raise AlgorithmProcessException()
 
 # 水印提取进程
 def wm_extract(app, inp_img, isdel=True):
@@ -162,7 +160,7 @@ def wm_extract(app, inp_img, isdel=True):
     if isdel:
         os.remove(inp_img)
     if p.returncode:
-        raise CrpException("水印提取进程执行错误！！")
+        raise AlgorithmProcessException()
     extret = p.stdout.readline().strip().decode("utf-8")
     return extret
 
@@ -187,9 +185,9 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, ha
                 if hasSessionId:
                     sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
                     if sessionId == None:
-                        raise CrpException("缺少sessionId参数")
+                        raise MissSessionIdException()
                     elif sp.session(sessionId) == None:
-                        raise CrpException("未登录，会话不存在，请登录后操作")
+                        raise NotExistsSessionException()
                     kws["sessionId"] = sessionId
                 # 装载kw
                 for arg in args:
@@ -200,7 +198,7 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, ha
                 rt = f(*ks, **kws)
             # 后处理(异常日志记录, 返回值JSON化)
                 if not isinstance(rt, dict):
-                    raise CrpException("视图函数正在尝试返回非字典类型数据")
+                    raise Exception("视图函数正在尝试返回非字典类型数据")
                 rt["errcode"]=0
             except CrpException as e:
                 # crp应用层面异常

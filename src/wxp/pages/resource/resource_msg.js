@@ -1,3 +1,4 @@
+var timer = require('../../utils/timer.js')
 var content;
 var nick;
 var nick_length;
@@ -14,10 +15,14 @@ Page({
     //  imgid=null
   },
   Input_content: function (e) {  //获取留言框中的信息content
+    wx.setStorageSync('active', true);
+    timer.timer();
     content = e.detail.value
    content_length=e.detail.value.length;
   },
   Input_nick: function (e) {  //获取留言框中的信息content
+    wx.setStorageSync('active', true);
+    timer.timer();
     nick = e.detail.value
     // console.log(content)
    nick_length=e.detail.value;

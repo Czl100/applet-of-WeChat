@@ -4,10 +4,10 @@
 
 <view class='line'>
 <view class='c'>
-<text >版权护卫</text>
+<text >请为您的图片选择保护方式</text>
 </view>
 </view>
-
+<view class='ba'>
 <view class='host-container'>
   <view wx:if="{{start}}" class='watermark-line-container' catchtap='onJump_host_visible' bindload="imageLoad">
     <text>可见水印-离线支持</text>
@@ -31,4 +31,5 @@
     <text>图片绑定</text>
   </view>
 
+</view>
 </view>

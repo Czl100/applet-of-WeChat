@@ -1,3 +1,4 @@
+var timer = require('../../utils/timer.js')
 var pages = 1;//总页数初始值
 var _re_list = [];
 Page({
@@ -20,6 +21,8 @@ Page({
     }]
   },
   onbefore: function () { //点击上一页
+    wx.setStorageSync('active', true);
+    timer.timer();
     if (this.data.mypage > 1) {
       this.setData({
         mypage: this.data.mypage - 1
@@ -96,6 +99,8 @@ Page({
     })
   },
   onafter: function () { //点击下一页
+    wx.setStorageSync('active', true);
+    timer.timer();
     if (this.data.mypage < pages) {
       this.setData({
         mypage: this.data.mypage + 1
@@ -170,13 +175,15 @@ Page({
     })
   },
   oncatch: function (e) {       //当点击的时候,说明这个是已经读了
+    wx.setStorageSync('active', true);
+    timer.timer();
     console.log(e);
     console.log('id', e.currentTarget.id);
     var that = this;
     that.setData({
       unread: true
     });
-    wx.request({    
+    wx.request({
       url: 'http://localhost:5000/read-message',
       method: 'POSt',
       header: {
@@ -220,7 +227,7 @@ Page({
           else {
             wx.setTabBarBadge({
               index: 3,
-              text: number-1 + "",
+              text: number - 1 + "",
             })
           }
           return
@@ -295,6 +302,8 @@ Page({
     })
   },
   onget: function () { //点击全部已读,意思就是说告诉后台，这些数据用户已经读了
+    wx.setStorageSync('active', true);
+    timer.timer();
     var that = this;
     wx.request({
       url: 'http://localhost:5000/read-all-messages',
@@ -380,7 +389,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    wx.setStorageSync('active', true);
+    timer.timer();
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -457,7 +467,7 @@ Page({
       }
     })
     wx.request({
-      url: 'http://localhost:5000/query-messages',   
+      url: 'http://localhost:5000/query-messages',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
@@ -497,44 +507,45 @@ Page({
           wx.setStorageSync('re_pages', pages);
           //固定放在某一页
           _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;
-          wx.setStorageSync('re_list',_re_list);
+          wx.setStorageSync('re_list', _re_list);
 
           console.log('总页数pages', pages);
           console.log('服务器上的总页数', res.data.pages);
-          
+
           return
         }
       },
       fail: function (res) {
         console.log('查询失败')
-        
+
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
           duration: 2000
         })
       },
-      
-      complete:function () {
+
+      complete: function () {
         var p = wx.getStorageSync('re_mypage');
-        console.log('re_p',p);
-       
+        console.log('re_p', p);
+
         // var that=this;
         that.setData({
           postList: wx.getStorageSync('re_list')[p - 1],
         })
-        console.log('postlist', wx.getStorageSync('re_list')[p-1])
+        console.log('postlist', wx.getStorageSync('re_list')[p - 1])
       }
 
     })
 
-   
-    
+
+
   },
   onpre: function (e) {
-    
+    wx.setStorageSync('active', true);
+    timer.timer();
     var n = wx.getStorageSync('re_mypage');
-    console.log('re进入',n)
+    console.log('re进入', n)
     console.log('re当前的id', e.currentTarget.id)
     var img_ = wx.getStorageSync('re_list')[n - 1][e.currentTarget.id].img;
 

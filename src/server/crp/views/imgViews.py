@@ -2,7 +2,7 @@
 
 from crp.utils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg, FileArg, fit_wx_resolution, wm_embed, wm_extract
 from crp.services import imgHistoryServices
-from crp.exception import CrpException
+from crp.exception import CrpException, DuplicateEmbedException
 from flask import request
 import time
 
@@ -18,10 +18,7 @@ def img_emb(app, sessionId, img, imgtitle, imgtype=0, key=None, secret=None):
     # 提取图像id，查看id是否已经存在
     maybe_imgid = md5(str(wm_extract(app, inpImgPath, isdel=False)))
     if imgHistoryServices.query_imgid_exists(app, maybe_imgid) :
-        if secret == None:
-            raise CrpException("该图像已经经过注册")
-        else:
-            raise CrpException("该图像已经是含水印图像")
+        raise DuplicateEmbedException()
     # 信息隐藏 生成载密图像
     print("embed_imgnum:", imgnum)
     success=True
