@@ -40,7 +40,7 @@ def bind_routes(app):
         userServices.login(app, wxid)
         
         # 建立sessionId并和wxid绑定
-        sessionId = sp.newSession(wxid, did)
+        sessionId = sp.new_session(wxid, did)
         return {"sessionId":sessionId}
 
     # 会话销毁
@@ -48,6 +48,6 @@ def bind_routes(app):
     @request_around(app, request, hasSessionId=True)
     @app.limiter.limit("20 per minute")
     def session_destroy(sessionId):
-        sp.delSession(sessionId)
+        sp.del_session(sessionId)
         return {}
 

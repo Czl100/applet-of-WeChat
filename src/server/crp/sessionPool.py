@@ -18,8 +18,23 @@ class SessionPool:
     def __init__(self):
         pass
 
+    def session_number(self):
+        return self.__sessionNumber__
+
+    def expires(self, sessionId=None):
+        import time
+        cache = self.__cache__
+        if sessionId:
+            expires, _ = cache._cache.get(sessionId, (None, None))
+            return time.asctime(time.localtime(expires)) if expires else None
+        else:
+            expires_mapper = {}
+            for k, v in cache._cache.items() :
+                expires_mapper[k]=time.asctime(time.localtime(v[0]))
+            return expires_mapper
+
     # 生成新的session会话所需要的sessionId，并为该会话绑定wxid
-    def newSession(self, wxid, did):
+    def new_session(self, wxid, did):
         locker = self.__lock__
         cache = self.__cache__
         wx2ids = self.__wx2ids__
@@ -45,7 +60,7 @@ class SessionPool:
         return sessionId
     
     # 删除指定的会话
-    def delSession(self, sessionId):
+    def del_session(self, sessionId):
         self.__lock__.acquire()
         try:
             dic = self.__cache__.get(sessionId)
@@ -54,20 +69,25 @@ class SessionPool:
         finally:
             self.__lock__.release()
 
-    def getSessionData(self, sessionId):
-        dic = None
-        try:
-            dic = self.__cache__.get(sessionId)
-        finally:
-            return dic
+    def session(self, sessionId=None):
+        cache = self.__cache__
+        if sessionId:
+            return cache.get(sessionId)
+        else:
+            sessions_mapper = {}
+            for k in cache._cache.keys() :
+                sessions_mapper[k]=cache.get(k)
+            return sessions_mapper
 
     def wxid(self, sessionId):
         return self.get(sessionId, "__wxid__")
 
     def get(self, sessionId, key):
         dic=self.__cache__.get(sessionId)
-        return dic.get(key)
+        return dic.get(key) if dic else None
 
     def put(self, sessionId, key, val):
         dic=self.__cache__.get(sessionId)
-        dic[key]=val
+        if dic:
+            dic[key]=val
+            return True

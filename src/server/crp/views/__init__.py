@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.utils import sp, urlget, request_around
+from crp.utils import sp, urlget, request_around, ip_times
 from crp.views import sessionViews, imgViews, messagesViews, historyViews
 from flask import request
 import json
@@ -8,13 +8,26 @@ import json
 def bind_routes(app):
     @app.route("/")
     @app.route("/index")
-    @app.route("/debug")
     @request_around(app, request, requestlog=True)
     @app.limiter.limit("20 per minute")
     def index():
+        return {"msg":"server running..."}
+
+    @app.route("/debug-sessions")
+    @request_around(app, request, requestlog=True)
+    def debug_session():
         sessionId = request.args.get("sessionId", None)
-        session = str(sp.getSessionData(sessionId)) if sessionId else "None"
-        return {"msg":"server running...", "session":session}
+        session = sp.session(sessionId)
+        expires = sp.expires(sessionId)
+        return {
+            "session_number":sp.session_number(),
+            "expires":expires,
+            "session":session}
+
+    @app.route("/debug-requests")
+    @request_around(app, request, requestlog=True)
+    def debug_requests():
+        return ip_times
 
     # @app.errorhandler(404)
     # @userWrapper()

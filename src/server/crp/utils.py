@@ -166,6 +166,7 @@ def wm_extract(app, inp_img, isdel=True):
     extret = p.stdout.readline().strip().decode("utf-8")
     return extret
 
+ip_times = {}
 # 该装饰器用于请求预处理和后处理，包括记录请求事件，异常记录等
 def request_around(app, request, args=None, requestlog=False, exceptlog=True, hasSessionId=False):
     if args == None:
@@ -174,8 +175,10 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, ha
         @wraps(f)
         def deractor(*ks, **kws):
             # 预处理(请求记录, sessionId测试)
-            if requestlog:
-                ip = request.remote_addr
+            global ip_times
+            ip = request.remote_addr
+            ip_times[ip] = ip_times.get(ip, 0) + 1
+            if requestlog:    
                 view = request.url
                 app.logger.debug("[请求]{0} --- {1}".format(ip, view))
             try:
@@ -185,7 +188,7 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, ha
                     sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
                     if sessionId == None:
                         raise CrpException("缺少sessionId参数")
-                    elif sp.getSessionData(sessionId) == None:
+                    elif sp.session(sessionId) == None:
                         raise CrpException("未登录，会话不存在，请登录后操作")
                     kws["sessionId"] = sessionId
                 # 装载kw
