@@ -122,7 +122,7 @@ Page({
   onsave: function () {
     wx.setStorageSync('active', true);
     timer.timer();
-    if (this.data.start) {
+  //  if (this.data.start) {
       //点击保存图片的时候
 
       wx.canvasToTempFilePath({
@@ -158,7 +158,8 @@ Page({
           })
         }
       })
-    }
+  //  }
+    /*
     else {
       wx.showToast({
         title: '请先加入水印信息',
@@ -166,6 +167,7 @@ Page({
         duration: 2000
       })
     }
+    */
 
   },
 

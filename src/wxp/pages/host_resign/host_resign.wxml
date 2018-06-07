@@ -1,21 +1,21 @@
 <view class='ba'>
-<view class='choice'>
-<image mode='widthFix' catchtap='onpre' src="{{resign_chooseFiles}}"></image>
-</view>
-
-<view class='container-a'>
-
-<view class='line_'>
-<input placeholder='请输入绑定的信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input'></input>
-</view>
-
-<view class='bo'>
- <view class='watermark-line-container3'  catchtap='onsure' >
-    <text>确定绑定</text>
+  <view class='choice'>
+    <image mode='widthFix' catchtap='onpre' src="{{resign_chooseFiles}}"></image>
   </view>
- <view class='watermark-line-container'  catchtap='oncancel' >
-    <text>保存至手机</text>
+  
+  <view class='line_'>
+    <input placeholder='请输入绑定的信息…' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input'></input>
   </view>
-</view>
-</view>
+
+  <view class='container-a'>
+
+    <view class='bo'>
+      <view class='watermark-line-container3' catchtap='onsure'>
+        <text>确定绑定</text>
+      </view>
+      <view class='watermark-line-container' catchtap='oncancel'>
+        <text>保存至手机</text>
+      </view>
+    </view>
+  </view>
 </view>

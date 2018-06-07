@@ -44,10 +44,11 @@ page{
   box-sizing: border-box;
 } 
 .input-box{
-  background: #E1F5FE;
+  background: #E0E0E0;
   border: 1px black;
   margin-top: 16rpx;
-  width: 100%
+  width: 100%;
+  height: 60rpx;
 }
 .choose-item-true text{
   font-size: 40rpx;
@@ -103,6 +104,7 @@ page{
   height: 80rpx;
   border-radius: 5px;
   text-align: center;
+  background-color: #F5F5F5
 
 }
 .watermark-line-container2{
@@ -112,4 +114,26 @@ page{
   height:80rpx;
   border-radius: 5px;
   text-align: center;
+}
+.watermark-line-container3 text{
+  font-size: 40rpx;
+  line-height: 80rpx;
+  font-family: Microsoft YaHei;
+  color: #fff;
+}
+.watermark-line-container3{
+  margin-top:40rpx;
+  border:1px solid #0091EA;
+  width: 650rpx;
+  height: 80rpx;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #0091EA
+
+}
+.line_
+{
+  width:100%;
+  
+  height: 60rpx;
 }

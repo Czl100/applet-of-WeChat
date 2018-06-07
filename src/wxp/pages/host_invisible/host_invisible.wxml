@@ -4,31 +4,32 @@
     <image mode='widthFix' src="{{invisible_chooseFiles}}" catchtap='onpre'></image>
   </view>
 
+  <view>
+    <view class='line_'>
+      <input wx:if="{{start}}" placeholder='请输入图片的标题（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_title'></input>
+    </view>
+    <view class='line_'>
+      <input placeholder='请输入密码（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_ser'></input>
+    </view>
+    <view class='line_'>
+      <input wx:if="{{start}}" placeholder='请输入要嵌入的信息…' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_dis'></input>
+    </view>
 
+  </view>
+  
   <view class='container-a'>
-    <view>
-      <view class='line_'>
-        <input wx:if="{{start}}" placeholder='请输入图片的标题（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_title'></input>
-      </view>
-      <view class='line_'>
-        <input placeholder='请输入密码（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_ser'></input>
-      </view>
-      <view class='line_'>
-        <input wx:if="{{start}}" placeholder='请输入要嵌入的信息…' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_dis'></input>
+
+    <view class='bo'>
+      <view class='watermark-line-container3' catchtap='onsure'>
+        <text>嵌入水印信息</text>
       </view>
 
+      <view wx:if="{{!co_get}}" class='watermark-line-container3' catchtap='onget'>
+        <text>提取水印信息</text>
+      </view>
+      <view wx:if="{{co_get}}" class='watermark-line-container' catchtap='onsave'>
+        <text>保存至手机</text>
+      </view>
     </view>
-<view class='bo'>
-    <view class='watermark-line-container3' catchtap='onsure'>
-      <text>嵌入水印信息</text>
-    </view>
-
-    <view wx:if="{{!co_get}}" class='watermark-line-container3' catchtap='onget'>
-      <text>提取水印信息</text>
-    </view>
-    <view wx:if="{{co_get}}" class='watermark-line-container' catchtap='onsave'>
-      <text>保存至手机</text>
-    </view>
-</view>
   </view>
 </view>

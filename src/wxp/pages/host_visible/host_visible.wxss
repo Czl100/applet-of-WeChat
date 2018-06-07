@@ -15,8 +15,9 @@
 }
 .line_
 {
-  width:540rpx;
-  margin-bottom: 0; 
+ 
+  margin-bottom: 40rpx; 
+ 
 }
 .button-sp-area{
     margin: 0 auto;
@@ -30,36 +31,4 @@
 .c{
   background-color: #fff;
   width: 100%;
-}
-.watermark-line-container text{
-  font-size: 40rpx;
-  line-height: 80rpx;
-  font-family: Microsoft YaHei;
-  color: #000;
-}
-.watermark-line-container{
-  margin-top:40rpx;
-  border:1px solid #CFD8DC;
-  width: 650rpx;
-  height: 80rpx;
-  border-radius: 5px;
-  text-align: center;
-background-color: #f8f8f8;
-}
-
-.watermark-line-container3 text{
-  font-size: 40rpx;
-  line-height: 80rpx;
-  font-family: Microsoft YaHei;
-  color: #fff;
-}
-.watermark-line-container3{
-  margin-top:40rpx;
-  border:1px solid #0091EA;
-  width: 650rpx;
-  height: 80rpx;
-  border-radius: 5px;
-  text-align: center;
-  background-color: #0091EA
-
 }

@@ -53,20 +53,7 @@ Page({
         success: function (res) {
           wx.hideToast();
           res.data = JSON.parse(res.data)
-          if (res.data.errcode == 1000) {
-            wx.showModal({
-              title: '提示',
-              content: res.data.errmsg,
-              success: function (res1) {
-                if (res1.confirm) {
-                  console.log('用户点击确定')
-                } else if (res1.cancel) {
-                  console.log('用户点击取消')
-                }
-              }
-            })
-            return
-          }
+         
           if (res.data.errcode == 1) {
             wx.showToast({
               title: '服务器遇到了异常，请稍后再试',
@@ -75,7 +62,7 @@ Page({
             })
             return
           }
-          else {
+          if(res.data.errcode==0) {
             console.log("图片可开始追溯", res.data)
             //如果图片可以开始进行追溯，那么就将信息放在缓存中
 
@@ -107,6 +94,20 @@ Page({
               //如果作者的信息可以找到，那么可以把这个图片的id放在缓存中，
               wx.setStorageSync('imgid', res.data.imgid);
             }
+            return
+          }
+       else {
+            wx.showModal({
+              title: '提示',
+              content: res.data.errmsg,
+              success: function (res1) {
+                if (res1.confirm) {
+                  console.log('用户点击确定')
+                } else if (res1.cancel) {
+                  console.log('用户点击取消')
+                }
+              }
+            })
             return
           }
         },
@@ -162,20 +163,7 @@ Page({
         'sessionId': wx.getStorageSync('sessionId'),
       },
       success: function (res) {
-        if (res.data.errcode == 1000) {
-          wx.showModal({
-            title: '信息提示',
-            content: res.data.errmsg,
-            success: function (res1) {
-              if (res1.confirm) {
-                console.log('用户点击确定')
-              } else if (res1.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-          return
-        }
+       
         if (res.data.errcode == 1) {
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
@@ -184,7 +172,7 @@ Page({
           })
           return
         }
-        else {
+        if(res.data.errcode==0) {
           console.log('打开追溯界面时刷新未邀请个数', res.data)
           wx.setStorageSync('_number', res.data.number);
           var number = wx.getStorageSync('_number');
@@ -201,7 +189,20 @@ Page({
           }
           return
         }
-
+       else {
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
       },
       fail: function (res) {
         wx.showToast({

@@ -1,47 +1,10 @@
-.watermark-line-container text{
-  font-size: 40rpx;
-  line-height: 80rpx;
-  font-family: Microsoft YaHei;
-  color: #000;
-}
+
 .ba{
   background-color: #fff
 }
-.watermark-line-container text{
-  font-size: 40rpx;
-  line-height: 80rpx;
-  font-family: Microsoft YaHei;
-  color: #000;
-}
-.watermark-line-container2{
-  margin-top:40rpx;
-  border:1px solid #bfbfbf;
-  width: 650rpx;
-  height: 80rpx;
-  border-radius: 5px;
-  text-align: center;
 
-}
-.watermark-line-container{
-  margin-top:40rpx;
-  border:1px solid #000;
-  width: 650rpx;
-  height: 80rpx;
-  border-radius: 5px;
-  text-align: center;
 
-}
-.watermark-line-container2 text{
-  font-size: 40rpx;
-  line-height: 80rpx;
-  font-family: Microsoft YaHei;
-  color: #bfbfbf;
-}
-.line_
-{
-  width:540rpx;
-  margin-bottom: 0; 
-}
+
 .img{
   width: 400rpx;
   height: 400rpx;
@@ -71,12 +34,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 30rpx;
 }
 .line{
   margin-top: 3rpx;
   background-color: #bfbfbf;
   height:60rpx;
-  margin-bottom: 50rpx;
+  
   text-align: center;
   font-family: Microsoft YaHei;
 }
@@ -85,7 +49,8 @@
   flex-direction:row;
   align-items:center;
   justify-content:center;
-
+margin-bottom: 30rpx;
+margin-top: 30rpx;
 }
 .line text{
   color: #fff;
@@ -93,20 +58,4 @@
   justify-content:space-around;
   height: 100%;
   font-size: 35rpx;
-}
-.watermark-line-container3 text{
-  font-size: 40rpx;
-  line-height: 80rpx;
-  font-family: Microsoft YaHei;
-  color: #fff;
-}
-.watermark-line-container3{
-  margin-top:40rpx;
-  border:1px solid #0091EA;
-  width: 650rpx;
-  height: 80rpx;
-  border-radius: 5px;
-  text-align: center;
-  background-color: #0091EA
-
 }

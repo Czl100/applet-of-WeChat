@@ -1,6 +1,6 @@
 //index.js
 //获取应用实例
-var timer = require('../../utils/timer.js')
+//var timer = require('../../utils/timer.js')
 const app = getApp()
 
 Page({
@@ -17,8 +17,7 @@ Page({
     })
   },
   onLoad: function () {
-    wx.setStorageSync('active', true);
-    timer.timer();
+  
     if (app.globalData.userInfo) {  //如果已经获取了用户的信息
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -50,8 +49,7 @@ Page({
     }
   },
   getUserInfo: function (e) {
-    wx.setStorageSync('active', true);
-    timer.timer();
+    
     //  console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     //  console.log(app.globalData.userInfo)
@@ -67,8 +65,7 @@ Page({
    * 授权事件
    */
   getUserInfo: function (e) {
-    wx.setStorageSync('active', true);
-    timer.timer();
+  
     //授权成功
     if (e.detail.errMsg == "getUserInfo:ok") {
       wx.showToast({
@@ -93,7 +90,18 @@ Page({
             return
           }
 
-          if (res.data.errcode == 1000) {
+          if (res.data.errcode == 0)  {
+            //这个时候会话创建成功
+            console.log('获取设备成功', res.data.did);
+            wx.showToast({
+              title: '设备ID获取成功',
+              icon: 'none',
+              duration: 1500
+            });
+            wx.setStorageSync('did', res.data.did);//将设备的id存入缓存中
+          }
+          else
+          {
             wx.showModal({
               title: '提示',
               content: res.data.errmsg,
@@ -106,16 +114,6 @@ Page({
               }
             })
             return
-          }
-          else {
-            //这个时候会话创建成功
-            console.log('获取设备成功', res.data.did);
-            wx.showToast({
-              title: '设备ID获取成功',
-              icon: 'none',
-              duration: 1500
-            });
-            wx.setStorageSync('did', res.data.did);//将设备的id存入缓存中
           }
         },
         fail: function (res) {
@@ -161,7 +159,7 @@ Page({
                       return
                     }
                     */
-                    console.log(res.data)
+                    console.log('index.js文件',res.data)
                     wx.setStorageSync('sessionId', res.data.sessionId);
 
 

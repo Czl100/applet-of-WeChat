@@ -21,84 +21,95 @@ Page({
     }]
   },
   onbefore: function () { //点击上一页
+
     wx.setStorageSync('active', true);
     timer.timer();
-    if (this.data.mypage > 1) {
+    if (pages == 0) {
       this.setData({
-        mypage: this.data.mypage - 1
+        mypages: 0
       })
     }
     else {
-      //如果页数小于0
-      this.setData({
-        mypage: 1
-      })
+      if (this.data.mypage > 1) {
+        this.setData({
+          mypage: this.data.mypage - 1
+        })
+      }
+
+      else {
+        //如果页数小于0
+        this.setData({
+          mypage: 1
+        })
+      }
     }
-    var that = this;
-    wx.setStorageSync('re_mypage', that.data.mypage);   //将当前的页数存入缓存
-    wx.request({
-      url: 'http://localhost:5000/query-messages',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded' // 默认值
-      },
-      method: 'GET',
-      data: {
-        'sessionId': wx.getStorageSync('sessionId'),
-        'page': that.data.mypage
-      },
-      success: function (res) {
-        if (res.data.errcode == 1000) {
-          wx.showModal({
-            title: '信息提示',
-            content: res.data.errmsg,
-            success: function (res1) {
-              if (res1.confirm) {
-                console.log('用户点击确定')
-              } else if (res1.cancel) {
-                console.log('用户点击取消')
+      var that = this;
+      wx.setStorageSync('re_mypage', that.data.mypage);   //将当前的页数存入缓存
+      wx.request({
+        url: 'http://localhost:5000/query-messages',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded' // 默认值
+        },
+        method: 'GET',
+        data: {
+          'sessionId': wx.getStorageSync('sessionId'),
+          'page': that.data.mypage
+        },
+        success: function (res) {
+
+          if (res.data.errcode == 1) {
+            wx.showToast({
+              title: '服务器遇到了异常，请稍后再试',
+              icon: 'none',
+              duration: 2000
+            })
+            return
+          }
+          if (res.data.errcode == 0) {
+            console.log('查询成功', res.data.list);
+            //将服务器反馈回来的数据存在数组当中
+            //   remind_List:res.data.list;
+            pages: res.data.pages
+            wx.setStorageSync('re_pages', res.data.pages);  //将总页数存放在缓存当中
+            _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;  //存放在这一页的数组中
+            wx.setStorageSync('re_list', _re_list); //然后再放入缓存中
+            return
+          }
+          else {
+            wx.showModal({
+              title: '信息提示',
+              content: res.data.errmsg,
+              success: function (res1) {
+                if (res1.confirm) {
+                  console.log('用户点击确定')
+                } else if (res1.cancel) {
+                  console.log('用户点击取消')
+                }
               }
-            }
-          })
-          return
-        }
-        if (res.data.errcode == 1) {
+            })
+            return
+          }
+        },
+        fail: function (res) {
+          console.log('查询失败')
           wx.showToast({
-            title: '服务器遇到了异常，请稍后再试',
+            title: '请保持网络通畅',
             icon: 'none',
             duration: 2000
           })
-          return
+        },
+        complete: function (res) {
+          var p = wx.getStorageSync('re_mypage');
+          that.setData({
+            postList: wx.getStorageSync('re_list')[p - 1]
+            //  postList: res.data.list
+          })
         }
-        else {
-          console.log('查询成功', res.data.list);
-          //将服务器反馈回来的数据存在数组当中
-          //   remind_List:res.data.list;
-          pages: res.data.pages
-          wx.setStorageSync('re_pages', res.data.pages);  //将总页数存放在缓存当中
-          _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;  //存放在这一页的数组中
-          wx.setStorageSync('re_list', _re_list); //然后再放入缓存中
-
-        }
-        return
-      },
-      fail: function (res) {
-        console.log('查询失败')
-        wx.showToast({
-          title: '请保持网络通畅',
-          icon: 'none',
-          duration: 2000
-        })
-      },
-      complete: function (res) {
-        var p = wx.getStorageSync('re_mypage');
-        that.setData({
-          postList: wx.getStorageSync('re_list')[p - 1]
-          //  postList: res.data.list
-        })
-      }
-    })
+      })
+    
   },
   onafter: function () { //点击下一页
+    console.log('点击下一页', this.data.mypage, pages)
     wx.setStorageSync('active', true);
     timer.timer();
     if (this.data.mypage < pages) {
@@ -124,7 +135,27 @@ Page({
         'page': that.data.mypage
       },
       success: function (res) {
-        if (res.data.errcode == 1000) {
+
+        if (res.data.errcode == 1) {
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        if (res.data.errcode == 0) {
+          console.log('查询成功', res.data.list);
+          //将服务器反馈回来的数据存在数组当中
+          //   remind_List:res.data.list;
+          pages: res.data.pages
+          wx.setStorageSync('re_pages', res.data.pages);
+          _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;
+          wx.setStorageSync('re_list', _re_list);
+
+          return
+        }
+        else {
           wx.showModal({
             title: '信息提示',
             content: res.data.errmsg,
@@ -136,25 +167,6 @@ Page({
               }
             }
           })
-          return
-        }
-        if (res.data.errcode == 1) {
-          wx.showToast({
-            title: '服务器遇到了异常，请稍后再试',
-            icon: 'none',
-            duration: 2000
-          })
-          return
-        }
-        else {
-          console.log('查询成功', res.data.list);
-          //将服务器反馈回来的数据存在数组当中
-          //   remind_List:res.data.list;
-          pages: res.data.pages
-          wx.setStorageSync('re_pages', res.data.pages);
-          _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;
-          wx.setStorageSync('re_list', _re_list);
-
           return
         }
       },
@@ -194,20 +206,7 @@ Page({
         messageId: e.currentTarget.id
       },
       success: function (res) {
-        if (res.data.errcode == 1000) {
-          wx.showModal({
-            title: '信息提示',
-            content: res.data.errmsg,
-            success: function (res1) {
-              if (res1.confirm) {
-                console.log('用户点击确定')
-              } else if (res1.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-          return
-        }
+
         if (res.data.errcode == 1) {
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
@@ -216,7 +215,7 @@ Page({
           })
           return
         }
-        else {
+        if (res.data.errcode == 0) {
           console.log('标记某个为已读反馈')
           var number = wx.getStorageSync('_number'); //这是消息提醒的个数
           if (number == 1) {
@@ -230,6 +229,20 @@ Page({
               text: number - 1 + "",
             })
           }
+          return
+        }
+        else {
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
           return
         }
       }, fail: function (res) {
@@ -251,7 +264,27 @@ Page({
         'page': that.data.mypage
       },
       success: function (res) {
-        if (res.data.errcode == 1000) {
+
+        if (res.data.errcode == 1) {
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
+        if (res.data.errcode == 0) {
+          console.log('查询成功', res.data.list);
+          //将服务器反馈回来的数据存在数组当中
+          //   remind_List:res.data.list;
+          pages: res.data.pages
+          wx.setStorageSync('re_pages', pages);
+          //固定放在某一页
+          _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;
+          wx.setStorageSync('re_list', _re_list);
+          return
+        }
+        else {
           wx.showModal({
             title: '信息提示',
             content: res.data.errmsg,
@@ -263,25 +296,6 @@ Page({
               }
             }
           })
-          return
-        }
-        if (res.data.errcode == 1) {
-          wx.showToast({
-            title: '服务器遇到了异常，请稍后再试',
-            icon: 'none',
-            duration: 2000
-          })
-          return
-        }
-        else {
-          console.log('查询成功', res.data.list);
-          //将服务器反馈回来的数据存在数组当中
-          //   remind_List:res.data.list;
-          pages: res.data.pages
-          wx.setStorageSync('re_pages', pages);
-          //固定放在某一页
-          _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;
-          wx.setStorageSync('re_list', _re_list);
           return
         }
       },
@@ -315,20 +329,7 @@ Page({
         'sessionId': wx.getStorageSync('sessionId')
       },
       success: function (res) {
-        if (res.data.errcode == 1000) {
-          wx.showModal({
-            title: '信息提示',
-            content: res.data.errmsg,
-            success: function (res1) {
-              if (res1.confirm) {
-                console.log('用户点击确定')
-              } else if (res1.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-          return
-        }
+
         if (res.data.errcode == 1) {
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
@@ -337,7 +338,7 @@ Page({
           })
           return
         }
-        else {
+        if (res.data.errcode == 0) {
           console.log('全部已读发送到服务端', res.data)   //发送后台全部已读，发送成功
           if (res.data) {//如果成功
             that.setData({
@@ -370,6 +371,20 @@ Page({
             },
             fail: function (res) {
               console.log('查询失败')
+            }
+          })
+          return
+        }
+        else {
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
             }
           })
           return
@@ -418,20 +433,7 @@ Page({
         'sessionId': wx.getStorageSync('sessionId'),
       },
       success: function (res) {
-        if (res.data.errcode == 1000) {
-          wx.showModal({
-            title: '信息提示',
-            content: res.data.errmsg,
-            success: function (res1) {
-              if (res1.confirm) {
-                console.log('用户点击确定')
-              } else if (res1.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-          return
-        }
+
         if (res.data.errcode == 1) {
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
@@ -440,7 +442,7 @@ Page({
           })
           return
         }
-        else {
+        if (res.data.errcode == 0) {
           console.log('打开消息提醒时未邀请个数', res.data)
           wx.setStorageSync('_number', res.data.number);
           var number = wx.getStorageSync('_number');
@@ -455,8 +457,22 @@ Page({
               text: number + "",
             })
           }
+          return
         }
-        return
+        else {
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
       },
       fail: function (res) {
         wx.showToast({
@@ -477,20 +493,7 @@ Page({
         'page': that.data.mypage
       },
       success: function (res) {
-        if (res.data.errcode == 1000) {
-          wx.showModal({
-            title: '信息提示',
-            content: res.data.errmsg,
-            success: function (res1) {
-              if (res1.confirm) {
-                console.log('用户点击确定')
-              } else if (res1.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-          return
-        }
+
         if (res.data.errcode == 1) {
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
@@ -499,7 +502,7 @@ Page({
           })
           return
         }
-        else {
+        if (res.data.errcode == 0) {
           console.log('查询成功', res.data.list);
           //将服务器反馈回来的数据存在数组当中
           //   remind_List:res.data.list;
@@ -512,6 +515,20 @@ Page({
           console.log('总页数pages', pages);
           console.log('服务器上的总页数', res.data.pages);
 
+          return
+        }
+        else {
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
           return
         }
       },

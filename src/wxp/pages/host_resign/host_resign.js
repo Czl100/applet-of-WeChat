@@ -164,20 +164,7 @@ Page({
         success: function (res) {
           wx.hideToast();
           res.data = JSON.parse(res.data);
-          if (res.data.errcode == 1000) {
-            wx.showModal({
-              title: '提示',
-              content: res.data.errmsg,
-              success: function (res1) {
-                if (res1.confirm) {
-                  console.log('用户点击确定')
-                } else if (res1.cancel) {
-                  console.log('用户点击取消')
-                }
-              }
-            })
-            return
-          }
+          
           if (res.data.errcode == 1) {
             wx.showToast({
               title: '服务器遇到了异常，请稍后再试',
@@ -186,7 +173,7 @@ Page({
             })
             return
           }
-          else {
+         if(res.data.errcode==0){
             console.log("图片上传成功", res.data);
             wx.setStorageSync('_save_img', res.data.img);
             //  console.log("图片上传成功", res.fg);
@@ -202,6 +189,22 @@ Page({
               start: true
             })
             return
+          }
+          else{
+           {
+             wx.showModal({
+               title: '提示',
+               content: res.data.errmsg,
+               success: function (res1) {
+                 if (res1.confirm) {
+                   console.log('用户点击确定')
+                 } else if (res1.cancel) {
+                   console.log('用户点击取消')
+                 }
+               }
+             })
+             return
+           }
           }
         },
         fail: function (res) {
