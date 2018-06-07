@@ -217,26 +217,26 @@ void IDWT(IplImage *pImage, int nLayer)
 //--参数：B通过数据，变换层数
 int mydwt(cv::Mat& _src,int _nlayer)
 {	
-	int nLayer = _nlayer;		
-	IplImage *pSrc = (IplImage *)&IplImage(_src);	
-
+	int nLayer = _nlayer;		    
+	//IplImage *pSrc = (IplImage *)&IplImage(_src2);	
+    IplImage pSrc = IplImage(_src);	
 	//--计算小波图象大小
-	CvSize size = cvGetSize(pSrc);
-	if ((pSrc->width >> nLayer) << nLayer != pSrc->width)
+	CvSize size = cvGetSize(&pSrc);
+	if ((pSrc.width >> nLayer) << nLayer != pSrc.width)
 	{
-		size.width = ((pSrc->width >> nLayer) + 1) << nLayer;
+		size.width = ((pSrc.width >> nLayer) + 1) << nLayer;
 	}
-	if ((pSrc->height >> nLayer) << nLayer != pSrc->height)
+	if ((pSrc.height >> nLayer) << nLayer != pSrc.height)
 	{
-		size.height = ((pSrc->height >> nLayer) + 1) << nLayer;
+		size.height = ((pSrc.height >> nLayer) + 1) << nLayer;
 	}
 	// 创建小波图象
-	IplImage *pWavelet = cvCreateImage(size, IPL_DEPTH_32F, pSrc->nChannels);
+	IplImage *pWavelet = cvCreateImage(size, IPL_DEPTH_32F, pSrc.nChannels);
 	if (pWavelet)
 	{
 		// 小波图象赋值
-		cvSetImageROI(pWavelet, cvRect(0, 0, pSrc->width, pSrc->height));
-		cvConvertScale(pSrc, pWavelet, 1, -128);
+		cvSetImageROI(pWavelet, cvRect(0, 0, pSrc.width, pSrc.height));
+		cvConvertScale(&pSrc, pWavelet, 1, -128);
 		cvResetImageROI(pWavelet);
 		// 彩色图像小波变换
 		IplImage *buf = cvCreateImage(cvGetSize(pWavelet), IPL_DEPTH_32F, 1);
@@ -256,8 +256,8 @@ int mydwt(cv::Mat& _src,int _nlayer)
 			cvReleaseImage(&buf);
 		}
 		// 小波变换图象
-		cvSetImageROI(pWavelet, cvRect(0, 0, pSrc->width, pSrc->height));
-		cvConvertScale(pWavelet, pSrc, 1, 128);		
+		cvSetImageROI(pWavelet, cvRect(0, 0, pSrc.width, pSrc.height));
+		cvConvertScale(pWavelet, &pSrc, 1, 128);		
 		cvResetImageROI(pWavelet);					
 
 		/*cvNamedWindow("pWavelet", WINDOW_NORMAL);
@@ -272,25 +272,25 @@ int mydwt(cv::Mat& _src,int _nlayer)
 int myidwt(cv::Mat& _src, int _nlayer)
 {
 	int nLayer = _nlayer;
-	IplImage *pSrc = (IplImage *)&IplImage(_src);
-
+	//IplImage *pSrc = (IplImage *)&IplImage(_src);
+    IplImage pSrc = IplImage(_src);
 	//--计算小波图象大小
-	CvSize size = cvGetSize(pSrc);
-	if ((pSrc->width >> nLayer) << nLayer != pSrc->width)
+	CvSize size = cvGetSize(&pSrc);
+	if ((pSrc.width >> nLayer) << nLayer != pSrc.width)
 	{
-		size.width = ((pSrc->width >> nLayer) + 1) << nLayer;
+		size.width = ((pSrc.width >> nLayer) + 1) << nLayer;
 	}
-	if ((pSrc->height >> nLayer) << nLayer != pSrc->height)
+	if ((pSrc.height >> nLayer) << nLayer != pSrc.height)
 	{
-		size.height = ((pSrc->height >> nLayer) + 1) << nLayer;
+		size.height = ((pSrc.height >> nLayer) + 1) << nLayer;
 	}
 	// 创建小波图象
-	IplImage *pWavelet = cvCreateImage(size, IPL_DEPTH_32F, pSrc->nChannels);
+	IplImage *pWavelet = cvCreateImage(size, IPL_DEPTH_32F, pSrc.nChannels);
 	if (pWavelet)
 	{
 		// 小波图象赋值
-		cvSetImageROI(pWavelet, cvRect(0, 0, pSrc->width, pSrc->height));
-		cvConvertScale(pSrc, pWavelet, 1, -128);
+		cvSetImageROI(pWavelet, cvRect(0, 0, pSrc.width, pSrc.height));
+		cvConvertScale(&pSrc, pWavelet, 1, -128);
 		cvResetImageROI(pWavelet);
 		// 彩色图像小波变换
 		IplImage *buf = cvCreateImage(cvGetSize(pWavelet), IPL_DEPTH_32F, 1);
@@ -310,8 +310,8 @@ int myidwt(cv::Mat& _src, int _nlayer)
 			cvReleaseImage(&buf);
 		}
 		// 小波变换图象
-		cvSetImageROI(pWavelet, cvRect(0, 0, pSrc->width, pSrc->height));
-		cvConvertScale(pWavelet, pSrc, 1, 128);
+		cvSetImageROI(pWavelet, cvRect(0, 0, pSrc.width, pSrc.height));
+		cvConvertScale(pWavelet, &pSrc, 1, 128);
 		cvResetImageROI(pWavelet);					// 本行代码有点多余，但有利用养成良好的编程习惯
 
 		/*cvNamedWindow("pWavelet", WINDOW_NORMAL);
