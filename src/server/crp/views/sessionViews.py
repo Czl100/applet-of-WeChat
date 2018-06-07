@@ -2,7 +2,7 @@
 
 from crp.utils import sp, urlget, request_around, unique_did_gen, GetArg
 from crp.services import userServices
-from crp.exception import CrpException
+from crp.exception import CrpException, VerifyCodeException
 from flask import request
 import json
 
@@ -33,7 +33,7 @@ def bind_routes(app):
         })
         respobj = json.loads(respstr)
         if(respobj.get("errcode", None)):
-            raise CrpException("校验code失败，errcode:"+str(respobj.get("errcode", None)))
+            raise VerifyCodeException(respobj.get("errcode", None), respobj.get("errmsg"))
         
         # wxid首次登陆则将用户添加至数据库
         wxid = respobj["openid"]

@@ -2,7 +2,7 @@
 
 from crp.utils import sp, urlget, unescape, request_around, PostArg, GetArg
 from crp.services import imgHistoryServices, messagesServices, userServices
-from crp.exception import CrpException
+from crp.exception import CrpException, TooLoogContentException
 from flask import request
 
 def bind_routes(app):
@@ -17,7 +17,7 @@ def bind_routes(app):
         senderId = sp.wxid(sessionId)
 
         if len(content) >= 140:
-            raise CrpException("邀请内容的长度应小于140, 您输入的字符串长度为:"+str(len(content)))
+            raise TooLoogContentException(140, len(content))
 
         if not nick.strip():
             nick = None
