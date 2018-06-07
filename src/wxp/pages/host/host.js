@@ -83,7 +83,7 @@ Page({
 
     if (!wx.getStorageSync('sessionId') == "") {
       wx.request({
-        url: 'http://localhost:5000/query-unread-number',
+        url: 'https://crp.shakeel.cn/query-unread-number',
         method: 'GET',
         header: {
           'content-type': 'application/x-www-form-urlencoded' // 默认值

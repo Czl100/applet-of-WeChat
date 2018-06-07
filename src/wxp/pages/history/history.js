@@ -57,7 +57,7 @@ Page({
     wx.setStorageSync('mypage', that.data.mypage);  //当前页数存入缓存
     console.log('点击上一页', that.data.mypage)
     wx.request({
-      url: 'http://localhost:5000/query-history',
+      url: 'https://crp.shakeel.cn/query-history',
       method: 'GET',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -164,7 +164,7 @@ Page({
     wx.setStorageSync('mypage', that.data.mypage);  //当前页数存入缓存
     console.log('点击下一页', that.data.mypage)
     wx.request({
-      url: 'http://localhost:5000/query-history',
+      url: 'https://crp.shakeel.cn/query-history',
       method: 'GET',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -250,7 +250,7 @@ Page({
     wx.setStorageSync('mypage', that.data.mypage);
     console.log('发送到服务器的页数', that.data.mypage)
     wx.request({                                               //发送到服务器获取相关页数的信息
-      url: 'http://localhost:5000/query-history',
+      url: 'https://crp.shakeel.cn/query-history',
       method: 'GET',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -322,7 +322,7 @@ Page({
       }
     })
     wx.request({
-      url: 'http://localhost:5000/query-unread-number',
+      url: 'https://crp.shakeel.cn/query-unread-number',
       method: 'GET',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值

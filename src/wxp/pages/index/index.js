@@ -74,7 +74,7 @@ Page({
       console.log('已经授权');
       //授权成功就是获取设备ID
       wx.request({
-        url: 'http://localhost:5000/did',
+        url: 'https://crp.shakeel.cn/did',
         method: 'GET',
         deat: {
 
@@ -135,10 +135,10 @@ Page({
               success: res => {
                 // 发送 res.code 到后台换取 openId, sessionKey, unionId
                 var did = wx.getStorageSync('did');
-                var requrl = 'http://localhost:5000/session-build?code=' + res.code + "&did=" + did
+                var requrl = 'https://crp.shakeel.cn/session-build?code=' + res.code + "&did=" + did
                 console.log(requrl)
                 wx.request({
-                  url: 'http://localhost:5000/session-build/',
+                  url: 'https://crp.shakeel.cn/session-build/',
                   url: requrl,
                   header: {
                     'content-type': 'application/x-www-form-urlencoded' // 默认值

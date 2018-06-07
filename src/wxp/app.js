@@ -4,7 +4,7 @@
 App({
   onUnload:function(){
 wx.request({
-  url: 'http://localhost:5000/session-destroy',
+  url: 'https://crp.shakeel.cn/session-destroy',
   method: 'GET',
   data: {
     sessionId: wx.getStorageSync('sessionId')
@@ -56,10 +56,10 @@ if(wx.getStorageSync('sessionId')){
     success: res => {
       // 发送 res.code 到后台换取 openId, sessionKey, unionId
       var did = wx.getStorageSync('did');
-      var requrl = 'http://localhost:5000/session-build?code=' + res.code + "&did=" + did
+      var requrl = 'https://crp.shakeel.cn/session-build?code=' + res.code + "&did=" + did
       console.log(requrl)
       wx.request({
-        url: 'http://localhost:5000/session-build/',
+        url: 'https://crp.shakeel.cn/session-build/',
         url: requrl,
         header: {
           'content-type': 'application/x-www-form-urlencoded' // 默认值

@@ -62,7 +62,7 @@ Page({
      
       //将用户的id,imgid,content都发送到服务器上
       wx.request({
-        url: 'http://localhost:5000/send-message',
+        url: 'https://crp.shakeel.cn/send-message',
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded' // 默认值

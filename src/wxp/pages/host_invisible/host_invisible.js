@@ -128,7 +128,7 @@ Page({
     console.log('提取水印', key);
     var file = app.globalData.chooseFiles;
     wx.uploadFile({
-      url: 'http://localhost:5000/ix',
+      url: 'https://crp.shakeel.cn/ix',
       method: 'POST',
       filePath: that.data.invisible_chooseFiles,
       name: 'img',
@@ -231,7 +231,7 @@ Page({
       var sessionId = wx.getStorageSync('sessionId');
       console.log(that.data.invisible_chooseFiles);
       wx.uploadFile({ //用户点击确定，那么就上传到服务器，进行不可见信息的嵌入
-        url: 'http://localhost:5000/ih',
+        url: 'https://crp.shakeel.cn/ih',
         method: 'POST',
         filePath: that.data.invisible_chooseFiles,
         name: 'img',
