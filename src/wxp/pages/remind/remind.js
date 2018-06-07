@@ -46,7 +46,7 @@ Page({
       var that = this;
       wx.setStorageSync('re_mypage', that.data.mypage);   //将当前的页数存入缓存
       wx.request({
-        url: 'http://localhost:5000/query-messages',
+        url: 'https://crp.shakeel.cn/query-messages',
         header: {
           'content-type': 'application/x-www-form-urlencoded' // 默认值
         },
@@ -112,6 +112,7 @@ Page({
     console.log('点击下一页', this.data.mypage, pages)
     wx.setStorageSync('active', true);
     timer.timer();
+    if (!pages == ""){
     if (this.data.mypage < pages) {
       this.setData({
         mypage: this.data.mypage + 1
@@ -122,10 +123,16 @@ Page({
         mypage: pages
       })
     }
+    }
+    else{
+      this.setData({
+        mypages:1
+      })
+    }
     var that = this;
     wx.setStorageSync('re_mypage', that.data.mypage);   //将当前的页数存入缓存
     wx.request({
-      url: 'http://localhost:5000/query-messages',
+      url: 'https://crp.shakeel.cn/query-messages',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
@@ -196,7 +203,7 @@ Page({
       unread: true
     });
     wx.request({
-      url: 'http://localhost:5000/read-message',
+      url: 'https://crp.shakeel.cn/read-message',
       method: 'POSt',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -254,7 +261,7 @@ Page({
       }
     });
     wx.request({   //一进来消息提醒界面的服务端请求，意思是缓存一些新的数据
-      url: 'http://localhost:5000/query-messages',
+      url: 'https://crp.shakeel.cn/query-messages',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
@@ -320,7 +327,7 @@ Page({
     timer.timer();
     var that = this;
     wx.request({
-      url: 'http://localhost:5000/read-all-messages',
+      url: 'https://crp.shakeel.cn/read-all-messages',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -350,7 +357,7 @@ Page({
             });
           }
           wx.request({
-            url: 'http://localhost:5000/query-messages',
+            url: 'https://crp.shakeel.cn/query-messages',
             header: {
               'content-type': 'application/x-www-form-urlencoded' // 默认值
             },
@@ -424,7 +431,7 @@ Page({
     var sessionId = wx.getStorageSync('sessionId');
     wx.setStorageSync('re_mypage', that.data.mypage);
     wx.request({     //未读个数的请求
-      url: 'http://localhost:5000/query-unread-number',
+      url: 'https://crp.shakeel.cn/query-unread-number',
       method: 'GET',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -483,7 +490,7 @@ Page({
       }
     })
     wx.request({
-      url: 'http://localhost:5000/query-messages',
+      url: 'https://crp.shakeel.cn/query-messages',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },

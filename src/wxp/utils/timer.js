@@ -11,10 +11,10 @@ function timer() {
           success: res => {
             // 发送 res.code 到后台换取 openId, sessionKey, unionId
             var did = wx.getStorageSync('did');
-            var requrl = 'http://localhost:5000/session-build?code=' + res.code + "&did=" + did
+            var requrl = 'https://crp.shakeel.cn/session-build?code=' + res.code + "&did=" + did
             console.log(requrl)
             wx.request({
-              url: 'http://localhost:5000/session-build/',
+              url: 'https://crp.shakeel.cn/session-build/',
               url: requrl,
               header: {
                 'content-type': 'application/x-www-form-urlencoded' // 默认值

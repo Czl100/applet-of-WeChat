@@ -153,7 +153,7 @@ Page({
       var that = this;
       var sessionId = wx.getStorageSync('sessionId');
       wx.uploadFile({
-        url: 'http://localhost:5000/img-bind',
+        url: 'https://crp.shakeel.cn/img-bind',
         filePath: that.data.resign_chooseFiles,  //将图片上传
         name: 'img',
         method: 'POST',
