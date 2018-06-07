@@ -166,16 +166,6 @@ def wm_extract(app, inp_img, isdel=True):
     extret = p.stdout.readline().strip().decode("utf-8")
     return extret
 
-limit_cache = SimpleCache(default_timeout=60)
-def limit_request(request):
-    ip = request.remote_addr
-    times = limit_cache.get(ip)
-    times = times if times else 0
-    if times<20:
-       limit_cache.inc(ip) 
-    else:
-        raise CrpException("{0} 访问过于频繁".format(ip))
-
 # 该装饰器用于请求预处理和后处理，包括记录请求事件，异常记录等
 def request_around(app, request, args=None, requestlog=False, exceptlog=True, hasSessionId=False):
     if args == None:
