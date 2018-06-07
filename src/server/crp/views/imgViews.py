@@ -66,6 +66,7 @@ def bind_routes(app):
     ))
     @app.limiter.limit("20 per minute")
     def img_bind(sessionId, img, imgtitle):
+        print("============= 1 ==============")
         return img_emb(app, sessionId, img=img, imgtitle=imgtitle)
 
     # 作者溯源视图函数
