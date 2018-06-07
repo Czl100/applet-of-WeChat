@@ -35,7 +35,6 @@ def bind_routes(app):
     ))
     @app.limiter.limit("20 per minute")
     def query_messages(sessionId, page):
-        print(page)
         wxid=sp.wxid(sessionId)
         page = int(page)     # 默认为查询第一页
         perpage = int(app.config["PERPAGE_SIZE"])

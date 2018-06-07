@@ -135,16 +135,13 @@ def wm_embed(app, inp_img, out_img, imgnum, isdel=True):
     import subprocess
     import os
     import platform
-    print(" ================== emb ==================")
     wm_exe = app.config['WATERMARK_WIN'] if "Windows" in platform.platform() else app.config['WATERMARK_LINUX']
     wm_key = app.config['WATERMARK_KEY']
     cmd = "{0} {1} {2} {3} {4}".format(wm_exe, inp_img, wm_key, imgnum, out_img)
-    print(cmd)
     p = subprocess.Popen([wm_exe, inp_img, wm_key, str(imgnum), out_img], shell=False, stdout=subprocess.PIPE)
     p.wait()
     if isdel:
         os.remove(inp_img)
-    print("returncode:", p.returncode)
     if p.returncode:
         raise AlgorithmProcessException()
 
@@ -153,16 +150,12 @@ def wm_extract(app, inp_img, isdel=True):
     import subprocess
     import os
     import platform
-    print(" ================== ext ==================")
     wm_exe = app.config['WATERMARK_WIN'] if "Windows" in platform.platform() else app.config['WATERMARK_LINUX']
     wm_key = app.config['WATERMARK_KEY']
-    cmd = "{0} {1} {2}".format(wm_exe, inp_img, wm_key)
-    print(cmd)
     p = subprocess.Popen(args=[wm_exe, inp_img, wm_key], shell=False, stdout=subprocess.PIPE)
     p.wait()
     if isdel:
         os.remove(inp_img)
-    print("returncode:", p.returncode)
     if p.returncode:
         raise AlgorithmProcessException()
     extret = p.stdout.readline().strip().decode("utf-8")

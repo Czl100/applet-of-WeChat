@@ -20,7 +20,6 @@ def img_emb(app, sessionId, img, imgtitle, imgtype=0, key=None, secret=None):
     if imgHistoryServices.query_imgid_exists(app, maybe_imgid) :
         raise DuplicateEmbedException()
     # 信息隐藏 生成载密图像
-    print("embed_imgnum:", imgnum)
     success=True
     try:
         wm_embed(app, inpImgPath, outImgPath, imgnum)
@@ -52,7 +51,6 @@ def imgid_ext(app, img):
 
     # 提取图像id
     imgnum = wm_extract(app, inpImgPath)
-    print("extract_imgnum:", imgnum)
     imgid = md5(str(imgnum))
     return imgid
 
@@ -66,7 +64,6 @@ def bind_routes(app):
     ))
     @app.limiter.limit("20 per minute")
     def img_bind(sessionId, img, imgtitle):
-        print("============= 1 ==============")
         return img_emb(app, sessionId, img=img, imgtitle=imgtitle)
 
     # 作者溯源视图函数
