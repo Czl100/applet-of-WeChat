@@ -1,4 +1,5 @@
 from werkzeug.contrib.cache import SimpleCache
+from crp.exception import CrpException
 import threading
 import hashlib
 
@@ -19,7 +20,7 @@ class SessionPool:
             if self.__wx2ids__.get(wxid).get("did") == did:
                 return self.__wx2ids__.get(wxid).get("sessionId")
             else:
-                raise Exception("您已在其他设备上登陆，无法再次登录")
+                raise CrpException("您已在其他设备上登陆，无法再次登录")
         self.__lock__.acquire()
         self.__sessionNumber__+=1
         self.__lock__.release()

@@ -3,6 +3,8 @@
 from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import pymysql
 import crp.models
 import crp.views
@@ -32,14 +34,21 @@ def create_app(config):
     app.dbEngine = db
     app.sessionMaker = sessionmaker(bind=db)
 
-    # URL绑定
-    crp.views.bind_routes(app)
-
     # 日志系统
     import logging
     file_handler = logging.FileHandler('../crp.log', encoding='UTF-8')
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s ''[in %(pathname)s:%(lineno)d]'))
     app.logger.addHandler(file_handler)
+
+    # 限流系统
+    limiter = Limiter(
+        app,
+        key_func=get_remote_address,
+    )
+    app.limiter = limiter
+
+    # URL绑定
+    crp.views.bind_routes(app)
 
     return app

@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, request_around, unique_did_gen, GetArg
+from crp.utils import sp, urlget, request_around, unique_did_gen, GetArg
 from crp.services import userServices
 from crp.exception import CrpException
 from flask import request
@@ -11,6 +11,7 @@ def bind_routes(app):
     # 服务器生成新的设备id
     @app.route("/did")
     @request_around(app, request)
+    @app.limiter.limit("20 per minute")
     def did_gen():
         return {"did":next(unique_did_gen)}
 
@@ -20,6 +21,7 @@ def bind_routes(app):
         GetArg("code", excep="缺少code参数"),
         GetArg("did", excep="缺少设备id参数(did)"),
     ))
+    @app.limiter.limit("20 per minute")
     def session_build(code, did):
         url = app.config['CODE_TO_WXID_URL']
         # 获得wxid
@@ -44,6 +46,7 @@ def bind_routes(app):
     # 会话销毁
     @app.route("/session-destroy")
     @request_around(app, request, hasSessionId=True)
+    @app.limiter.limit("20 per minute")
     def session_destroy(sessionId):
         sp.delSession(sessionId)
         return {}

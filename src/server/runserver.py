@@ -2,7 +2,7 @@
 
 import crp
 import configs
-from crp.untils import wm_embed, wm_extract
+
 
 # 创建http-app
 app = crp.create_app(configs.devConfig)

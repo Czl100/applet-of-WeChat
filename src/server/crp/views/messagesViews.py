@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, unescape, request_around, PostArg, GetArg
+from crp.utils import sp, urlget, unescape, request_around, PostArg, GetArg
 from crp.services import imgHistoryServices, messagesServices, userServices
 from crp.exception import CrpException
 from flask import request
@@ -12,6 +12,7 @@ def bind_routes(app):
         PostArg("imgid", excep="缺少imgid参数"),
         PostArg("nick", default=""),
     ))
+    @app.limiter.limit("20 per minute")
     def send_message(sessionId, imgid, content, nick):
         senderId = sp.wxid(sessionId)
 
@@ -32,6 +33,7 @@ def bind_routes(app):
     @request_around(app, request, hasSessionId=True, args=(
         GetArg("page", default="1"),
     ))
+    @app.limiter.limit("20 per minute")
     def query_messages(sessionId, page):
         print(page)
         wxid=sp.wxid(sessionId)
@@ -44,6 +46,7 @@ def bind_routes(app):
 
     @app.route("/query-unread-number")
     @request_around(app, request, hasSessionId=True)
+    @app.limiter.limit("20 per minute")
     def query_unread(sessionId):
         wxid = sp.wxid(sessionId)
         unreadnum = messagesServices.message_unread_number(app, wxid=wxid)
@@ -53,6 +56,7 @@ def bind_routes(app):
     @request_around(app, request, hasSessionId=True, args=(
         PostArg("messageId", excep="缺少参数messageId"),
     ))
+    @app.limiter.limit("20 per minute")
     def read_message(sessionId, messageId):
         wxid = sp.wxid(sessionId)
         messagesServices.message_have_read(app, wxid=wxid, messageId=messageId)
@@ -60,6 +64,7 @@ def bind_routes(app):
 
     @app.route("/read-all-messages", methods=['post'])
     @request_around(app, request, hasSessionId=True)
+    @app.limiter.limit("20 per minute")
     def read_all_messages(sessionId):
         wxid = sp.wxid(sessionId)
         messagesServices.messages_all_read(app, wxid=wxid)

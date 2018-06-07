@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg, FileArg, fit_wx_resolution, wm_embed, wm_extract
+from crp.utils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg, FileArg, fit_wx_resolution, wm_embed, wm_extract
 from crp.services import imgHistoryServices
 from crp.exception import CrpException
 from flask import request
@@ -67,6 +67,7 @@ def bind_routes(app):
         FileArg("img", excep="缺少图像文件"),
         PostArg("imgtitle", default=None),
     ))
+    @app.limiter.limit("20 per minute")
     def img_bind(sessionId, img, imgtitle):
         return img_emb(app, sessionId, img=img, imgtitle=imgtitle)
 
@@ -75,6 +76,7 @@ def bind_routes(app):
     @request_around(app, request, hasSessionId=True, args=(
         FileArg("img", excep="缺少图像文件"),
     ))
+    @app.limiter.limit("20 per minute")
     def query_author(sessionId, img):
         imgid = imgid_ext(app, img)
 
@@ -92,6 +94,7 @@ def bind_routes(app):
         PostArg("secret", excep="秘密信息不能为空", allow_empty_string=False),
         PostArg("imgtitle", default=None),
     ))
+    @app.limiter.limit("20 per minute")
     def info_hide(sessionId, img, key, secret, imgtitle):
         return img_emb(app, sessionId=sessionId, img=img, imgtitle=imgtitle, imgtype=1, key=key, secret=secret)
 
@@ -100,6 +103,7 @@ def bind_routes(app):
         FileArg("img", excep="缺少图像文件"),
         PostArg("key", default=""),
     ))
+    @app.limiter.limit("20 per minute")
     def info_extract(sessionId, img, key):
         imgid = imgid_ext(app, img)
         secret = imgHistoryServices.query_img_secret(app, imgid, key)

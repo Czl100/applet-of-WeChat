@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, urlget, request_around
+from crp.utils import sp, urlget, request_around
 from crp.views import sessionViews, imgViews, messagesViews, historyViews
 from flask import request
 import json
@@ -10,6 +10,7 @@ def bind_routes(app):
     @app.route("/index")
     @app.route("/debug")
     @request_around(app, request, requestlog=True)
+    @app.limiter.limit("20 per minute")
     def index():
         sessionId = request.args.get("sessionId", None)
         session = str(sp.getSessionData(sessionId)) if sessionId else "None"

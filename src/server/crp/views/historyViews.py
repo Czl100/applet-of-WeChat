@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.untils import sp, request_around, GetArg
+from crp.utils import sp, request_around, GetArg
 from crp.models import ImgHistory
 from flask import request
 from sqlalchemy import desc
@@ -11,6 +11,7 @@ def bind_routes(app):
     @request_around(app, request, hasSessionId=True, args=(
         GetArg("page", default=1),   # 默认取第一页
     ))
+    @app.limiter.limit("20 per minute")
     def history(sessionId, page):
         wxid = sp.wxid(sessionId)
         page = int(page)

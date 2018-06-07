@@ -176,23 +176,20 @@ def limit_request(request):
     else:
         raise CrpException("{0} 访问过于频繁".format(ip))
 
-# 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
-def request_around(app, request, args=None, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):
+# 该装饰器用于请求预处理和后处理，包括记录请求事件，异常记录等
+def request_around(app, request, args=None, requestlog=False, exceptlog=True, hasSessionId=False):
     if args == None:
         args = ()
     def innerWrapper(f):
         @wraps(f)
         def deractor(*ks, **kws):
-            # 预处理(请求记录, 限流, sessionId测试)
+            # 预处理(请求记录, sessionId测试)
             if requestlog:
                 ip = request.remote_addr
                 view = request.url
                 app.logger.debug("[请求]{0} --- {1}".format(ip, view))
             try:
                 rt = {"errcode":1}
-                # 限流
-                if limit:
-                    limit_request(request)
                 # sessionId的存在测试
                 if hasSessionId:
                     sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
@@ -211,16 +208,13 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, li
             # 后处理(异常日志记录, 返回值JSON化)
                 if not isinstance(rt, dict):
                     raise CrpException("视图函数正在尝试返回非字典类型数据")
-                rt["fg"]=True
                 rt["errcode"]=0
             except CrpException as e:
                 # crp应用层面异常
-                rt["fg"]=False
                 rt["errmsg"]=str(e)
                 rt["errcode"]=e.errcode()
             except Exception as e:
                 # 服务器其他异常
-                rt["fg"]=False
                 rt["errmsg"]=str(e)
                 rt["errcode"]=1
             if rt["errcode"] and exceptlog:

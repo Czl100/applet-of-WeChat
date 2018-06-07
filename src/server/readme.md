@@ -13,6 +13,7 @@ pip install flask-sqlalchemy        # 数据库ORM框架
 pip install numpy                   # python数值计算扩展, 图像库需要 
 pip install scipy                   # python科学计算扩展, 图像库需要
 pip install scikit_image            # 图像库，用于缩放
+pip install Flask-Limiter           # 安装flask限流插件
 ```
 若是安装包查询失败，请使用阿里镜像: `pip install <you-need> -i http://mirrors.aliyun.com/pypi/simple`
 

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from crp.models import ImgHistory
-from crp.untils import sp
+from crp.utils import sp
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import desc
 from crp.exception import CrpException
