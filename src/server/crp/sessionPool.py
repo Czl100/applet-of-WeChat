@@ -5,7 +5,7 @@ import hashlib
 
 class SessionPool:
     # 建立session缓存
-    __cache__ = SimpleCache(default_timeout=600)
+    __cache__ = SimpleCache(default_timeout=10)
     # 建立wxid到sessionId和did的映射
     __wx2ids__ = SimpleCache()
     # 服务器建立以来session的总个数(已经不存在的session+仍然存在的session)
@@ -30,7 +30,8 @@ class SessionPool:
         else:
             expires_mapper = {}
             for k, v in cache._cache.items() :
-                expires_mapper[k]=time.asctime(time.localtime(v[0]))
+                if cache.get(k):
+                    expires_mapper[k]=time.asctime(time.localtime(v[0]))
             return expires_mapper
 
     # 生成新的session会话所需要的sessionId，并为该会话绑定wxid
@@ -55,7 +56,7 @@ class SessionPool:
         print("sessionNumber:", self.__sessionNumber__)
         self.__md5__.update(str(self.__sessionNumber__).encode("utf-8"))
         sessionId = self.__md5__.hexdigest()
-        cache.set(sessionId, {"__wxid__":wxid})        # 为该会话创建字典
+        cache.set(sessionId, {"__wxid__":wxid, "__did__":did})        # 为该会话创建字典
         wx2ids.set(wxid, {"sessionId":sessionId, "did":did})
         return sessionId
     
@@ -76,7 +77,8 @@ class SessionPool:
         else:
             sessions_mapper = {}
             for k in cache._cache.keys() :
-                sessions_mapper[k]=cache.get(k)
+                if cache.get(k):
+                    sessions_mapper[k]=cache.get(k)
             return sessions_mapper
 
     def wxid(self, sessionId):
