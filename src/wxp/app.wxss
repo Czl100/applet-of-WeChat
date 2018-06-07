@@ -2,7 +2,7 @@
 @import 'weul.wxss';
 
 page{
-    background-color: #F8F8F8;
+    background-color: #fff;
     font-size: 16px;
     font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif;
 }
@@ -75,6 +75,41 @@ page{
   border:1px solid #000;
   width: 450rpx;
   height: 90rpx;
+  border-radius: 5px;
+  text-align: center;
+}
+.ba{
+  background-color: #fff;
+  margin-bottom: 0;
+  margin-top: 0;
+  height: 100%
+}
+.watermark-line-container2 text{
+  font-size: 40rpx;
+  line-height: 80rpx;
+  font-family: Microsoft YaHei;
+  color: #bfbfbf;
+}
+.watermark-line-container text{
+  font-size: 40rpx;
+  line-height: 80rpx;
+  font-family: Microsoft YaHei;
+  color: #000;
+}
+.watermark-line-container{
+  margin-top:40rpx;
+  border:1px solid #000;
+  width: 650rpx;
+  height: 80rpx;
+  border-radius: 5px;
+  text-align: center;
+
+}
+.watermark-line-container2{
+  margin-top:40rpx;
+  border:1px solid #bfbfbf;
+  width: 650rpx;
+  height:80rpx;
   border-radius: 5px;
   text-align: center;
 }

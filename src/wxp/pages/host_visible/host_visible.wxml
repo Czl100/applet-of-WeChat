@@ -8,7 +8,7 @@
 </view>
 
 <view class='watermark-line-container3'  catchtap='onsure' >
-    <text>加入可见水印</text>
+    <text>预览</text>
   </view>
 <view class='watermark-line-container'  catchtap='onsave' >
     <text>保存图片</text>

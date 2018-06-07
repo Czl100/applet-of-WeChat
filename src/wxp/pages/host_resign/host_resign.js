@@ -1,3 +1,4 @@
+var timer = require('../../utils/timer.js')
 var app = getApp();
 Page({
 
@@ -12,6 +13,8 @@ Page({
     useKeyboardFlag: true,  //默认是键盘输入类型的输入框
   },
   onpre: function () {
+    wx.setStorageSync('active', true);
+    timer.timer();
     var ig = wx.getStorageSync('_save_img')
     console.log('缓存图片_save_img', ig);
     if (this.data.start) {
@@ -42,13 +45,17 @@ Page({
     }
   },
   Input: function (e) {
+    wx.setStorageSync('active', true);
+    timer.timer();
     this.setData({
       dis: e.detail.value
     })
     //   console.log(this.data.dis);
   },
   oncancel: function () {
-    console.log('start',this.data.start);
+    wx.setStorageSync('active', true);
+    timer.timer();
+    console.log('start', this.data.start);
     if (this.data.start) {
       //如果图片已经绑定了就可以存到手机相册
       if (!wx.getStorageSync('_save_img') == "") //如果缓存不是空的 
@@ -62,9 +69,9 @@ Page({
             })
           }
         })
-        
+
       }
-     
+
     }
     else {
       wx.showToast({
@@ -78,6 +85,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.setStorageSync('active', true);
+    timer.timer();
     this.setData({
       resign_chooseFiles: app.globalData.chooseFiles
     })
@@ -133,6 +142,8 @@ Page({
   },
 
   onsure: function () {
+    wx.setStorageSync('active', true);
+    timer.timer();
     if (!this.data.dis == "") {
       wx.showToast({
         title: '正在处理',
