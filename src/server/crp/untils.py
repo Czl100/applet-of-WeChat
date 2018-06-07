@@ -3,6 +3,7 @@ import urllib.parse
 import urllib.request
 import json
 import random
+import threading
 from werkzeug.contrib.cache import SimpleCache
 from functools import wraps
 from flask import request, Response
@@ -80,9 +81,7 @@ def md5(s):
 
 # 线程安全的递增生成器函数
 max_num = 2147483647
-def inc_num_genfun(init_num, maxn):
-    import threading
-    
+def inc_num_genfun(init_num, maxn): 
     lock = threading.Lock()
     while True:
         yield init_num
@@ -98,7 +97,7 @@ inc_imgnum_gen = inc_num_genfun(random.randint(0, max_num), max_num)
 
 # 线程安全的唯一ID生成器函数
 def unique_id_genfun():
-    import threading
+    
     
     uniqueNumber = random.random()
     lock = threading.Lock()
@@ -167,6 +166,16 @@ def wm_extract(app, inp_img, isdel=True):
     extret = p.stdout.readline().strip().decode("utf-8")
     return extret
 
+limit_cache = SimpleCache(default_timeout=60)
+def limit_request(request):
+    ip = request.remote_addr
+    times = limit_cache.get(ip)
+    times = times if times else 0
+    if times<20:
+       limit_cache.inc(ip) 
+    else:
+        raise CrpException("{0} 访问过于频繁".format(ip))
+
 # 该装饰器用于请求预处理和后处理，包括记录请求事件，限流，异常记录等
 def request_around(app, request, args=None, requestlog=False, exceptlog=True, limit=True, hasSessionId=False):
     if args == None:
@@ -179,11 +188,11 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, li
                 ip = request.remote_addr
                 view = request.url
                 app.logger.debug("[请求]{0} --- {1}".format(ip, view))
-            if limit:
-                pass
-            # 请求处理
             try:
                 rt = {"errcode":1}
+                # 限流
+                if limit:
+                    limit_request(request)
                 # sessionId的存在测试
                 if hasSessionId:
                     sessionId = request.args.get("sessionId", None) or request.form.get("sessionId", None)
@@ -214,7 +223,7 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, li
                 rt["fg"]=False
                 rt["errmsg"]=str(e)
                 rt["errcode"]=1
-            if (not rt["fg"]) and exceptlog:
+            if rt["errcode"] and exceptlog:
                 app.logger.error("【异常】{0}".format(rt["errmsg"]))
             return Response(json.dumps(rt), mimetype='application/json')
         return deractor
