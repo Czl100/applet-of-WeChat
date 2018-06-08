@@ -25,11 +25,12 @@ def insert_notfinish_img_history(app, sessionId, imgid, imgtype, path, secret=No
     dbsession.add(newHistory)
     dbsession.commit()
 
-def insert_finish_img_history(app, sessionId, imgid, imgtype, path, secret=None, key=None, imgtitle=None, success=True):
+def insert_finish_img_history(app, sessionId, imgid, imgnum, imgtype, path, secret=None, key=None, imgtitle=None, success=True):
     dbsession = app.sessionMaker()
     wxid = sp.wxid(sessionId)
     kws = {
         "imgid":imgid,
+        "imgnum":imgnum,
         "wxid":wxid,
         "imgtitle":imgtitle,
         "imgtype":imgtype,

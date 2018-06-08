@@ -32,8 +32,9 @@ def img_emb(app, sessionId, img, imgtitle, imgtype=0, key=None, secret=None):
     kws = {
         "success":success, 
         "sessionId":sessionId,
-        "path":outImgPath, 
+        "path":outImgPath,
         "imgid":imgid,
+        "imgnum":imgnum,
         "imgtitle":imgtitle,
         "imgtype":imgtype,
         "secret":secret,

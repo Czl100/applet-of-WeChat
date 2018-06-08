@@ -18,10 +18,8 @@ def bind_routes(app):
     def debug_session():
         sessionId = request.args.get("sessionId", None)
         session = sp.session(sessionId)
-        expires = sp.expires(sessionId)
         return {
             "session_number":sp.session_number(),
-            "expires":expires,
             "session":session}
 
     @app.route("/debug-requests")
