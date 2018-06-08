@@ -31,7 +31,9 @@ class RequestArg:
 
     def __val__(self, mapper):
         v = mapper.get(self.__key__, None)
-        if (not self.__allow_empty_string__) and isinstance(v, str) and (not v.strip()):
+        if ((not self.__allow_empty_string__) and
+                isinstance(v, str) and 
+                (not v.strip())):
             v = None
         if v == None:
             if self.__excep__ == None:

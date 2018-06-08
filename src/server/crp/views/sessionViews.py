@@ -18,8 +18,8 @@ def bind_routes(app):
     # 会话建立
     @app.route("/session-build")
     @request_around(app, request, args=(
-        GetArg("code", excep="缺少code参数"),
-        GetArg("did", excep="缺少设备id参数(did)"),
+        GetArg("code", excep="缺少code参数", allow_empty_string=False),
+        GetArg("did", excep="缺少设备id参数(did)", allow_empty_string=False),
     ))
     @app.limiter.limit("20 per minute")
     def session_build(code, did):

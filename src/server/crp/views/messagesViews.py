@@ -9,7 +9,7 @@ def bind_routes(app):
     @app.route("/send-message", methods=['post'])
     @request_around(app, request, hasSessionId=True, args=(
         PostArg("content", default=""),
-        PostArg("imgid", excep="缺少imgid参数"),
+        PostArg("imgid", excep="缺少imgid参数", allow_empty_string=False),
         PostArg("nick", default=""),
     ))
     @app.limiter.limit("20 per minute")
@@ -53,7 +53,7 @@ def bind_routes(app):
 
     @app.route("/read-message", methods=['post'])
     @request_around(app, request, hasSessionId=True, args=(
-        PostArg("messageId", excep="缺少参数messageId"),
+        PostArg("messageId", excep="缺少参数messageId", allow_empty_string=False),
     ))
     @app.limiter.limit("20 per minute")
     def read_message(sessionId, messageId):
