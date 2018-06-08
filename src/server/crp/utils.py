@@ -143,6 +143,9 @@ def gen_phone_resolution(imgpath, outimgpath):
     elif height>width:
         newheight = 64
         newwidth = int(64/height * width)
+    else:
+        newheight=64
+        newwidth=64
     img = transform.resize(img, (newheight, newwidth))
     io.imsave(outimgpath,img)
 
