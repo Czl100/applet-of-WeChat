@@ -32,11 +32,13 @@ def query_messages_page(app, authorId, perpage, page):
     # 转化成字典形式
     itemList = []
     for item in items:
+        smallurl = item.imgurl.split(".jpeg")[0]+"_small.jpeg"
         dicitem = {
             "messageId":item.id,
             "unread": item.unread,
             "sender":item.senderNick,
             "img":item.imgurl,
+            "img_small":smallurl,
             "imgtitle":item.imgtitle,
             "content":item.content,
             "datetime":str(item.datetime)

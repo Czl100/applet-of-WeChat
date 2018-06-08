@@ -132,6 +132,20 @@ def fit_wx_resolution(imgpath):
     img = transform.resize(img, (newheight, newwidth))
     io.imsave(imgpath,img)
 
+def gen_phone_resolution(imgpath, outimgpath):
+    from skimage import io, transform
+    img=io.imread(imgpath)
+    height = img.shape[0]
+    width = img.shape[1]
+    if height<width:
+        newwidth = 64
+        newheight = int(64/width * height)
+    elif height>width:
+        newheight = 64
+        newwidth = int(64/height * width)
+    img = transform.resize(img, (newheight, newwidth))
+    io.imsave(outimgpath,img)
+
 # 水印嵌入进程
 def wm_embed(app, inp_img, out_img, imgnum, isdel=True):
     import subprocess

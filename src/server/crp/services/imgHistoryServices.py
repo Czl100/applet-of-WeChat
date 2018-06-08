@@ -108,8 +108,10 @@ def query_history_page(app, wxid, page, perpage):
     # 转化成字典形式
     itemList = []
     for item in items:
+        smallpath = item.path.split(".jpeg")[0]+"_small.jpeg"
         dicitem = {
             "img":app.config['ENABLE_HOST']+item.path,
+            "img_small":app.config['ENABLE_HOST']+smallpath,
             "imgtitle":item.imgtitle,
             "imgtype":item.imgtype,
             "datetime":str(item.datetime),

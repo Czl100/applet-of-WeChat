@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from crp.utils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg, FileArg, fit_wx_resolution, wm_embed, wm_extract
+from crp.utils import sp, urlget, md5, unescape, request_around, inc_imgnum_gen, PostArg, FileArg, fit_wx_resolution, wm_embed, wm_extract, gen_phone_resolution
 from crp.services import imgHistoryServices
 from crp.exception import CrpException, DuplicateEmbedException
 from flask import request
@@ -10,11 +10,14 @@ def img_emb(app, sessionId, img, imgtitle, imgtype=0, key=None, secret=None):
     imgnum = next(inc_imgnum_gen)
     imgid = md5(str(imgnum))
 
-    timeStamp = str(int(time.time()*1000000))                   # 转化为微秒级时间戳, 用作文件命名
-    inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"        # 原始图片路径
-    outImgPath = app.config["IMG_DIR"]+timeStamp+".jpeg"        # 载迷图像输出路径
-    img.save(inpImgPath)                                        # 将图像保存
-    fit_wx_resolution(inpImgPath)                               # 修改输入图像的分辨率
+    timeStamp = str(int(time.time()*1000000))                       # 转化为微秒级时间戳, 用作文件命名
+    inpImgPath = app.config["TMP_DIR"]+timeStamp+".jpeg"            # 原始图片路径
+    outImgPath = app.config["IMG_DIR"]+timeStamp+".jpeg"            # 含水印图像输出路径
+    smallImgPath = app.config["IMG_DIR"]+timeStamp+"_small.jpeg"    # 含水印图像降分辨率
+    img.save(inpImgPath)                                            # 将图像保存
+
+    # 适配微信变更分辨率问题
+    fit_wx_resolution(inpImgPath)
     # 提取图像id，查看id是否已经存在
     maybe_imgid = md5(str(wm_extract(app, inpImgPath, isdel=False)))
     if imgHistoryServices.query_imgid_exists(app, maybe_imgid) :
@@ -41,7 +44,8 @@ def img_emb(app, sessionId, img, imgtitle, imgtype=0, key=None, secret=None):
         "key":key        
     }
     imgHistoryServices.insert_finish_img_history(app, **kws)
-
+    # 生成小分辨率含密图
+    gen_phone_resolution(outImgPath, smallImgPath)
     imgurl = app.config['ENABLE_HOST']+outImgPath
     return {"img":imgurl}
 
