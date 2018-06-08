@@ -3,20 +3,25 @@
   <view class='ig'>
     <image mode='widthFix' src="{{invisible_chooseFiles}}" catchtap='onpre'></image>
   </view>
-
+  <view class='line'>
+<view class='c'>
+<text >该水印不为肉眼所见，原创者可进行版权维护</text>
+</view>
+</view>
+<!--
   <view>
     <view class='line_'>
-      <input wx:if="{{start}}" placeholder='请输入图片的标题（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_title'></input>
+      <input placeholder='请输入图片的标题（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_title'></input>
     </view>
     <view class='line_'>
       <input placeholder='请输入密码（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_ser'></input>
     </view>
     <view class='line_'>
-      <input wx:if="{{start}}" placeholder='请输入要嵌入的信息…' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_dis'></input>
+      <input placeholder='请输入要嵌入的信息…' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input_dis'></input>
     </view>
 
   </view>
-  
+-->
   <view class='container-a'>
 
     <view class='bo'>
@@ -24,12 +29,23 @@
         <text>嵌入水印信息</text>
       </view>
 
-      <view wx:if="{{!co_get}}" class='watermark-line-container3' catchtap='onget'>
+      <view class='watermark-line-container3' catchtap='onget'>
         <text>提取水印信息</text>
       </view>
-      <view wx:if="{{co_get}}" class='watermark-line-container' catchtap='onsave'>
+      <view class='watermark-line-container' catchtap='onsave'>
         <text>保存至手机</text>
       </view>
     </view>
   </view>
 </view>
+
+
+<modal hidden="{{hiddenmodalput}}" title="请输入相关信息" confirmcolor='#40C4FF' confirm-text="嵌入" cancel-text="取消" bindcancel="cancel" bindconfirm="sure">
+  <input type='text' hidden='{{!useKeyboardFlag}}' bindinput='Input_dis' placeholder="请输入水印信息……" auto-focus/>
+  <input type='text' hidden='{{!useKeyboardFlag}}' bindinput='Input_title' placeholder="请输入标题（选填）……" auto-focus/>
+  <input type='text' hidden='{{!useKeyboardFlag}}'  bindinput='Input_ser' placeholder="请输入密码（选填）……" auto-focus/>
+</modal>
+
+<modal hidden="{{hiddenmodalput_get}}" title="请输入相关信息" confirm-text="提取" cancel-text="取消" bindcancel="cancel" bindconfirm="get">
+  <input type='text' hidden='{{!useKeyboardFlag}}'  bindinput='Input_ser' placeholder="请输入密码（选填）……" auto-focus/>
+</modal>

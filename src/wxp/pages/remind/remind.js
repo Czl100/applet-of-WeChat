@@ -43,90 +43,90 @@ Page({
         })
       }
     }
-      var that = this;
-      wx.setStorageSync('re_mypage', that.data.mypage);   //将当前的页数存入缓存
-      wx.request({
-        url: 'https://crp.shakeel.cn/query-messages',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded' // 默认值
-        },
-        method: 'GET',
-        data: {
-          'sessionId': wx.getStorageSync('sessionId'),
-          'page': that.data.mypage
-        },
-        success: function (res) {
+    var that = this;
+    wx.setStorageSync('re_mypage', that.data.mypage);   //将当前的页数存入缓存
+    wx.request({
+      url: 'https://crp.shakeel.cn/query-messages',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      method: 'GET',
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+        'page': that.data.mypage
+      },
+      success: function (res) {
 
-          if (res.data.errcode == 1) {
-            wx.showToast({
-              title: '服务器遇到了异常，请稍后再试',
-              icon: 'none',
-              duration: 2000
-            })
-            return
-          }
-          if (res.data.errcode == 0) {
-            console.log('查询成功', res.data.list);
-            //将服务器反馈回来的数据存在数组当中
-            //   remind_List:res.data.list;
-            pages: res.data.pages
-            wx.setStorageSync('re_pages', res.data.pages);  //将总页数存放在缓存当中
-            _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;  //存放在这一页的数组中
-            wx.setStorageSync('re_list', _re_list); //然后再放入缓存中
-            return
-          }
-          else {
-            wx.showModal({
-              title: '信息提示',
-              content: res.data.errmsg,
-              success: function (res1) {
-                if (res1.confirm) {
-                  console.log('用户点击确定')
-                } else if (res1.cancel) {
-                  console.log('用户点击取消')
-                }
-              }
-            })
-            return
-          }
-        },
-        fail: function (res) {
-          console.log('查询失败')
+        if (res.data.errcode == 1) {
           wx.showToast({
-            title: '请保持网络通畅',
+            title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
             duration: 2000
           })
-        },
-        complete: function (res) {
-          var p = wx.getStorageSync('re_mypage');
-          that.setData({
-            postList: wx.getStorageSync('re_list')[p - 1]
-            //  postList: res.data.list
-          })
+          return
         }
-      })
-    
+        if (res.data.errcode == 0) {
+          console.log('查询成功', res.data.list);
+          //将服务器反馈回来的数据存在数组当中
+          //   remind_List:res.data.list;
+          pages: res.data.pages
+          wx.setStorageSync('re_pages', res.data.pages);  //将总页数存放在缓存当中
+          _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;  //存放在这一页的数组中
+          wx.setStorageSync('re_list', _re_list); //然后再放入缓存中
+          return
+        }
+        else {
+          wx.showModal({
+            title: '信息提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+        }
+      },
+      fail: function (res) {
+        console.log('查询失败')
+        wx.showToast({
+          title: '请保持网络通畅',
+          icon: 'none',
+          duration: 2000
+        })
+      },
+      complete: function (res) {
+        var p = wx.getStorageSync('re_mypage');
+        that.setData({
+          postList: wx.getStorageSync('re_list')[p - 1]
+          //  postList: res.data.list
+        })
+      }
+    })
+
   },
   onafter: function () { //点击下一页
     console.log('点击下一页', this.data.mypage, pages)
     wx.setStorageSync('active', true);
     timer.timer();
-    if (!pages == ""){
-    if (this.data.mypage < pages) {
-      this.setData({
-        mypage: this.data.mypage + 1
-      })
+    if (!pages == "") {
+      if (this.data.mypage < pages) {
+        this.setData({
+          mypage: this.data.mypage + 1
+        })
+      }
+      else {
+        this.setData({
+          mypage: pages
+        })
+      }
     }
     else {
       this.setData({
-        mypage: pages
-      })
-    }
-    }
-    else{
-      this.setData({
-        mypages:1
+        mypages: 1
       })
     }
     var that = this;

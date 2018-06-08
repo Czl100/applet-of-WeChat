@@ -1,7 +1,7 @@
 function timer() {
 
   setTimeout(function () {
-    for (var i = 0; i <20; i++) {
+    for (var i = 0; i<5; i++) {
       if (wx.getStorageSync('active')) {   //如果有点击事件的话
         console.log('计时器打开')
         //如果1分钟active是true的话，那么就发送请求告诉服务器，将会话合并，只要aging设备有活动

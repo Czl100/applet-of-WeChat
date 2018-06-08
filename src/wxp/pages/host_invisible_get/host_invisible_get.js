@@ -8,9 +8,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    hiddenmodalput: true,
-    hiddenmodalput_get: true,
-    //可以通过hidden是否掩藏弹出框的属性，来指定那个弹出框 
     co_save: false,
     co_get: false,
     start: false,
@@ -20,58 +17,42 @@ Page({
     ser: "",     //这是嵌入的密码
     useKeyboardFlag: true,  //默认是键盘输入类型的输入框
   },
-  /*
-   //取消按钮  
-   cancel: function () {
-     this.setData({
-       hiddenmodalput: true
-     });
-   },
-   //确认  
-   confirm: function () {
-     this.setData({
-       hiddenmodalput: true
-     })
-   },
-   */
   onsave: function () {
     wx.setStorageSync('active', true);
     timer.timer();
     console.log('co_save', this.data.co_save);
     console.log('保存到手机的图片路径', wx.getStorageSync('save_img'))
-    //  if (this.data.co_save)  //如果嵌入水印成功可以保存到手机
-    //  {
-    if (wx.getStorageSync('save_img') == "")//如果没有图片的话，
+    if (this.data.co_save)  //如果嵌入水印成功可以保存到手机
     {
+      if (wx.getStorageSync('save_img') == "")//如果没有图片的话，
+      {
+        wx.showToast({
+          title: '由于不可抗因素，信息嵌入失败',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+      else {
+        console.log('保存到手机的图片路径', wx.getStorageSync('save_img'))
+        wx.saveImageToPhotosAlbum({
+          filePath: wx.getStorageSync('save_img'),
+          success(res) {
+            wx.showToast({
+              title: '已保存至手机相册',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        })
+      }
+    }
+    else {
       wx.showToast({
-        title: '由于不可抗因素，信息嵌入失败',
+        title: '请正确嵌入水印',
         icon: 'none',
         duration: 2000
       })
     }
-    else {
-      console.log('保存到手机的图片路径', wx.getStorageSync('save_img'))
-      wx.saveImageToPhotosAlbum({
-        filePath: wx.getStorageSync('save_img'),
-        success(res) {
-          wx.showToast({
-            title: '已保存至手机相册',
-            icon: 'none',
-            duration: 2000
-          })
-        }
-      })
-    }
-    /*
-  }
-  else {
-    wx.showToast({
-      title: '请正确嵌入水印',
-      icon: 'none',
-      duration: 2000
-    })
-  }
-  */
   },
   Input_title: function (e) {
     wx.setStorageSync('active', true);
@@ -130,22 +111,12 @@ Page({
   onget: function () {  //提取水印信息
     wx.setStorageSync('active', true);
     timer.timer();
-    this.setData({
-      hiddenmodalput_get: !this.data.hiddenmodalput_get
-    })
-  },
-  get: function () {  //点击提取
-    wx.setStorageSync('active', true);
-    timer.timer();
     wx.showToast({
       title: '正在处理',
       icon: 'loading',
       duration: 10000
     });
     //   wx.navigateBack()
-    this.setData({
-      hiddenmodalput_get: !this.data.hiddenmodalput_get
-    })
     var that = this;
     if (this.data.ser == "") {
       var key = this.data.ser
@@ -180,6 +151,7 @@ Page({
         if (res.data.errcode == 0) {
           console.log('获取水印信息', res.data);
           console.log('获取水印信息', res.data.secret);
+          
           wx.showModal({
             title: '水印信息',
             content: res.data.secret,
@@ -230,38 +202,16 @@ Page({
     timer.timer();
     this.setData({
       start: true,
-      co_get: true,
-      hiddenmodalput: !this.data.hiddenmodalput
+      co_get: true
     })
-
-  },
-  cancel: function () {
-    wx.setStorageSync('active', true);
-    timer.timer();
-    this.setData({
-      hiddenmodalput: true,
-      hiddenmodalput_get: true,
-    })
-  },
-  sure: function () { //点击嵌入水印
-    wx.setStorageSync('active', true);
-    timer.timer();
-    if (this.data.dis == "") {
-      wx.showToast({
-        title: '嵌入的水印信息不可为空',
-        icon: 'none',
-        duration: 2000
+    if (this.data.imgtitle == "") {
+      this.setData({
+        imgtitle: '暂无标题'
       })
     }
-    else { //如果嵌入的水印信息不是空的话
-      if (this.data.imgtitle == "") {
-        this.setData({
-          imgtitle: '暂无标题'
-        })
-      }
-      //  if((!this.data.ser=="")&&(!this.data.dis=="") ) //这个时候没有输入水印
-      //  if (!this.data.dis == "")  //如果嵌入的水印信息是空的
-      //  {
+    //  if((!this.data.ser=="")&&(!this.data.dis=="") ) //这个时候没有输入水印
+    if (!this.data.dis == "")  //如果嵌入的水印信息是空的
+    {
 
       wx.showToast({
         title: '正在处理',
@@ -269,9 +219,7 @@ Page({
         duration: 6000
       })
       var that = this;
-      that.setData({
-        hiddenmodalput: true
-      })
+
       console.log('图片标题', that.data.imgtitle);
       if (this.data.ser == "") {
         var key = this.data.ser
@@ -351,8 +299,6 @@ Page({
             });
         }
       })
-
-      /*
     }
     else {
       wx.showToast({
@@ -361,8 +307,6 @@ Page({
 
         duration: 2000
       })
-    }
-    */
     }
   },
   /**

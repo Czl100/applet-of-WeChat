@@ -1,6 +1,6 @@
 var timer = require('../../utils/timer.js')
 var content;
-var nick;
+//var nick;
 var nick_length;
 var content_length;
 Page({
@@ -10,7 +10,9 @@ Page({
    */
   data: {
     showTopTips: false,//用来后面的错误提示
- //   isAgree: false,
+    nick: '暂无名称',
+
+    //   isAgree: false,
     // content:null  //用来进行相关的文本，字数是140个
     //  imgid=null
   },
@@ -18,17 +20,20 @@ Page({
     wx.setStorageSync('active', true);
     timer.timer();
     content = e.detail.value
-   content_length=e.detail.value.length;
+    content_length = e.detail.value.length;
   },
   Input_nick: function (e) {  //获取留言框中的信息content
     wx.setStorageSync('active', true);
     timer.timer();
-    nick = e.detail.value
+    this.setData({
+      nick:e.detail.value
+    })
+
     // console.log(content)
-   nick_length=e.detail.value;
+    nick_length = e.detail.value;
   },
   showTopTips: function () {    //这个就是点击确定按键的时候
-    if (content_length >140) {
+    if (content_length > 140) {
       wx.showModal({
         title: '注意',
         content: '用户输入字数已经超过140，请控制好留言的字数。',
@@ -41,7 +46,7 @@ Page({
         }
       })
     }
-    if (nick_length >10) {
+    if (nick_length > 10) {
       wx.showModal({
         title: '温馨提示',
         content: '联系人的名字不得超过5个字',
@@ -59,7 +64,12 @@ Page({
     var sessionId = wx.getStorageSync('sessionId');
     //如果留言不是空的话：
     if (!content == '') {
-     
+
+      if (this.data.nick == "") {
+        this.setData({
+          nick: "暂无名称"
+        })
+      }
       //将用户的id,imgid,content都发送到服务器上
       wx.request({
         url: 'https://crp.shakeel.cn/send-message',
@@ -69,14 +79,13 @@ Page({
         },
         data: {
           'sessionId': sessionId,
-          'nick': nick,
-         // 'imgid': imgid,
-
-          'imgid': 'de0112fcac8a94819bd6edcad7a070df',
+          'nick': this.data.nick,
+      'imgid': imgid,
+          //  'imgid': 'f0d4dcbf1c7e43fa6ad9fe04eae036de',
           'content': content //留言信息发送到服务器
         },
         success: function (res) {
-        
+
           if (res.data.errcode == 1) {
             wx.showToast({
               title: '服务器遇到了异常，请稍后再试',
@@ -85,35 +94,34 @@ Page({
             })
             return
           }
-          if(res.data.errcode==0) {
+          if (res.data.errcode == 0) {
             console.log('发送邀请成功', res.data);
-         wx.showToast({
+            wx.showToast({
               title: '发送邀请成功',
               icon: 'success',
               duration: 2000
             });
-            content=null;
-            nick=null;
-         setTimeout(function () {
-           wx.navigateBack({})
-         }, 700)
-         return 
+            content = null;
+     //       nick = null;
+            setTimeout(function () {
+              wx.navigateBack({})
+            }, 700)
+            return
           }
-else
-            {
-              wx.showModal({
-                title: '提示',
-                content: res.data.errmsg,
-                success: function (res1) {
-                  if (res1.confirm) {
-                    console.log('用户点击确定')
-                  } else if (res1.cancel) {
-                    console.log('用户点击取消')
-                  }
+          else {
+            wx.showModal({
+              title: '提示',
+              content: res.data.errmsg,
+              success: function (res1) {
+                if (res1.confirm) {
+                  console.log('用户点击确定')
+                } else if (res1.cancel) {
+                  console.log('用户点击取消')
                 }
-              })
-              return
-            }
+              }
+            })
+            return
+          }
         },
         fail: function (res) {
           wx.showToast({
@@ -130,12 +138,12 @@ else
     else //如果留言是空的话
     //   if(!this.data.isAgree){  //如果不同意，那么显示顶部栏错误提示
     {
-      
-      
+
+
       this.setData({
         showTopTips: true
       });
-      
+
       console.log('留言是空的')
       setTimeout(function () {
         that.setData({
@@ -152,7 +160,10 @@ else
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    wx.showModal({
+      title: '温馨提示',
+      content: '为了便于作者与您联系，建议您留下联系方式',
+    })
   },
 
   /**
@@ -166,10 +177,7 @@ else
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-wx.showModal({
-  title: '温馨提示',
-  content: '为了便于作者与您联系，建议您留下联系方式',
-})
+   
   },
 
   /**
