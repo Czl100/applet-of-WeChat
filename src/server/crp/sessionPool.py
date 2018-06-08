@@ -29,7 +29,7 @@ class SessionPool:
     # 建立session缓存
     __cache__ = CrpCache(default_timeout=600)
     # 建立wxid到sessionId和did的映射
-    __wx2ids__ = CrpCache(default_timeout=0)
+    __wx2ids__ = CrpCache(default_timeout=600)
     # 服务器建立以来session的总个数(已经不存在的session+仍然存在的session)
     __sessionNumber__ = 0
     # md5生成器
@@ -56,16 +56,19 @@ class SessionPool:
                 sessionId = wx2ids.get(wxid).get("sessionId")
                 # 刷新超时时间
                 cache.set(sessionId, cache.get(sessionId), addexpires=True)
+                wx2ids.set(wxid, wx2ids.get(wxid))
                 return sessionId
             else:
                 raise DeviceConflictException()
         locker.acquire()
-        self.__sessionNumber__+=1
-        self.__md5__.update(str(self.__sessionNumber__).encode("utf-8"))
-        sessionId = self.__md5__.hexdigest()
-        cache.set(sessionId, {"__wxid__":wxid, "__did__":did}, addexpires=True)        # 为该会话创建字典
-        wx2ids.set(wxid, {"sessionId":sessionId, "did":did})
-        locker.release()
+        try:
+            self.__sessionNumber__+=1
+            self.__md5__.update(str(self.__sessionNumber__).encode("utf-8"))
+            sessionId = self.__md5__.hexdigest()
+            cache.set(sessionId, {"__wxid__":wxid, "__did__":did}, addexpires=True)        # 为该会话创建字典
+            wx2ids.set(wxid, {"sessionId":sessionId, "did":did})
+        finally:
+            locker.release()
         return sessionId
     
     # 删除指定的会话
