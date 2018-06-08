@@ -53,7 +53,7 @@ Page({
       },
       method: 'GET',
       data: {
-        'sessionId': sessionId,
+        'sessionId': wx.getStorageSync('sessionId'),
         'page': that.data.mypage
       },
       success: function (res) {
@@ -148,7 +148,7 @@ Page({
       },
       method: 'GET',
       data: {
-        'sessionId': sessionId,
+        'sessionId': wx.getStorageSync('sessionId'),
         'page': that.data.mypage
       },
       success: function (res) {
@@ -275,7 +275,7 @@ Page({
       },
       method: 'GET',
       data: {
-        'sessionId': sessionId,
+        'sessionId': wx.getStorageSync('sessionId'),
         'page': that.data.mypage
       },
       success: function (res) {
@@ -380,7 +380,7 @@ Page({
             },
             method: 'GET',
             data: {
-              'sessionId': sessionId,
+              'sessionId': wx.getStorageSync('sessionId'),
               'page': that.data.mypage
             },
             success: function (res) {
@@ -548,7 +548,7 @@ Page({
       },
       method: 'GET',
       data: {
-        'sessionId': sessionId,
+        'sessionId': wx.getStorageSync('sessionId'),
         'page': that.data.mypage
       },
       success: function (res) {
