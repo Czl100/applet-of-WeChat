@@ -4,7 +4,7 @@
   </view>
   
   <view class='line_'>
-    <input placeholder='请输入绑定的信息…（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input'></input>
+    <input placeholder='请输入绑定的标题信息（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input'></input>
   </view>
 
   <view class='container-a'>
@@ -13,8 +13,9 @@
       <view class='watermark-line-container3' catchtap='onsure'>
         <text>确定绑定</text>
       </view>
+      
       <view class='watermark-line-container' catchtap='oncancel'>
-        <text>保存至手机</text>
+        <text>取消</text>
       </view>
     </view>
   </view>

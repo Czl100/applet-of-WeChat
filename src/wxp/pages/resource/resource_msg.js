@@ -68,7 +68,7 @@ Page({
 
       if (this.data.nick == "") {
         this.setData({
-          nick: "暂无名称"
+          nick: "匿名用户"
         })
       }
       //将用户的id,imgid,content都发送到服务器上
@@ -81,8 +81,8 @@ Page({
         data: {
           'sessionId': sessionId,
           'nick': this.data.nick,
-      'imgid': imgid,
-          //  'imgid': 'f0d4dcbf1c7e43fa6ad9fe04eae036de',
+     'imgid': imgid,
+        //    'imgid': 'f0d4dcbf1c7e43fa6ad9fe04eae036de',
           'content': content //留言信息发送到服务器
         },
         success: function (res) {

@@ -311,43 +311,38 @@ Page({
             app.globalData.userimages.push(that.data.invisible_chooseFiles);//当用户点击确定之后，将图片保存在本地缓存
             var ss = wx.setStorageSync('userimages', app.globalData.userimages);
             console.log(ss);
-            var k=true;
-           
-         //  setTimeout(function () {
+           //var k=true;
+          /* 
+           setTimeout(function () {
              wx.showToast({
                title: '嵌入成功,',
                icon: 'success',
                duration: 2000
              },k=false)
-         //  }, 2000)
+          }, 2000)
+*/
 
-console.log(k);
-setTimeout(function(){
-{
-  wx.showModal({
-    title: '温馨提示',
-    content: '请选择图片预览或者取消',
-    confirmText: '预览',
-    cancelText: '取消',
-    success: function (res1) {
-      if (res1.confirm) {
-        console.log('用户点击确定');
-        that.setData({
-          hiddenmodalput: true
-        });
-        //进行图片的预览
-        wx.previewImage({
-          current: res.data.img,
-          urls: [res.data.img],
-        })
-      } else if (res1.cancel) {
-        console.log('用户点击取消')
-      }
+wx.showModal({
+  title: '温馨提示',
+  content: '不可见水印嵌入成功，请选择图片预览或者取消',
+  confirmText: '预览',
+  cancelText: '取消',
+  success: function (res1) {
+    if (res1.confirm) {
+      console.log('用户点击确定');
+      that.setData({
+        hiddenmodalput: true
+      });
+      //进行图片的预览
+      wx.previewImage({
+        current: res.data.img,
+        urls: [res.data.img],
+      })
+    } else if (res1.cancel) {
+      console.log('用户点击取消')
     }
-  })
-}
-},2000)
-           
+  }
+})        
             return
           }
           else {
