@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    
     hiddenmodalput: true,
     hiddenmodalput_get: true,
     //可以通过hidden是否掩藏弹出框的属性，来指定那个弹出框 
