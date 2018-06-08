@@ -1,4 +1,5 @@
 var timer = require('../../utils/timer.js')
+var exp = require('../../utils/exception.js')
 var app = getApp();
 Page({
 
@@ -122,6 +123,8 @@ Page({
           }
           else {
             console.log(res.data.errmsg);
+            exp.exception(res.data.errcode);
+            /*
             wx.showModal({
               title: '提示',
               content: res.data.errmsg,
@@ -133,6 +136,7 @@ Page({
                 }
               }
             })
+            */
           }
         },
         fail: function (res) {

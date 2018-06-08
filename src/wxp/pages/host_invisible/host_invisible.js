@@ -1,6 +1,7 @@
 var app = getApp();
 var Jmd5 = require('../../utils/md5.js')
 var timer = require('../../utils/timer.js')
+var exp = require('../../utils/exception.js')
 
 Page({
 
@@ -200,18 +201,7 @@ Page({
           return
         }
         else {
-          wx.showModal({
-            title: '提示',
-            content: res.data.errmsg,
-            success: function (res1) {
-              if (res1.confirm) {
-                console.log('用户点击确定')
-              } else if (res1.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-          return
+      exp.exception(res.data.errcode);
         }
       },
       fail: function (res) {
@@ -267,12 +257,15 @@ Page({
       wx.showToast({
         title: '正在处理',
         icon: 'loading',
-        duration: 6000
+        duration: 10000
       })
+      
       var that = this;
+      /*
       that.setData({
         hiddenmodalput: true
       })
+      */
       console.log('图片标题', that.data.imgtitle);
       if (this.data.ser == "") {
         var key = this.data.ser
@@ -318,26 +311,48 @@ Page({
             app.globalData.userimages.push(that.data.invisible_chooseFiles);//当用户点击确定之后，将图片保存在本地缓存
             var ss = wx.setStorageSync('userimages', app.globalData.userimages);
             console.log(ss);
-            wx.showToast({
-              title: '嵌入成功,',
-              icon: 'success',
-              duration: 3000
-            });
+            var k=true;
+           
+         //  setTimeout(function () {
+             wx.showToast({
+               title: '嵌入成功,',
+               icon: 'success',
+               duration: 2000
+             },k=false)
+         //  }, 2000)
+
+console.log(k);
+setTimeout(function(){
+{
+  wx.showModal({
+    title: '温馨提示',
+    content: '请选择图片预览或者取消',
+    confirmText: '预览',
+    cancelText: '取消',
+    success: function (res1) {
+      if (res1.confirm) {
+        console.log('用户点击确定');
+        that.setData({
+          hiddenmodalput: true
+        });
+        //进行图片的预览
+        wx.previewImage({
+          current: res.data.img,
+          urls: [res.data.img],
+        })
+      } else if (res1.cancel) {
+        console.log('用户点击取消')
+      }
+    }
+  })
+}
+},2000)
+           
             return
           }
           else {
             console.log(res.data.errmsg);
-            wx.showModal({
-              title: '提示',
-              content: res.data.errmsg,
-              success: function (res1) {
-                if (res1.confirm) {
-                  console.log('用户点击确定')
-                } else if (res1.cancel) {
-                  console.log('用户点击取消')
-                }
-              }
-            })
+            exp.exception(res.data.errcode);
             return
           }
 
@@ -350,6 +365,12 @@ Page({
               icon: 'none',
               duration: 2000
             });
+        },
+        complete:function(res){
+         // var that = this;
+          that.setData({
+            hiddenmodalput: true
+          })
         }
       })
 

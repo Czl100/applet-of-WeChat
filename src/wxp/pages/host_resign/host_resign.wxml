@@ -4,7 +4,7 @@
   </view>
   
   <view class='line_'>
-    <input placeholder='请输入绑定的信息…' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input'></input>
+    <input placeholder='请输入绑定的信息…（选填）' hidden='{{!useKeyboardFlag}}' class='input-box' bindinput='Input'></input>
   </view>
 
   <view class='container-a'>

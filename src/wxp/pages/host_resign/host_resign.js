@@ -1,4 +1,5 @@
 var timer = require('../../utils/timer.js')
+var exp = require('../../utils/exception.js')
 var app = getApp();
 Page({
 
@@ -192,18 +193,7 @@ Page({
           }
           else{
            {
-             wx.showModal({
-               title: '提示',
-               content: res.data.errmsg,
-               success: function (res1) {
-                 if (res1.confirm) {
-                   console.log('用户点击确定')
-                 } else if (res1.cancel) {
-                   console.log('用户点击取消')
-                 }
-               }
-             })
-             return
+             exp.exception(res.data.errcode);
            }
           }
         },

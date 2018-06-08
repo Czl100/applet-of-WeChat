@@ -1,4 +1,5 @@
 var timer = require('../../utils/timer.js')
+var exp=require('../../utils/exception.js')
 Page({
 
   /**
