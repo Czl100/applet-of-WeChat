@@ -23,14 +23,15 @@ class ImgHistory(Base):
 
     # 字段
     id = Column(Integer, primary_key=True)                  # 自增主键
-    imgid = Column(String(64), unique=True, index=True)     # 图像ID, 隐藏在图像中的数据
+    imgid = Column(String(64), unique=True, index=True)     # 图像ID, imgid = md5(imgnum)
+    imgnum = Column(Integer, default=0)                     # 图像imgnum, 实际嵌入的32bit数据    
     wxid = Column(String(32), index=True)                   # 微信ID
     path = Column(String(128))                              # 图像相对于工作目录的路径
     imgtitle = Column(String(64))                           # 图像名称
     secret = Column(String(300))                            # 图像秘密内容, 用于信息隐藏
     key = Column(String(300))                               # 图像密钥(md5-key)
     finish = Column(Integer, default=0)                     # 是否完成的标记, 0-未完成, 1-完成, 2-处理错误
-    imgtype = Column(Integer, default=0)                   # 图像记录类型, 0-图像注册, 1-信息隐藏
+    imgtype = Column(Integer, default=0)                    # 图像记录类型, 0-图像注册, 1-信息隐藏
     datetime  = Column(DateTime)                            # 创建日期
 
 class Messages(Base):

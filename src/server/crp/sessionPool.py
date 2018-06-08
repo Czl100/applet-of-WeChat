@@ -2,12 +2,34 @@ from werkzeug.contrib.cache import SimpleCache
 from crp.exception import DeviceConflictException
 import threading
 import hashlib
+import time
+try:
+    import cPickle as pickle
+except ImportError:  # pragma: no cover
+    import pickle
+
+class CrpCache(SimpleCache):
+    def __init__(self, threshold=500, default_timeout=300):
+        super().__init__(threshold=threshold, default_timeout=default_timeout)
+
+    # 默认参数为SimpleCache的实现
+    def set(self, key, value, timeout=None, refresh=True, addexpires=False):
+        expires = self._normalize_timeout(timeout)
+        if not refresh:
+            # 如果没有该key，代表需要新添加，则采用原实现所采用的expires
+            expires, _ = self._cache.get(key, (expires, None))
+        self._prune()
+        if addexpires:
+            value["__expires__"] = expires
+            value["__normalize_expires__"] = time.asctime(time.localtime(expires))
+        self._cache[key] = (expires, pickle.dumps(value, pickle.HIGHEST_PROTOCOL))
+        return True
 
 class SessionPool:
     # 建立session缓存
-    __cache__ = SimpleCache(default_timeout=600)
+    __cache__ = CrpCache(default_timeout=600)
     # 建立wxid到sessionId和did的映射
-    __wx2ids__ = SimpleCache()
+    __wx2ids__ = CrpCache(default_timeout=0)
     # 服务器建立以来session的总个数(已经不存在的session+仍然存在的session)
     __sessionNumber__ = 0
     # md5生成器
@@ -21,19 +43,6 @@ class SessionPool:
     def session_number(self):
         return self.__sessionNumber__
 
-    def expires(self, sessionId=None):
-        import time
-        cache = self.__cache__
-        if sessionId:
-            expires, _ = cache._cache.get(sessionId, (None, None))
-            return time.asctime(time.localtime(expires)) if expires else None
-        else:
-            expires_mapper = {}
-            for k, v in cache._cache.items() :
-                if cache.get(k):
-                    expires_mapper[k]=time.asctime(time.localtime(v[0]))
-            return expires_mapper
-
     # 生成新的session会话所需要的sessionId，并为该会话绑定wxid
     def new_session(self, wxid, did):
         locker = self.__lock__
@@ -46,18 +55,17 @@ class SessionPool:
             if wx2ids.get(wxid).get("did") == did:
                 sessionId = wx2ids.get(wxid).get("sessionId")
                 # 刷新超时时间
-                cache.set(sessionId, cache.get(sessionId))
+                cache.set(sessionId, cache.get(sessionId), addexpires=True)
                 return sessionId
             else:
                 raise DeviceConflictException()
         locker.acquire()
         self.__sessionNumber__+=1
-        locker.release()
-        print("sessionNumber:", self.__sessionNumber__)
         self.__md5__.update(str(self.__sessionNumber__).encode("utf-8"))
         sessionId = self.__md5__.hexdigest()
-        cache.set(sessionId, {"__wxid__":wxid, "__did__":did})        # 为该会话创建字典
+        cache.set(sessionId, {"__wxid__":wxid, "__did__":did}, addexpires=True)        # 为该会话创建字典
         wx2ids.set(wxid, {"sessionId":sessionId, "did":did})
+        locker.release()
         return sessionId
     
     # 删除指定的会话
@@ -92,4 +100,6 @@ class SessionPool:
         dic=self.__cache__.get(sessionId)
         if dic:
             dic[key]=val
+            # 不刷新过期时间
+            self.__cache__.set(sessionId, dic, refresh=False, addexpires=True)
             return True
