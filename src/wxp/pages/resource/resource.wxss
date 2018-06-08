@@ -36,26 +36,4 @@
   align-items: center;
   margin-bottom: 30rpx;
 }
-.line{
-  margin-top: 3rpx;
-  background-color: #bfbfbf;
-  height:60rpx;
-  
-  text-align: center;
-  font-family: Microsoft YaHei;
-}
-.c{
-  display: flex;
-  flex-direction:row;
-  align-items:center;
-  justify-content:center;
-margin-bottom: 30rpx;
-margin-top: 30rpx;
-}
-.line text{
-  color: #fff;
-  text-align: center;
-  justify-content:space-around;
-  height: 100%;
-  font-size: 35rpx;
-}
+

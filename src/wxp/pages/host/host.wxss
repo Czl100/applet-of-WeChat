@@ -7,21 +7,7 @@
   background-color: #fff;
 
 }
-.line{
-  margin-top: 30rpx;
-  background-color: #bfbfbf;
-  height:60rpx;
-  
-  text-align: center;
-  font-family: Microsoft YaHei;
-}
-.c{
-  display: flex;
-  flex-direction:row;
-  align-items:center;
-  justify-content:center;
 
-}
 .line text{
   color: #999999;
   text-align: center;

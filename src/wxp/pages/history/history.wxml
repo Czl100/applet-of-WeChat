@@ -1,5 +1,5 @@
 <view class='ba'>
-<view class='c'>
+<view class='his-c'>
   <block wx:for="{{postList}}" wx:for-item="item" wx:for-index="idx" wx:key="1">
 
     <view wx:if="{{item.finish}}">

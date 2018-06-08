@@ -226,9 +226,11 @@ Page({
         canvasId: 'canvas',
         success: function (res2) {
           console.log(res2.tempFilePath);
+          /*
           that.setData({
             visible_chooseFiles: res2.tempFilePath
           })
+          */
           wx.previewImage({
             current: res2.tempFilePath, // 当前显示图片的http链接
             urls: [res2.tempFilePath] // 需要预览的图片http链接列表

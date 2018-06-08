@@ -31,10 +31,16 @@ Page({
     this.setData({
       imgid: options.imgid
     })
-    if (!options.title)  //如果title不是空的话
+    if (!options.title=="")  //如果title不是空的话
     {
       this.setData({
         title: options.title,
+      })
+
+    }
+    else{
+      this.setData({
+        title: '暂无标题',
       })
     }
   },

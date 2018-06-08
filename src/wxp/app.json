@@ -8,6 +8,7 @@
     "pages/remind/remind",
     "pages/resource/resource",
     "pages/host_invisible/host_invisible",
+    "pages/host_invisible_get/host_invisible_get",
     "pages/host_resign/host_resign",
     "pages/resource/resource_success",
     "pages/resource/resource_msg"
