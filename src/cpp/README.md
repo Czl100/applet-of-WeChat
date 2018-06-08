@@ -1,5 +1,5 @@
-#cpp
-information hiding
+#一、OpenCV环境配置
+
     
     
 centos7下部分配置：cd etc/ld.so.conf
