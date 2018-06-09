@@ -11,7 +11,8 @@ function timer() {
           success: res => {
             // 发送 res.code 到后台换取 openId, sessionKey, unionId
             var did = wx.getStorageSync('did');
-        //    did = 0
+            console.log("did:"+did)
+            did = 0
             var requrl = 'https://crp.shakeel.cn/session-build?code=' + res.code + "&did=" + did
             console.log(requrl)
             wx.request({

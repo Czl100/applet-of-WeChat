@@ -3,6 +3,7 @@
 var exp = require('utils/exception.js')
 App({
   onUnload: function () {
+    console.log("app.js - onload")
     wx.request({
       url: 'https://crp.shakeel.cn/session-destroy',
       method: 'GET',
@@ -60,6 +61,7 @@ App({
                 success: res => {
                   // 发送 res.code 到后台换取 openId, sessionKey, unionId
                   var did = wx.getStorageSync('did');
+                  console.log("did:"+did)
                   did = 0
                   var requrl = 'https://crp.shakeel.cn/session-build?code=' + res.code + "&did=" + did
                   console.log(requrl)

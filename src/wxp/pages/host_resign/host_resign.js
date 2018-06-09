@@ -39,11 +39,13 @@ Page({
       }
     }
     else {
-      wx.showToast({
-        title: '请准确绑定图片',
-        icon: 'none',
-        duration: 2000
-      })
+      wx.showModal({
+        title: '温馨提示',
+        mask: true,
+        content: '请准确绑定图片',
+        confirmText: '我知道了',
+        showCancel:false
+      });
     }
   },
   Input: function (e) {
@@ -157,6 +159,7 @@ Page({
     //   if (!this.data.dis == "") {
       wx.showLoading({
         title: '正在处理',
+        mask:true
       });
   
     var that = this;
@@ -175,11 +178,13 @@ Page({
         res.data = JSON.parse(res.data);
 
         if (res.data.errcode == 1) {
-          wx.showToast({
-            title: '服务器遇到了异常，请稍后再试',
-            icon: 'none',
-            duration: 2000
-          })
+          wx.showModal({
+            title: '温馨提示',
+            mask: true,
+            content: '服务器遇到了异常，请稍后再试',
+            confirmText: '我知道了',
+            showCancel: false
+          });
           return
         }
         if (res.data.errcode == 0) {
@@ -197,6 +202,7 @@ Page({
           */
           wx.showModal({
             title: '温馨提示',
+            mask:true,
             content: '图片已经绑定成功，请选择预览或者返回',
             confirmText:'预览',
             cancelText:'取消',
@@ -212,12 +218,14 @@ Page({
                   })
                 }
                 else{
-                  console.log('图片上传的时候出现意外情况，请用户重新绑定')
-                  wx.showToast({
-                    title: '图片上传的时候出现意外情况，请用户重新绑定',
-                    icon:'none',
-                    duration:2000
-                  })
+                  console.log('图片上传的时候出现意外情况，请用户重新绑定');
+                  wx.showModal({
+                    title: '温馨提示',
+                    mask: true,
+                    content: '图片上传的时候出现意外情况，请用户重新绑定',
+                    confirmText: '我知道了',
+                    showCancel: false
+                  });
                 }
                
               } else if (res.cancel) {
@@ -241,10 +249,12 @@ Page({
       fail: function (res) {
         wx.hideLoading();
         console.log("图片上传失败");
-        wx.showToast({
-          title: '绑定失败',
-          icon: 'none',
-          duration: 2000
+        wx.showModal({
+          title: '温馨提示',
+          mask: true,
+          content: '绑定失败',
+          confirmText: '我知道了',
+          showCancel: false
         });
       },
       complete:function(){

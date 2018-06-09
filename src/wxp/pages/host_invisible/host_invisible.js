@@ -32,11 +32,13 @@ Page({
     //  {
     if (wx.getStorageSync('save_img') == "")//如果没有图片的话，
     {
-      wx.showToast({
-        title: '由于不可抗因素，信息嵌入失败',
-        icon: 'none',
-        duration: 2000
-      })
+      wx.showModal({
+        title: '温馨提示',
+        mask: true,
+        content: '由于不可抗因素，信息嵌入失败',
+        confirmText: '我知道了',
+        showCancel: false
+      });
     }
     else {
       console.log('保存到手机的图片路径', wx.getStorageSync('save_img'))
@@ -100,11 +102,13 @@ Page({
       }
     }
     else {
-      wx.showToast({
-        title: '请准确嵌入水印',
-        icon: 'none',
-        duration: 2000
-      })
+      wx.showModal({
+        title: '温馨提示',
+        mask: true,
+        content: '请准确嵌入水印',
+        confirmText: '我知道了',
+        showCancel: false
+      });
     }
   },
   onget: function () {  //提取水印信息
@@ -119,6 +123,7 @@ Page({
     timer.timer();
     wx.showLoading({
       title: '正在处理',
+      mask:true
     })
   
     //   wx.navigateBack()
@@ -161,6 +166,7 @@ Page({
           console.log('获取水印信息', res.data.secret);
           wx.showModal({
             title: '水印信息',
+            mask:true,
             content: res.data.secret,
             confirmText: "确定",
             cancelText: "取消",
@@ -184,10 +190,12 @@ Page({
       fail: function (res) {
         wx.hideLoading();
         console.log('获取失败，服务器无法进行处理');
-        wx.showToast({
-          title: '提取失败',
-          icon: 'none',
-          duration: 2000
+        wx.showModal({
+          title: '温馨提示',
+          mask: true,
+          content: '提取失败',
+          confirmText: '我知道了',
+          showCancel: false
         });
       },
       complete:function(){
@@ -221,6 +229,7 @@ Page({
       wx.showToast({
         title: '嵌入的水印信息不可为空',
         icon: 'none',
+        mask: true,
         duration: 2000
       })
     }
@@ -229,11 +238,10 @@ Page({
       //  if((!this.data.ser=="")&&(!this.data.dis=="") ) //这个时候没有输入水印
       //  if (!this.data.dis == "")  //如果嵌入的水印信息是空的
       //  {
-wx.showLoading({
-  title: '正在处理',
-})
-     
-      
+      wx.showLoading({
+        title: "正在处理",
+        mask:true,
+      })
       var that = this;
       /*
       that.setData({
@@ -290,6 +298,7 @@ wx.showLoading({
 
 wx.showModal({
   title: '温馨提示',
+  mask:true,
   content: '不可见水印嵌入成功，请选择图片预览或者取消',
   confirmText: '预览',
   cancelText: '取消',
@@ -322,10 +331,12 @@ wx.showModal({
           wx.hideLoading();
        //   wx.hideToast();
           console.log("嵌入水印失败"),
-            wx.showToast({
-              title: '嵌入水印失败',
-              icon: 'none',
-              duration: 2000
+            wx.showModal({
+              title: '温馨提示',
+              mask: true,
+              content: '嵌入水印失败',
+              confirmText: '我知道了',
+              showCancel: false
             });
         },
         complete:function(res){
