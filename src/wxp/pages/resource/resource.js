@@ -58,6 +58,7 @@ Page({
             wx.showToast({
               title: '服务器遇到了异常，请稍后再试',
               icon: 'none',
+              mask:true,
               duration: 2000
             })
             return
@@ -96,6 +97,7 @@ Page({
           wx.showToast({
             title: '请保持网络通畅',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
         }
@@ -106,6 +108,7 @@ Page({
       wx.showToast({
         title: '请先选择图片',
         icon: 'none',
+        mask:true,
         duration: 2000
       })
     }
@@ -146,6 +149,7 @@ Page({
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
           return
@@ -175,6 +179,7 @@ Page({
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
+          mask:true,
           duration: 2000
         })
       }

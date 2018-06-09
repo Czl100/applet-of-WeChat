@@ -3,7 +3,6 @@ function exception(n){
 wx.showModal({
   title: '提醒',
   content: '设置消息为已读时，系统获取不到该消息',
-  mask: true,
   showCancel: false,
   confirmText: "我知道了"
 })
@@ -13,7 +12,6 @@ return
     wx.showModal({
       title: '提醒',
       content: '发送邀请时，找不到该图片',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })
@@ -23,7 +21,6 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '该图片未曾嵌入过不可见水印',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })
@@ -33,7 +30,6 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '密码错误',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })
@@ -43,7 +39,6 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '微信小程序登录时，采用的临时凭证有问题',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })
@@ -54,7 +49,6 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '内容长度过长',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })
@@ -65,7 +59,6 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '所采用的图像已经在该平台中嵌入了相关的水印或者已经注册过',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })
@@ -76,7 +69,6 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '嵌入/提取算法进程运行异常，请联系开发者',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })
@@ -86,7 +78,6 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '已经有不同的设备用此账号在登录，请检查个人信息',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })
@@ -96,7 +87,6 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '服务器请求过程中缺少必需的数据',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })
@@ -106,7 +96,6 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '未登录或登录已经过期，请退出重新登录',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })
@@ -116,7 +105,6 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '登录过程中出现异常，请退出重新登录',
-      mask: true,
       showCancel: false,
       confirmText: "我知道了"
     })

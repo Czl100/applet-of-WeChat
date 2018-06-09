@@ -38,26 +38,16 @@ Page({
       wx.showModal({
         title: '注意',
         content: '用户输入字数已经超过140，请控制好留言的字数。',
-        success: function (res) {
-          if (res.confirm) {
-            console.log('用户点击确定')
-          } else if (res.cancel) {
-            console.log('用户点击取消')
-          }
-        }
+        confirmText:"我知道了",
+        showCancel:false
       })
     }
     if (nick_length > 10) {
       wx.showModal({
         title: '温馨提示',
         content: '联系人的名字不得超过5个字',
-        success: function (res) {
-          if (res.confirm) {
-            console.log('用户点击确定')
-          } else if (res.cancel) {
-            console.log('用户点击取消')
-          }
-        }
+        confirmText:"我知道了",
+        showCancel:false
       })
     }
     var that = this;
@@ -86,6 +76,7 @@ Page({
             wx.showToast({
               title: '服务器遇到了异常，请稍后再试',
               icon: 'none',
+              mask:true,
               duration: 2000
             })
             return
@@ -95,6 +86,7 @@ Page({
             wx.showToast({
               title: '发送邀请成功',
               icon: 'success',
+              mask:true,
               duration: 2000
             });
             content = null;
@@ -112,6 +104,7 @@ Page({
           wx.showToast({
             title: '请保持网络通畅',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
           console.log('发送邀请失败')
@@ -148,6 +141,8 @@ Page({
     wx.showModal({
       title: '温馨提示',
       content: '为了便于作者与您联系，建议您留下联系方式',
+      confirmText:"我知道了",
+      showCancel:false
     })
   },
 
