@@ -12,6 +12,7 @@ def add_message(app, imgtitle, imgurl, nick, senderId, authorId, content):
     oneMessage = Messages(imgurl=imgurl, imgtitle=imgtitle, senderNick=nick, senderId=senderId, authorId=authorId, content=content, datetime=datetime.datetime.today())
     try:
         dbsession.add(oneMessage)        # 邀请入库
+        dbsession.commit()
     except Exception:
         dbsession.rollback()
 
