@@ -1,4 +1,5 @@
 var timer = require('../../utils/timer.js')
+var exp = require('../../utils/exception.js')
 var app = getApp();
 var List_;
 var his_list = [];  //生命一个数组用于缓存
@@ -16,7 +17,7 @@ Page({
     postList: [{
       datetime: '',
       finish: '',
-      img: "",
+      img_small: "",
       imgtitle: '暂无标题',
       imgtype: ''
     }]
@@ -70,6 +71,7 @@ Page({
 
       success: function (res) {
         if (res.data.errcode == 1) {
+       //   exp(res.data.errcode);
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
@@ -77,29 +79,32 @@ Page({
           })
           return
         }
-        if(res.data.errcode==0) {
-        console.log('发送查询历史信息请求', res.data),
-        console.log('当前的页数是', wx.getStorageSync('mypage')),
-        //固定放在某一页
-        his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
+        if (res.data.errcode == 0) {
+         // exp.exception(res.data.errcode);
+          console.log('发送查询历史信息请求', res.data),
+            console.log('当前的页数是', wx.getStorageSync('mypage')),
+            //固定放在某一页
+            his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
 
-        // his_list.push(res.data.list);
-        wx.setStorageSync('history_list', his_list);
-        //   List_ = res.data.list
-        // console.log(List_)  //打印出来看看
-        //总页数
-        pages = res.data.pages
+          // his_list.push(res.data.list);
+          wx.setStorageSync('history_list', his_list);
+          //   List_ = res.data.list
+          // console.log(List_)  //打印出来看看
+          //总页数
+          pages = res.data.pages
           wx.setStorageSync('history_pages', pages);
-        /*
-         that.setData({
-           postList: List_
-         })
-         */
-        console.log('总页数pages', pages);
-        console.log('服务器上的总页数', res.data.pages);
-        return
+          /*
+           that.setData({
+             postList: List_
+           })
+           */
+          console.log('总页数pages', pages);
+          console.log('服务器上的总页数', res.data.pages);
+          return
         }
-       else {
+        else {
+          exp.exception(res.data.errcode);
+          /*
           console.log('历史记录界面', res.data.errmsg);
           wx.showModal({
             title: '提示',
@@ -113,8 +118,9 @@ Page({
             }
           })
           return
+          */
         }
-       
+
       },
       fail: function (res) {
         wx.showToast({
@@ -124,6 +130,14 @@ Page({
         })
       },
       complete: function () {
+        if (wx.getStorageSync('history_pages') == 0) {
+          wx.showToast({
+            title: '暂无记录',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+        else{
         var p = wx.getStorageSync('mypage');
         console.log('上一页的p', p)
         // var that=this;
@@ -133,7 +147,7 @@ Page({
             postList: wx.getStorageSync('history_list')[p - 1],
           })
         }
-
+        }
       }
     })
   },
@@ -142,23 +156,23 @@ Page({
     timer.timer();
     console.log(this.data.mypage, pages);
     pages = wx.getStorageSync('history_pages', pages);
-    if(!pages==""){
-    if (this.data.mypage < pages) {
-      this.setData({
-        mypage: this.data.mypage + 1
-      })
+    if (!pages == "") {
+      if (this.data.mypage < pages) {
+        this.setData({
+          mypage: this.data.mypage + 1
+        })
 
-      // wx.setStorageSync('history_mypage', this.data.mypage);  //当前页数存入缓存
+        // wx.setStorageSync('history_mypage', this.data.mypage);  //当前页数存入缓存
+      }
+      else {
+        this.setData({
+          mypage: pages
+        })
+        //   wx.setStorageSync('history_mypage', this.data.mypage);  //当前页数存入缓存
+      }
     }
     else {
-      this.setData({
-        mypage: pages
-      })
-      //   wx.setStorageSync('history_mypage', this.data.mypage);  //当前页数存入缓存
-    }
-    }
-    else{
-      mypage:1
+      mypage: 1
     }
     var that = this;
     wx.setStorageSync('mypage', that.data.mypage);  //当前页数存入缓存
@@ -174,7 +188,7 @@ Page({
         'page': that.data.mypage
       },
       success: function (res) {
-     
+
         if (res.data.errcode == 1) {
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
@@ -183,7 +197,7 @@ Page({
           })
           return
         }
-       if(res.data.errcode==0) {
+        if (res.data.errcode == 0) {
           console.log('发送查询历史信息请求', res.data),
             console.log('当前的页数是', wx.getStorageSync('mypage')),
             //固定放在某一页
@@ -203,21 +217,25 @@ Page({
           console.log('总页数pages', pages);
           console.log('服务器上的总页数', res.data.pages);
         }
-      else {
-         console.log('历史记录界面', res.data.errmsg);
-         wx.showModal({
-           title: '提示',
-           content: res.data.errmsg,
-           success: function (res1) {
-             if (res1.confirm) {
-               console.log('用户点击确定')
-             } else if (res1.cancel) {
-               console.log('用户点击取消')
-             }
-           }
-         })
-         return
-       }
+        else {
+          console.log('历史记录界面', res.data.errmsg);
+          exp.exception(res.data.errcode);
+          /*
+          wx.showModal({
+            title: '提示',
+            content: res.data.errmsg,
+            success: function (res1) {
+              if (res1.confirm) {
+                console.log('用户点击确定')
+              } else if (res1.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return
+          */
+        }
+        
       },
       fail: function (res) {
         wx.showToast({
@@ -227,6 +245,14 @@ Page({
         })
       },
       complete: function (res) {
+        if (wx.getStorageSync('history_pages') == 0) {
+          wx.showToast({
+            title: '暂无记录',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+        else{
         var p = wx.getStorageSync('mypage');
         console.log('下一页的p', p)
         // var that=this;
@@ -234,6 +260,7 @@ Page({
           postList: wx.getStorageSync('history_list')[p - 1],
         })
         console.log('点击下一页的数据动态渲染结果', wx.getStorageSync('history_list')[p - 1])
+      }
       }
     })
   },
@@ -243,7 +270,7 @@ Page({
    */
 
   onShow: function () {
-    
+
     var that = this;
 
     var sessionId = wx.getStorageSync('sessionId');
@@ -262,7 +289,7 @@ Page({
       },
       success: function (res) {
 
-        
+
         if (res.data.errcode == 1) {
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
@@ -271,7 +298,7 @@ Page({
           })
           return
         }
-       if(res.data.errcode==0) {
+        if (res.data.errcode == 0) {
           console.log('发送查询历史信息请求', res.data),
             console.log('onshow当前的页数是', wx.getStorageSync('mypage')),
             //固定放在某一页
@@ -284,26 +311,16 @@ Page({
           //总页数
           pages = res.data.pages
           wx.setStorageSync('history_pages', pages);
-         
+
           console.log('数据缓存', wx.getStorageSync('history_list'))
           console.log('总页数pages', pages);
           console.log('服务器上的总页数', res.data.pages);
         }
-       else {
-         console.log('历史记录界面', res.data.errmsg);
-         wx.showModal({
-           title: '提示',
-           content: res.data.errmsg,
-           success: function (res1) {
-             if (res1.confirm) {
-               console.log('用户点击确定')
-             } else if (res1.cancel) {
-               console.log('用户点击取消')
-             }
-           }
-         })
-         return
-       }
+        else {
+          console.log('历史记录界面', res.data.errmsg);
+          exp.exception(res.data.errcode);
+         
+        }
       }, fail: function (res) {
         wx.showToast({
           title: '请保持网络通畅',
@@ -313,12 +330,21 @@ Page({
 
       },
       complete: function (res) {
+        if (wx.getStorageSync('history_pages')==0){
+          wx.showToast({
+            title: '暂无记录',
+            icon:'none',
+            duration:2000
+          })
+        }
+        else{
         var p = wx.getStorageSync('mypage');
         console.log('p', p)
         // var that=this;
         that.setData({
           postList: wx.getStorageSync('history_list')[p - 1],
         })
+      }
       }
     })
     wx.request({
@@ -331,7 +357,7 @@ Page({
         'sessionId': wx.getStorageSync('sessionId'),
       },
       success: function (res) {
-        
+
         if (res.data.errcode == 1) {
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
@@ -340,7 +366,7 @@ Page({
           })
           return
         }
-        if(res.data.errcode==0) {
+        if (res.data.errcode == 0) {
           console.log('打开历史记录时查询未邀请个数', res.data)
           wx.setStorageSync('_number', res.data.number);
           var number = wx.getStorageSync('_number');
@@ -359,6 +385,8 @@ Page({
         }
         else {
           console.log('历史记录界面', res.data.errmsg);
+          exp.exception(res.data.errcode);
+          /*
           wx.showModal({
             title: '提示',
             content: res.data.errmsg,
@@ -371,6 +399,7 @@ Page({
             }
           })
           return
+          */
         }
       }, fail: function (res) {
         wx.showToast({

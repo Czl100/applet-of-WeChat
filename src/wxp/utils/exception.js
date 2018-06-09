@@ -58,7 +58,7 @@ return
   if(n==1008){
     wx.showModal({
       title: '温馨提示',
-      content: '微信小程序建立会话时，采用的临时凭证code有问题导致的异常',
+      content: '微信小程序登录时，采用的临时凭证有问题',
       success: function (res) {
         if (res.confirm) {
           console.log('用户点击确定')
@@ -179,10 +179,19 @@ duration:2000
   }
   if (n == 1000) {
     wx.showToast({
-      title: '出现Crp平台预期的异常',
+      title: '系统出现异常',//出现Crp平台预期的异常
       icon: 'none',
       duration: 2000
     })
+    return
+  }
+  else{
+    wx.showToast({
+      title: '出现了不可预测的异常，请联系小程序开发者',//出现Crp平台预期的异常
+      icon: 'none',
+      duration: 2000
+    }) 
+    return
   }
 }
 

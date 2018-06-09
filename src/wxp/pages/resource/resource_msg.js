@@ -1,4 +1,5 @@
 var timer = require('../../utils/timer.js')
+var exp=require('../../utils/exception.js')
 var content;
 //var nick;
 var nick_length;
@@ -67,7 +68,7 @@ Page({
 
       if (this.data.nick == "") {
         this.setData({
-          nick: "暂无名称"
+          nick: "匿名用户"
         })
       }
       //将用户的id,imgid,content都发送到服务器上
@@ -80,8 +81,8 @@ Page({
         data: {
           'sessionId': sessionId,
           'nick': this.data.nick,
-      'imgid': imgid,
-          //  'imgid': 'f0d4dcbf1c7e43fa6ad9fe04eae036de',
+     'imgid': imgid,
+        //    'imgid': 'f0d4dcbf1c7e43fa6ad9fe04eae036de',
           'content': content //留言信息发送到服务器
         },
         success: function (res) {
@@ -109,18 +110,7 @@ Page({
             return
           }
           else {
-            wx.showModal({
-              title: '提示',
-              content: res.data.errmsg,
-              success: function (res1) {
-                if (res1.confirm) {
-                  console.log('用户点击确定')
-                } else if (res1.cancel) {
-                  console.log('用户点击取消')
-                }
-              }
-            })
-            return
+            exp.exception(res.data.errcode);
           }
         },
         fail: function (res) {
