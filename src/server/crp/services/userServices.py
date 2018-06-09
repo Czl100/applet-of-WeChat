@@ -14,6 +14,6 @@ def login(app, wxid):
         # 未找到该用户，该用户首次登陆，入库。
         newUser = User(wxid=wxid, datetime=datetime.datetime.today())
         dbsession.add(newUser)
-    finally:
         dbsession.commit()
-        dbsession.close()
+    except Exception:
+        dbsession.rollback()
