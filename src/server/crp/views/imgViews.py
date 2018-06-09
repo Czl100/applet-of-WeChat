@@ -56,6 +56,7 @@ def imgid_ext(app, img):
 
     # 提取图像id
     imgnum = wm_extract(app, inpImgPath)
+    print(imgnum)
     imgid = md5(str(imgnum))
     return imgid
 
