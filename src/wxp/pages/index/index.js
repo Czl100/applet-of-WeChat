@@ -77,7 +77,7 @@ Page({
       wx.request({
         url: 'https://crp.shakeel.cn/did',
         method: 'GET',
-        deat: {
+        data: {
 
         },
         success: function (res) {
@@ -103,7 +103,7 @@ Page({
           }
           else
           {
-            exp.expception(errcode);
+            exp.exception(errcode);
           }
         },
         fail: function (res) {
@@ -175,7 +175,7 @@ Page({
                     }
 
                     else {
-                     exp.expception(res.data.errcode)
+                     exp.exception(res.data.errcode)
                     }
 
                   },

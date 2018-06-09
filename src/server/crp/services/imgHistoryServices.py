@@ -10,46 +10,55 @@ import datetime
 # 插入一条未处理完成的
 def insert_notfinish_img_history(app, sessionId, imgid, imgtype, path, secret=None, key=None, imgtitle=None):
     dbsession = app.sessionMaker()
-    wxid = sp.wxid(sessionId)
-    kws = {
-        "imgid":imgid,
-        "wxid":wxid,
-        "imgtitle":imgtitle,
-        "imgtype":imgtype,
-        "path":path,
-        "secret":secret,
-        "key":key,
-        "datetime":datetime.datetime.today()
-    }
-    newHistory = ImgHistory(**kws)
-    dbsession.add(newHistory)
-    dbsession.commit()
+    try:
+        wxid = sp.wxid(sessionId)
+        kws = {
+            "imgid":imgid,
+            "wxid":wxid,
+            "imgtitle":imgtitle,
+            "imgtype":imgtype,
+            "path":path,
+            "secret":secret,
+            "key":key,
+            "datetime":datetime.datetime.today()
+        }
+        newHistory = ImgHistory(**kws)
+        dbsession.add(newHistory)
+        dbsession.commit()
+    except Exception:
+        dbsession.rollback()
 
 def insert_finish_img_history(app, sessionId, imgid, imgnum, imgtype, path, secret=None, key=None, imgtitle=None, success=True):
     dbsession = app.sessionMaker()
-    wxid = sp.wxid(sessionId)
-    kws = {
-        "imgid":imgid,
-        "imgnum":imgnum,
-        "wxid":wxid,
-        "imgtitle":imgtitle,
-        "imgtype":imgtype,
-        "path":path,
-        "secret":secret,
-        "key":key,
-        "datetime":datetime.datetime.today(),
-        "finish": 1 if success else 2
-    }
-    newHistory = ImgHistory(**kws)
-    dbsession.add(newHistory)
-    dbsession.commit()
+    try:
+        wxid = sp.wxid(sessionId)
+        kws = {
+            "imgid":imgid,
+            "imgnum":imgnum,
+            "wxid":wxid,
+            "imgtitle":imgtitle,
+            "imgtype":imgtype,
+            "path":path,
+            "secret":secret,
+            "key":key,
+            "datetime":datetime.datetime.today(),
+            "finish": 1 if success else 2
+        }
+        newHistory = ImgHistory(**kws)
+        dbsession.add(newHistory)
+        dbsession.commit()
+    except Exception:
+        dbsession.rollback()
 
 # 当图像处理完成，更新该记录为已处理
 def update_finish_img_history(app, imgid, success=True):
     dbsession = app.sessionMaker()
-    tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
-    tmpHistory.finish = 1 if success else 2
-    dbsession.commit()
+    try:
+        tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
+        tmpHistory.finish = 1 if success else 2
+        dbsession.commit()
+    except Exception:
+        dbsession.rollback()
 
 # 查询imgid所对应的作者, 正确返回则找到匹配作者
 def query_img_author(app, imgid):
@@ -61,8 +70,9 @@ def query_img_author(app, imgid):
         item = dbsession.query(ImgHistory).filter_by(imgid=imgid, imgtype=0).first()
         exist = True if item else False
         imgtitle = item.imgtitle if exist else imgtitle
-    finally:
         dbsession.commit()      # 提交事务，避免死锁
+    except Exception:
+        dbsession.rollback()
     return exist, imgtitle
 
 def query_img_secret(app, imgid, key):
@@ -75,8 +85,9 @@ def query_img_secret(app, imgid, key):
         if item.key != key:
             raise NotPassException()
         secret = item.secret
-    finally:
         dbsession.commit()
+    except Exception:
+        dbsession.rollback()
     return secret
 
 def query_imgid_exists(app, imgid):
@@ -86,8 +97,9 @@ def query_imgid_exists(app, imgid):
         # one，查找不到抛出异常. first，查找不到不会抛出异常    
         item = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
         exists = True if item else False
-    finally:
         dbsession.commit()
+    except Exception:
+        dbsession.rollback()
     return exists
 
 # 查询指定指定微信用户，指定页面的历史记录
@@ -96,8 +108,9 @@ def query_history_page(app, wxid, page, perpage):
     dbsession = app.sessionMaker()
     try:
         allItems = dbsession.query(ImgHistory).filter_by(wxid=wxid).order_by(ImgHistory.finish).order_by(desc(ImgHistory.datetime)).all()
-    finally:
         dbsession.commit()
+    except Exception:
+        dbsession.rollback()
 
     # 提取出该页数据
     totalpage = int(len(allItems)/perpage) + 1
@@ -129,8 +142,9 @@ def query_img_info(app, imgid):
         authorId = item.wxid
         imgurl = app.config['ENABLE_HOST']+item.path
         imgtitle = item.imgtitle
-    except NoResultFound:
-        raise NotExistImgidException(imgid)
-    finally:
         dbsession.commit()
+    except NoResultFound:
+        dbsession.rollback()
+        raise NotExistImgidException(imgid)
+        
     return authorId, imgtitle, imgurl

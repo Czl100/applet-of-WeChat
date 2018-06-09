@@ -11,7 +11,7 @@
 
     <view class='bo'>
       <view class='watermark-line-container3' catchtap='onsure'>
-        <text>确定绑定</text>
+        <text>开始注册</text>
       </view>
       
       <view class='watermark-line-container' catchtap='oncancel'>

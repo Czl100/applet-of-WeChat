@@ -39,22 +39,22 @@
 
 
 <modal hidden="{{hiddenmodalput}}" title="请输入相关信息" confirm-text="嵌入" cancel-text="取消" bindcancel="cancel" bindconfirm="sure">
-  <input type='text' hidden='{{!useKeyboardFlag}}' bindinput='Input_dis' placeholder="请输入水印信息" auto-focus/>
+  <input type='text' hidden='{{!useKeyboardFlag}}' bindinput='Input_dis' placeholder="请输入水印信息" />
   <view class="weui-progress__bar" class='l'>
     <progress percent="0" stroke-width="1" />
   </view>
-  <input type='text' hidden='{{!useKeyboardFlag}}' bindinput='Input_title' placeholder="请输入标题（选填）" auto-focus/>
+  <input type='text' hidden='{{!useKeyboardFlag}}' bindinput='Input_title' placeholder="请输入标题（选填）"/>
   <view class="weui-progress__bar" class='l'>
     <progress percent="0" stroke-width="1" />
   </view>
-  <input type='text' hidden='{{!useKeyboardFlag}}' bindinput='Input_ser' placeholder="请输入密码（选填）" auto-focus/>
+  <input type='text' hidden='{{!useKeyboardFlag}}' bindinput='Input_ser' placeholder="请输入密码（选填）"/>
   <view class="weui-progress__bar" class='l'>
     <progress percent="0" stroke-width="1" />
   </view>
 </modal>
 
 <modal hidden="{{hiddenmodalput_get}}" title="请输入相关信息" confirm-text="提取" cancel-text="取消" bindcancel="cancel" bindconfirm="get">
-  <input type='text' hidden='{{!useKeyboardFlag}}' bindinput='Input_ser' placeholder="请输入密码（选填）" auto-focus/>
+  <input type='text' hidden='{{!useKeyboardFlag}}' bindinput='Input_ser' placeholder="请输入密码（选填）"/>
   <view class="weui-progress__bar" class='l'>
     <progress percent="0" stroke-width="1" />
   </view>

@@ -36,10 +36,9 @@ Page({
     wx.setStorageSync('active', true);
     timer.timer();
     if (this.data.start) {
-      wx.showToast({
-        title: '正在追溯',
-        icon: 'loading',
-        duration: 10000
+      wx.showLoading({
+        "title":'正在追溯',
+        "mask":true
       });
       var that = this;
       var sessionId = wx.getStorageSync('sessionId');
@@ -52,13 +51,14 @@ Page({
           'sessionId': sessionId
         },
         success: function (res) {
-          wx.hideToast();
+          wx.hideLoading()
           res.data = JSON.parse(res.data)
          
           if (res.data.errcode == 1) {
             wx.showToast({
               title: '服务器遇到了异常，请稍后再试',
               icon: 'none',
+              mask:true,
               duration: 2000
             })
             return
@@ -74,18 +74,8 @@ Page({
               wx.showModal({
                 title: '温馨提醒',
                 content: '该图片没有追溯成功',
-                confirmText: "确定",
-                cancelText: "取消",
-                success: function (res) {
-                  console.log(res);
-                  if (res.confirm) {
-                    console.log('确定')
-                    wx.navigateBack();
-                  } else {
-                    console.log('取消')
-                    wx.navigateBack();
-                  }
-                }
+                confirmText: "我知道了",
+                showCancel:false
               });
             }
             else {  //这个时候，作者信息找到
@@ -102,14 +92,14 @@ Page({
           }
         },
         fail: function (res) {
-          wx.hideToast();
+          wx.hideLoading()
           console.log("图片追溯上传失败")
           wx.showToast({
             title: '请保持网络通畅',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
-
         }
       })
     }
@@ -118,6 +108,7 @@ Page({
       wx.showToast({
         title: '请先选择图片',
         icon: 'none',
+        mask:true,
         duration: 2000
       })
     }
@@ -158,6 +149,7 @@ Page({
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
           return
@@ -187,6 +179,7 @@ Page({
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
+          mask:true,
           duration: 2000
         })
       }
