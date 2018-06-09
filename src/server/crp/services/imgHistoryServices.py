@@ -25,8 +25,9 @@ def insert_notfinish_img_history(app, sessionId, imgid, imgtype, path, secret=No
         newHistory = ImgHistory(**kws)
         dbsession.add(newHistory)
         dbsession.commit()
-    except Exception:
+    except Exception as e:
         dbsession.rollback()
+        raise e
 
 def insert_finish_img_history(app, sessionId, imgid, imgnum, imgtype, path, secret=None, key=None, imgtitle=None, success=True):
     dbsession = app.sessionMaker()
@@ -47,8 +48,9 @@ def insert_finish_img_history(app, sessionId, imgid, imgnum, imgtype, path, secr
         newHistory = ImgHistory(**kws)
         dbsession.add(newHistory)
         dbsession.commit()
-    except Exception:
+    except Exception as e:
         dbsession.rollback()
+        raise e
 
 # 当图像处理完成，更新该记录为已处理
 def update_finish_img_history(app, imgid, success=True):
@@ -57,8 +59,9 @@ def update_finish_img_history(app, imgid, success=True):
         tmpHistory = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
         tmpHistory.finish = 1 if success else 2
         dbsession.commit()
-    except Exception:
+    except Exception as e:
         dbsession.rollback()
+        raise e
 
 # 查询imgid所对应的作者, 正确返回则找到匹配作者
 def query_img_author(app, imgid):
@@ -71,8 +74,9 @@ def query_img_author(app, imgid):
         exist = True if item else False
         imgtitle = item.imgtitle if exist else imgtitle
         dbsession.commit()      # 提交事务，避免死锁
-    except Exception:
+    except Exception as e:
         dbsession.rollback()
+        raise e
     return exist, imgtitle
 
 def query_img_secret(app, imgid, key):
@@ -86,8 +90,9 @@ def query_img_secret(app, imgid, key):
             raise NotPassException()
         secret = item.secret
         dbsession.commit()
-    except Exception:
+    except Exception as e:
         dbsession.rollback()
+        raise e
     return secret
 
 def query_imgid_exists(app, imgid):
@@ -98,8 +103,9 @@ def query_imgid_exists(app, imgid):
         item = dbsession.query(ImgHistory).filter_by(imgid=imgid).first()
         exists = True if item else False
         dbsession.commit()
-    except Exception:
+    except Exception as e:
         dbsession.rollback()
+        raise e
     return exists
 
 # 查询指定指定微信用户，指定页面的历史记录
@@ -109,8 +115,9 @@ def query_history_page(app, wxid, page, perpage):
     try:
         allItems = dbsession.query(ImgHistory).filter_by(wxid=wxid).order_by(ImgHistory.finish).order_by(desc(ImgHistory.datetime)).all()
         dbsession.commit()
-    except Exception:
+    except Exception as e:
         dbsession.rollback()
+        raise e
 
     # 提取出该页数据
     totalpage = int(len(allItems)/perpage) + 1

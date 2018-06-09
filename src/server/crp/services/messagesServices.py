@@ -65,8 +65,9 @@ def message_have_read(app, wxid, messageId):
             raise NotExistMessageidException(messageId)
         messageItem.unread=0
         dbsession.commit()
-    except Exception:
+    except Exception as e:
         dbsession.rollback()
+        raise e
 
 def messages_all_read(app, wxid):
     dbsession = app.sessionMaker()
@@ -75,5 +76,6 @@ def messages_all_read(app, wxid):
         for item in messageList:
             item.unread = 0
         dbsession.commit()
-    except Exception:
+    except Exception as e:
         dbsession.rollback()
+        raise e
