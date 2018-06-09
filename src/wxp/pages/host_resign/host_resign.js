@@ -20,13 +20,13 @@ Page({
     var ig = wx.getStorageSync('_save_img')
     console.log('缓存图片_save_img', ig);
     if (this.data.start) {
-      console.log('start的标记，说明当前图已经绑定好了', this.data.start);
+      console.log('start的标记，说明当前图已经注册好了', this.data.start);
       if (wx.getStorageSync('_save_img') == "") {
         wx.previewImage({
           current: 'app.global.chooseFiles', // 当前显示图片的http链接
           urls: [app.globalData.chooseFiles],
         })
-        console.log('图片还没有绑定，预览的图片是没有绑定的')
+        console.log('图片还没有注册，预览的图片是没有注册的')
       }
       else {
         //如果已经绑定了
@@ -35,14 +35,14 @@ Page({
           current: 'ig', // 当前显示图片的http链接
           urls: [wx.getStorageSync('_save_img')],
         })
-        console.log('图片已经绑定，预览的图片是有绑定的')
+        console.log('图片已经注册，预览的图片是有注册的')
       }
     }
     else {
       wx.showModal({
         title: '温馨提示',
         mask: true,
-        content: '请准确绑定图片',
+        content: '请准确注册图片',
         confirmText: '我知道了',
         showCancel:false
       });
@@ -203,7 +203,7 @@ Page({
           wx.showModal({
             title: '温馨提示',
             mask:true,
-            content: '图片已经绑定成功，请选择预览或者返回',
+            content: '图片已经注册成功，请选择预览或者返回',
             confirmText:'预览',
             cancelText:'取消',
             success: function (res) {
@@ -211,18 +211,18 @@ Page({
                 console.log('用户点击确定')
                 if (!wx.getStorageSync('_save_img') == "") //如果缓存不是空的 
                 {
-                  console.log('图片绑定_缓存不是空的，_sava_img', wx.getStorageSync('_save_img'))
+                  console.log('图片注册_缓存不是空的，_sava_img', wx.getStorageSync('_save_img'))
                   wx.previewImage({
                     current: wx.getStorageSync('_save_img'),
                     urls: [wx.getStorageSync('_save_img')],
                   })
                 }
                 else{
-                  console.log('图片上传的时候出现意外情况，请用户重新绑定');
+                  console.log('图片上传的时候出现意外情况，请用户重新注册');
                   wx.showModal({
                     title: '温馨提示',
                     mask: true,
-                    content: '图片上传的时候出现意外情况，请用户重新绑定',
+                    content: '图片上传的时候出现意外情况，请用户重新注册',
                     confirmText: '我知道了',
                     showCancel: false
                   });
@@ -252,7 +252,7 @@ Page({
         wx.showModal({
           title: '温馨提示',
           mask: true,
-          content: '绑定失败',
+          content: '注册失败',
           confirmText: '我知道了',
           showCancel: false
         });
