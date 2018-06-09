@@ -1,8 +1,13 @@
 //app.js
-//var timer = require('../../utils/timer.js')
+//var timer = require('utils/timer.js')
 var exp = require('utils/exception.js')
 App({
+  onHide:function(){
+    console.log('关闭定时器')
+wx.setStorageSync('active', false);
+  },
   onUnload: function () {
+    
     console.log("app.js - onload")
     wx.request({
       url: 'https://crp.shakeel.cn/session-destroy',

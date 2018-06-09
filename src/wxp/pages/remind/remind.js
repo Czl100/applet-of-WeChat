@@ -24,7 +24,7 @@ Page({
   onbefore: function () { //点击上一页
 
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     if (pages == 0) {
       this.setData({
         mypages: 0
@@ -139,7 +139,7 @@ Page({
   onafter: function () { //点击下一页
     console.log('点击下一页', this.data.mypage, pages)
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     if (!pages == "") {
       if (this.data.mypage < pages) {
         this.setData({
@@ -247,7 +247,7 @@ Page({
   },
   oncatch: function (e) {       //当点击的时候,说明这个是已经读了
     wx.setStorageSync('active', true);
-    timer.timer();
+ //   timer.timer();
     console.log(e);
     console.log('id', e.currentTarget.id);
     var that = this;
@@ -389,7 +389,7 @@ Page({
   },
   onget: function () { //点击全部已读,意思就是说告诉后台，这些数据用户已经读了
     wx.setStorageSync('active', true);
-    timer.timer();
+ //   timer.timer();
     var that = this;
     wx.request({
       url: 'https://crp.shakeel.cn/read-all-messages',
@@ -540,7 +540,7 @@ Page({
    */
   onLoad: function (options) {
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -556,7 +556,7 @@ Page({
    */
   onShow: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     var that = this;
     var sessionId = wx.getStorageSync('sessionId');
     wx.setStorageSync('re_mypage', that.data.mypage);
@@ -699,7 +699,7 @@ Page({
   },
   onpre: function (e) {
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     var n = wx.getStorageSync('re_mypage');
     console.log('re进入', n)
     console.log('re当前的id', e.currentTarget.id)

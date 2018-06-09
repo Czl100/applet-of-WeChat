@@ -15,7 +15,7 @@ Page({
   },
   chooseImage: function (event) {
     wx.setStorageSync('active', true);
-    timer.timer();
+ //   timer.timer();
     var that = this;
     wx.chooseImage({
       count: 1, // 默认9
@@ -34,7 +34,7 @@ Page({
 
   onstart: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     if (this.data.start) {
       wx.showLoading({
         "title": '正在追溯',
@@ -118,7 +118,7 @@ Page({
    */
   onLoad: function (options) {
     wx.setStorageSync('active', true);
-    timer.timer();
+ //   timer.timer();
   },
 
   /**
@@ -135,7 +135,7 @@ Page({
    */
   onShow: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+//   timer.timer();
     wx.request({
       url: 'https://crp.shakeel.cn/query-unread-number',
       header: {

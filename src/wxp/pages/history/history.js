@@ -28,7 +28,7 @@ Page({
    */
   onLoad: function (options) {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     //   timer.timer();
     //  wx.setStorageSync('history_list', List_);  //将这个列表存放在缓存中
   },
@@ -42,7 +42,7 @@ Page({
 
   onbefore: function () { //点击上一页
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     if (this.data.mypage > 1) {
       this.setData({
         mypage: this.data.mypage - 1
@@ -141,7 +141,7 @@ Page({
   },
   onafter: function () { //点击下一页
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     console.log(this.data.mypage, pages);
     pages = wx.getStorageSync('history_pages', pages);
     if (!pages == "") {
@@ -250,7 +250,7 @@ Page({
 
   onShow: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     var that = this;
 
     var sessionId = wx.getStorageSync('sessionId');
@@ -384,7 +384,7 @@ Page({
   },
   onpre: function (e) {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     var n = wx.getStorageSync('mypage');
     var img_ = wx.getStorageSync('history_list')[n - 1][e.currentTarget.id].img;
 

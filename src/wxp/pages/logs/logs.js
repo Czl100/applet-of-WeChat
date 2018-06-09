@@ -7,7 +7,7 @@ Page({
   },
   onLoad: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+    //timer.timer();
     this.setData({
       logs: (wx.getStorageSync('logs') || []).map(log => {
         return util.formatTime(new Date(log))

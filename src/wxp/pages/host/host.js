@@ -22,7 +22,7 @@ Page({
   },
   chooseImage: function (event) {
     wx.setStorageSync('active', true);
-    timer.timer();
+    //  timer.timer();
     var that = this;
     wx.chooseImage({
       count: 1, // 默认9
@@ -81,8 +81,8 @@ Page({
    */
   onShow: function () {
     console.log('host页面打开')
-   // wx.setStorageSync('active', true);
-  // timer.timer();
+    // wx.setStorageSync('active', true);
+    // timer.timer();
     console.log('进入小程序')
     if (!wx.getStorageSync('sessionId') == "") {
       console.log('会话已经存在，有sessionId')
@@ -222,6 +222,10 @@ Page({
                                 console.log('=================session success=================')
                                 // console.log(res.data.fg)
                                 if (res1.data.errcode == 0) {  //如果登录成功
+                                  wx.setStorageSync('active', true);
+                                  console.log('登录成功，打开定时器')
+                                  timer.timer();
+
                                   wx.hideLoading();
                                   console.log(res1.data.sessionId);
                                   wx.showToast({
@@ -229,6 +233,7 @@ Page({
                                     icon: 'success',
                                     duration: 2000
                                   })
+
                                   return
                                 }
                                 if (res1.data.errcode == 1) {
@@ -392,6 +397,9 @@ Page({
                           // console.log(res.data.fg)
                           if (res1.data.errcode == 0) {  //如果登录成功
                             console.log(res1.data.sessionId);
+                            wx.setStorageSync('active', true);
+                            console.log('登录成功，打开定时器')
+                            timer.timer();
                             wx.showToast({
                               title: '登录成功',
                               icon: 'success',
@@ -517,8 +525,8 @@ Page({
         }
       })
     }
-    console.log('未读个数host',wx, wx.getStorageSync('sessionId'))
-  
+    console.log('未读个数host', wx, wx.getStorageSync('sessionId'))
+
 
   },
 
@@ -561,7 +569,7 @@ Page({
   onJump_host_visible: function (event) {
 
     wx.setStorageSync('active', true);
-    timer.timer();
+    // timer.timer();
     if (this.data.start) //如果选择了图片
     {
       var that = this;
@@ -591,7 +599,7 @@ Page({
   },
   onJump_host_invisible: function (event) {
     wx.setStorageSync('active', true);
-    timer.timer();
+    // timer.timer();
 
     if (this.data.start) {
 
@@ -621,7 +629,7 @@ Page({
   },
   onJump_host_resign: function (event) {
     wx.setStorageSync('active', true);
-    timer.timer();
+    // timer.timer();
     if (this.data.start) {
       wx.navigateTo({
         url: '../host_resign/host_resign',

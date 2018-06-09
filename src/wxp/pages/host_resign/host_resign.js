@@ -16,7 +16,7 @@ Page({
   },
   onpre: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     var ig = wx.getStorageSync('_save_img')
     console.log('缓存图片_save_img', ig);
     if (this.data.start) {
@@ -50,7 +50,7 @@ Page({
   },
   Input: function (e) {
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     this.setData({
       dis: e.detail.value
     })
@@ -58,7 +58,7 @@ Page({
   },
   oncancel: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     /*
     console.log('start', this.data.start);
     if (this.data.start) {
@@ -93,7 +93,7 @@ Page({
    */
   onLoad: function (options) {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     this.setData({
       resign_chooseFiles: app.globalData.chooseFiles
     })
@@ -111,7 +111,7 @@ Page({
    */
   onShow: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
   },
 
   /**
@@ -156,7 +156,7 @@ Page({
     })
     
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     //   if (!this.data.dis == "") {
       wx.showLoading({
         title: '正在处理',

@@ -11,12 +11,12 @@ Page({
   },
   onno: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     wx.navigateBack();
   },
   onyes: function () {  //如果点击了粉丝留言
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     var that = this;
     wx.navigateTo({
       url: 'resource_msg?imgid' + that.data.imgid
@@ -27,7 +27,7 @@ Page({
    */
   onLoad: function (options) {
     wx.setStorageSync('active', true);
-    timer.timer();
+//    timer.timer();
     console.log(options)
     this.setData({
       imgid: options.imgid

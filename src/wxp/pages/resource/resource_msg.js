@@ -19,13 +19,13 @@ Page({
   },
   Input_content: function (e) {  //获取留言框中的信息content
     wx.setStorageSync('active', true);
-    timer.timer();
+ //   timer.timer();
     content = e.detail.value
     content_length = e.detail.value.length;
   },
   Input_nick: function (e) {  //获取留言框中的信息content
     wx.setStorageSync('active', true);
-    timer.timer();
+ //   timer.timer();
     this.setData({
       nick:e.detail.value
     })

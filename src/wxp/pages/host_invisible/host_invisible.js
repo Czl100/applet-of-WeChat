@@ -25,7 +25,7 @@ Page({
 
   onsave: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     console.log('co_save', this.data.co_save);
     console.log('保存到手机的图片路径', wx.getStorageSync('save_img'))
     //  if (this.data.co_save)  //如果嵌入水印成功可以保存到手机
@@ -57,14 +57,14 @@ Page({
   },
   Input_title: function (e) {
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     this.setData({
       imgtitle: e.detail.value
     })
   },
   Input_dis: function (e) {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     this.setData({
       dis: e.detail.value
     })
@@ -72,14 +72,14 @@ Page({
   },
   Input_ser: function (e) {
     wx.setStorageSync('active', true);
-    timer.timer();
+ //  timer.timer();
     this.setData({
       ser: e.detail.value
     })
   },
   onpre: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+  //  timer.timer();
     var ig = wx.getStorageSync('save_img')
     console.log('缓存图片save_img', ig);
     if (this.data.co_save) {
@@ -113,14 +113,14 @@ Page({
   },
   onget: function () {  //提取水印信息
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     this.setData({
       hiddenmodalput_get: !this.data.hiddenmodalput_get
     })
   },
   get: function () {  //点击提取
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     wx.showLoading({
       title: '正在处理',
       mask: true
@@ -206,7 +206,7 @@ Page({
 
   onsure: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     this.setData({
       start: true,
       co_get: true,
@@ -216,7 +216,7 @@ Page({
   },
   cancel: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     this.setData({
       hiddenmodalput: true,
       hiddenmodalput_get: true,
@@ -224,7 +224,7 @@ Page({
   },
   sure: function () { //点击嵌入水印
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     if (this.data.dis == "") {
       wx.showToast({
         title: '嵌入的水印信息不可为空',
@@ -381,7 +381,7 @@ wx.uploadFile({ //用户点击确定，那么就上传到服务器，进行不�
  */
 onLoad: function (options) {
   wx.setStorageSync('active', true);
-  timer.timer();
+//  timer.timer();
   this.setData({
     invisible_chooseFiles: app.globalData.chooseFiles
   })
@@ -399,7 +399,7 @@ onReady: function () {
  */
 onShow: function () {
   wx.setStorageSync('active', true);
-  timer.timer();
+ // timer.timer();
 },
 
 /**
