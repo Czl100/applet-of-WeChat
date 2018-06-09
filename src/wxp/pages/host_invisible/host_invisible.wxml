@@ -32,9 +32,7 @@
       <view class='watermark-line-container3' catchtap='onget'>
         <text>提取水印信息</text>
       </view>
-      <view wx:if='{{co_save}}' class='watermark-line-container' catchtap='onsave'>
-        <text>保存至手机</text>
-      </view>
+     
     </view>
   </view>
 </view>

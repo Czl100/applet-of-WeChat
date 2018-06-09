@@ -9,7 +9,7 @@
     <view class='main'>
       <view class='image'>
         <view class='img'>
-          <image mode='aspectFit' src="{{item.img}}" catchtap='onpre' id='{{idx}}'></image>
+          <image mode='aspectFit' src="{{item.img_small}}" catchtap='onpre' id='{{idx}}'></image>
         </view>
         <view class='title'>{{item.imgtitle}}</view>
       </view>

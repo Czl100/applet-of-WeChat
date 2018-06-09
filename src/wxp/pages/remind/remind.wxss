@@ -8,7 +8,7 @@
   margin-top: 30rpx;
 }
 .color{
-   background-color: #E1F5FE;
+   background-color:#E1F5FE;
 }
 .color1{
    background-color: #fff;

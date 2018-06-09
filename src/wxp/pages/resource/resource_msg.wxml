@@ -3,7 +3,7 @@
 <view class="weui-cells weui-cells_after-title">
   <view class="weui-cell weui-cell_input">
     <view class="weui-cell__bd">
-      <input class="weui-input" placeholder="请输入你的名字" bindinput='Input_nick'/>
+      <input class="weui-input" placeholder="请输入你的名字（选填）" bindinput='Input_nick'/>
       <view class="input-counter" maxlength='140'>字数不能超过10</view>
     </view>
   </view>
