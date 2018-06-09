@@ -202,7 +202,11 @@ return
       showCancel: false,
       confirmText: "我知道了"
     })
+   
     return
+    wx.navigateBack({
+
+    })
   }
   if(n==1){
     wx.showToast({

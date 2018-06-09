@@ -33,6 +33,20 @@ Page({
   },
 
   onstart: function () {
+    if (!wx.getStorageSync('un-line')) {//如果是离线的话
+      wx.showModal({
+        title: '注意',
+        content: '请进行用户登录方可使用',
+        showCancel: false,
+        confirmText: '我知道了',
+        success: function (res) {
+          if (res.confirm) {
+            console.log('我知道了')
+          }
+        }
+      })
+    }
+    else{
     wx.setStorageSync('active', true);
    // timer.timer();
     if (this.data.start) {
@@ -42,6 +56,7 @@ Page({
       });
       var that = this;
       var sessionId = wx.getStorageSync('sessionId');
+      console.log('开始追溯的sessionId', sessionId, wx.getStorageSync('sessionId'))
       wx.uploadFile({
         url: 'https://crp.shakeel.cn/query-author',
         method: 'POST',
@@ -111,6 +126,7 @@ Page({
         mask: true,
         duration: 2000
       })
+    }
     }
   },
   /**

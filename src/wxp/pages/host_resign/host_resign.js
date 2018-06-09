@@ -150,6 +150,20 @@ Page({
   },
 
   onsure: function () {
+    if (!wx.getStorageSync('un-line')) {//如果是离线的话
+      wx.showModal({
+        title: '注意',
+        content: '请进行用户登录方可使用',
+        showCancel: false,
+        confirmText: '我知道了',
+        success: function (res) {
+          if (res.confirm) {
+            console.log('我知道了')
+          }
+        }
+      })
+    }
+    else{
     if(this.data.allow){
     this.setData({
       allow:false //点击了绑定之后就不允许点击了
@@ -277,5 +291,6 @@ Page({
         */
   }
 
+  }
   }
 })
