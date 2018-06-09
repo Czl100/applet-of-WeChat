@@ -1,8 +1,17 @@
-#一、OpenCV环境配置
+#**OpenCV环境配置**
+  
+##一、Windows下配置OpenCV
+
+>     本地测试环境为Win7_64、OpenCV3.0.0、 visual studio 2013
+>1.   下载OpenCV 地址：[https://opencv.org/releases.html](https://opencv.org/releases.html").
+选择适合本机的OpenCV版本下载，此处选择Windows 3.0.0版本
+>2.   
+>
 
     
     
 centos7下部分配置：cd etc/ld.so.conf
+
     添加：/local/opencv-3.0.0/lib
     centos中文件内容
     usr/local/bin       opencv_annotation;opencv_createsamples;opencv_traincascade(均是安装生成的)
