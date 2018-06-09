@@ -18,7 +18,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+
+  /*
 
     // 查看是否授权
     wx.getSetting({
@@ -140,6 +141,7 @@ Page({
         }
       }
     })
+    */
   },
   chooseImage: function (event) {
     wx.setStorageSync('active', true);
@@ -202,7 +204,57 @@ Page({
    */
   onShow: function () {
     wx.setStorageSync('active', true);
-    timer.timer();
+   timer.timer();
+    wx.request({
+      url: 'https://crp.shakeel.cn/query-unread-number',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      method: 'GET',
+      data: {
+        'sessionId': wx.getStorageSync('sessionId'),
+      },
+      success: function (res) {
+
+        if (res.data.errcode == 1) {
+          wx.showToast({
+            title: '服务器遇到了异常，请稍后再试',
+            icon: 'none',
+            mask: true,
+            duration: 2000
+          })
+          return
+        }
+        if (res.data.errcode == 0) {
+          console.log('打开时刷新未邀请个数', res.data)
+          wx.setStorageSync('_number', res.data.number);
+          var number = wx.getStorageSync('_number');
+          if (number == 0) {
+            wx.removeTabBarBadge({
+              index: 3
+            });
+          }
+          else {
+            wx.setTabBarBadge({
+              index: 3,
+              text: number + "",
+            })
+          }
+          return
+        }
+        else {
+          exp.exception(res.data.errcode);
+        }
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '请保持网络通畅',
+          icon: 'none',
+          mask: true,
+          duration: 2000
+        })
+      }
+    })
   },
 
   /**

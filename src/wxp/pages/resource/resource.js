@@ -1,5 +1,5 @@
 var timer = require('../../utils/timer.js')
-var exp=require('../../utils/exception.js')
+var exp = require('../../utils/exception.js')
 var app = getApp();
 Page({
 
@@ -37,8 +37,8 @@ Page({
     timer.timer();
     if (this.data.start) {
       wx.showLoading({
-        "title":'正在追溯',
-        "mask":true
+        "title": '正在追溯',
+        "mask": true
       });
       var that = this;
       var sessionId = wx.getStorageSync('sessionId');
@@ -53,17 +53,17 @@ Page({
         success: function (res) {
           wx.hideLoading()
           res.data = JSON.parse(res.data)
-         
+
           if (res.data.errcode == 1) {
             wx.showToast({
               title: '服务器遇到了异常，请稍后再试',
               icon: 'none',
-              mask:true,
+              mask: true,
               duration: 2000
             })
             return
           }
-          if(res.data.errcode==0) {
+          if (res.data.errcode == 0) {
             console.log("图片可开始追溯", res.data)
             //如果图片可以开始进行追溯，那么就将信息放在缓存中
 
@@ -75,7 +75,7 @@ Page({
                 title: '温馨提醒',
                 content: '该图片没有追溯成功',
                 confirmText: "我知道了",
-                showCancel:false
+                showCancel: false
               });
             }
             else {  //这个时候，作者信息找到
@@ -87,7 +87,7 @@ Page({
             }
             return
           }
-       else {
+          else {
             exp.exception(res.data.errcode);
           }
         },
@@ -97,7 +97,7 @@ Page({
           wx.showToast({
             title: '请保持网络通畅',
             icon: 'none',
-            mask:true,
+            mask: true,
             duration: 2000
           })
         }
@@ -108,7 +108,7 @@ Page({
       wx.showToast({
         title: '请先选择图片',
         icon: 'none',
-        mask:true,
+        mask: true,
         duration: 2000
       })
     }
@@ -146,17 +146,17 @@ Page({
         'sessionId': wx.getStorageSync('sessionId'),
       },
       success: function (res) {
-       
+
         if (res.data.errcode == 1) {
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
-            mask:true,
+            mask: true,
             duration: 2000
           })
           return
         }
-        if(res.data.errcode==0) {
+        if (res.data.errcode == 0) {
           console.log('打开追溯界面时刷新未邀请个数', res.data)
           wx.setStorageSync('_number', res.data.number);
           var number = wx.getStorageSync('_number');
@@ -173,7 +173,7 @@ Page({
           }
           return
         }
-       else {
+        else {
           exp.exception(res.data.errcode);
         }
       },
@@ -181,7 +181,7 @@ Page({
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
-          mask:true,
+          mask: true,
           duration: 2000
         })
       }
