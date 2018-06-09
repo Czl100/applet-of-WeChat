@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    allow:true,
     start: false,
     Image: "/pages/icon/camera.png",
     resign_chooseFiles: app.globalData.chooseFiles,
@@ -146,14 +147,18 @@ Page({
   },
 
   onsure: function () {
+    if(this.data.allow){
+    this.setData({
+      allow:false //点击了绑定之后就不允许点击了
+    })
+    
     wx.setStorageSync('active', true);
     timer.timer();
     //   if (!this.data.dis == "") {
-    wx.showToast({
-      title: '正在处理',
-      icon: 'loading',
-      duration: 10000
-    });
+      wx.showLoading({
+        title: '正在处理',
+      });
+  
     var that = this;
     var sessionId = wx.getStorageSync('sessionId');
     wx.uploadFile({
@@ -166,7 +171,7 @@ Page({
         'imgtitle': that.data.dis
       },
       success: function (res) {
-        wx.hideToast();
+        wx.hideLoading();
         res.data = JSON.parse(res.data);
 
         if (res.data.errcode == 1) {
@@ -223,7 +228,7 @@ Page({
           })
           //绑定成功
           that.setData({
-            start: true
+            start: true,
           })
           return
         }
@@ -234,13 +239,19 @@ Page({
         }
       },
       fail: function (res) {
-        wx.hideToast();
+        wx.hideLoading();
         console.log("图片上传失败");
         wx.showToast({
           title: '绑定失败',
           icon: 'none',
           duration: 2000
         });
+      },
+      complete:function(){
+        wx.hideLoading();
+        that.setData({
+          allow:true
+        })
       }
     })
     //   }
@@ -253,5 +264,7 @@ Page({
           })
         }
         */
+  }
+
   }
 })

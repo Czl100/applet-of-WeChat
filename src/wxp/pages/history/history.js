@@ -85,40 +85,25 @@ Page({
             console.log('当前的页数是', wx.getStorageSync('mypage')),
             //固定放在某一页
             his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
-
-          // his_list.push(res.data.list);
+          for (var i = 0; i < 10; i++) {
+            if (his_list[wx.getStorageSync('mypage') - 1][i].imgtitle == "") {
+              his_list[wx.getStorageSync('mypage') - 1][i].imgtitle = '暂无标题'
+            }
+          }
+          
           wx.setStorageSync('history_list', his_list);
-          //   List_ = res.data.list
-          // console.log(List_)  //打印出来看看
+          
           //总页数
           pages = res.data.pages
           wx.setStorageSync('history_pages', pages);
-          /*
-           that.setData({
-             postList: List_
-           })
-           */
+        
           console.log('总页数pages', pages);
           console.log('服务器上的总页数', res.data.pages);
           return
         }
         else {
           exp.exception(res.data.errcode);
-          /*
-          console.log('历史记录界面', res.data.errmsg);
-          wx.showModal({
-            title: '提示',
-            content: res.data.errmsg,
-            success: function (res1) {
-              if (res1.confirm) {
-                console.log('用户点击确定')
-              } else if (res1.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-          return
-          */
+      
         }
 
       },
@@ -138,11 +123,14 @@ Page({
           })
         }
         else{
+         
         var p = wx.getStorageSync('mypage');
         console.log('上一页的p', p)
         // var that=this;
         if (!wx.getStorageSync('history_list')[p - 1] == "") {
-
+          if (wx.getStorageSync('history_list')[p - 1].imgtitle==""){
+            
+          }
           that.setData({
             postList: wx.getStorageSync('history_list')[p - 1],
           })
@@ -202,7 +190,11 @@ Page({
             console.log('当前的页数是', wx.getStorageSync('mypage')),
             //固定放在某一页
             his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
-          //        his_list.push(res.data.list);
+          for (var i = 0; i < 10; i++) {
+            if (his_list[wx.getStorageSync('mypage') - 1][i].imgtitle == "") {
+              his_list[wx.getStorageSync('mypage') - 1][i].imgtitle = '暂无标题'
+            }
+          }
           wx.setStorageSync('history_list', his_list);
           //     List_ = res.data.list
           //   console.log(List_)  //打印出来看看
@@ -220,20 +212,7 @@ Page({
         else {
           console.log('历史记录界面', res.data.errmsg);
           exp.exception(res.data.errcode);
-          /*
-          wx.showModal({
-            title: '提示',
-            content: res.data.errmsg,
-            success: function (res1) {
-              if (res1.confirm) {
-                console.log('用户点击确定')
-              } else if (res1.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-          return
-          */
+       
         }
         
       },
@@ -304,8 +283,12 @@ Page({
             //固定放在某一页
             his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
           console.log('onshow的list', his_list[wx.getStorageSync('mypage') - 1]);
-          //List_.push(res.data.list);
-          //  List_=res.data.list //列表中的数据，从服务器中读取
+         for(var i=0;i<10;i++){
+           if (his_list[wx.getStorageSync('mypage') - 1][i].imgtitle=="")
+           {
+             his_list[wx.getStorageSync('mypage') - 1][i].imgtitle='暂无标题'
+           }
+         }
           wx.setStorageSync('history_list', his_list);  //将这个列表存放在缓存中
           console.log('his_list', his_list)  //打印出来看看
           //总页数
@@ -340,7 +323,8 @@ Page({
         else{
         var p = wx.getStorageSync('mypage');
         console.log('p', p)
-        // var that=this;
+       // console.log('历史记录的1', wx.getStorageSync('history_list')[p - 1][1].imgtitle)
+      
         that.setData({
           postList: wx.getStorageSync('history_list')[p - 1],
         })
@@ -386,20 +370,7 @@ Page({
         else {
           console.log('历史记录界面', res.data.errmsg);
           exp.exception(res.data.errcode);
-          /*
-          wx.showModal({
-            title: '提示',
-            content: res.data.errmsg,
-            success: function (res1) {
-              if (res1.confirm) {
-                console.log('用户点击确定')
-              } else if (res1.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-          return
-          */
+         
         }
       }, fail: function (res) {
         wx.showToast({

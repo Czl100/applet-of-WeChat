@@ -11,7 +11,7 @@ Page({
    */
   data: {
     showTopTips: false,//用来后面的错误提示
-    nick: '暂无名称',
+    nick: '',
 
     //   isAgree: false,
     // content:null  //用来进行相关的文本，字数是140个
@@ -66,11 +66,6 @@ Page({
     //如果留言不是空的话：
     if (!content == '') {
 
-      if (this.data.nick == "") {
-        this.setData({
-          nick: "匿名用户"
-        })
-      }
       //将用户的id,imgid,content都发送到服务器上
       wx.request({
         url: 'https://crp.shakeel.cn/send-message',

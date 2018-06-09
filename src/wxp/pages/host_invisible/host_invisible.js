@@ -22,20 +22,7 @@ Page({
     ser: "",     //这是嵌入的密码
     useKeyboardFlag: true,  //默认是键盘输入类型的输入框
   },
-  /*
-   //取消按钮  
-   cancel: function () {
-     this.setData({
-       hiddenmodalput: true
-     });
-   },
-   //确认  
-   confirm: function () {
-     this.setData({
-       hiddenmodalput: true
-     })
-   },
-   */
+ 
   onsave: function () {
     wx.setStorageSync('active', true);
     timer.timer();
@@ -64,16 +51,7 @@ Page({
         }
       })
     }
-    /*
-  }
-  else {
-    wx.showToast({
-      title: '请正确嵌入水印',
-      icon: 'none',
-      duration: 2000
-    })
-  }
-  */
+
   },
   Input_title: function (e) {
     wx.setStorageSync('active', true);
@@ -139,11 +117,10 @@ Page({
   get: function () {  //点击提取
     wx.setStorageSync('active', true);
     timer.timer();
-    wx.showToast({
+    wx.showLoading({
       title: '正在处理',
-      icon: 'loading',
-      duration: 10000
-    });
+    })
+  
     //   wx.navigateBack()
     this.setData({
       hiddenmodalput_get: !this.data.hiddenmodalput_get
@@ -168,7 +145,7 @@ Page({
         'key': key //输入的密码
       },
       success: function (res) {
-        wx.hideToast();
+        wx.hideLoading();
         res.data = JSON.parse(res.data);
 
         if (res.data.errcode == 1) {
@@ -205,13 +182,16 @@ Page({
         }
       },
       fail: function (res) {
-        wx.hideToast();
+        wx.hideLoading();
         console.log('获取失败，服务器无法进行处理');
         wx.showToast({
           title: '提取失败',
           icon: 'none',
           duration: 2000
         });
+      },
+      complete:function(){
+        wx.hideLoading();
       }
     })
   },
@@ -245,20 +225,14 @@ Page({
       })
     }
     else { //如果嵌入的水印信息不是空的话
-      if (this.data.imgtitle == "") {
-        this.setData({
-          imgtitle: '暂无标题'
-        })
-      }
+   
       //  if((!this.data.ser=="")&&(!this.data.dis=="") ) //这个时候没有输入水印
       //  if (!this.data.dis == "")  //如果嵌入的水印信息是空的
       //  {
-
-      wx.showToast({
-        title: '正在处理',
-        icon: 'loading',
-        duration: 10000
-      })
+wx.showLoading({
+  title: '正在处理',
+})
+     
       
       var that = this;
       /*
@@ -289,6 +263,7 @@ Page({
           'imgtitle': that.data.imgtitle
         },
         success: function (res) {
+          wx.hideLoading();
           wx.hideToast();
           res.data = JSON.parse(res.data);
           console.log('嵌入的反馈', res.data.errcode);
@@ -311,16 +286,7 @@ Page({
             app.globalData.userimages.push(that.data.invisible_chooseFiles);//当用户点击确定之后，将图片保存在本地缓存
             var ss = wx.setStorageSync('userimages', app.globalData.userimages);
             console.log(ss);
-           //var k=true;
-          /* 
-           setTimeout(function () {
-             wx.showToast({
-               title: '嵌入成功,',
-               icon: 'success',
-               duration: 2000
-             },k=false)
-          }, 2000)
-*/
+        
 
 wx.showModal({
   title: '温馨提示',
@@ -353,7 +319,8 @@ wx.showModal({
 
         },
         fail: function () {
-          wx.hideToast();
+          wx.hideLoading();
+       //   wx.hideToast();
           console.log("嵌入水印失败"),
             wx.showToast({
               title: '嵌入水印失败',
@@ -363,23 +330,14 @@ wx.showModal({
         },
         complete:function(res){
          // var that = this;
+          wx.hideLoading();
           that.setData({
             hiddenmodalput: true
           })
         }
       })
 
-      /*
-    }
-    else {
-      wx.showToast({
-        title: '嵌入的不可见水印信息不得为空',
-        icon: 'none',
-
-        duration: 2000
-      })
-    }
-    */
+  
     }
   },
   /**

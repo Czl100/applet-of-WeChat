@@ -72,8 +72,23 @@ Page({
           //   remind_List:res.data.list;
           pages = res.data.pages
           wx.setStorageSync('re_pages', pages);
+        
           //固定放在某一页
           _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;
+          
+          for (var i = 0; i < _re_list[wx.getStorageSync('re_mypage') - 1].length; i++) {
+            if (_re_list[wx.getStorageSync('re_mypage') - 1][i].sender == null) {
+              _re_list[wx.getStorageSync('re_mypage') - 1][i].sender = '匿名用户'
+              console.log('render1', _re_list[wx.getStorageSync('re_mypage') - 1][0].sender)
+            }
+            if (_re_list[wx.getStorageSync('re_mypage') - 1][i].imgtitle =="") {
+              _re_list[wx.getStorageSync('re_mypage') - 1][i].imgtitle = '暂无标题'
+           
+            }
+            
+          }
+          
+          console.log('render',_re_list[wx.getStorageSync('re_mypage') - 1][0].sender)
           wx.setStorageSync('re_list', _re_list);
 
           console.log('总页数pages', pages);
@@ -169,6 +184,18 @@ Page({
           wx.setStorageSync('re_pages', pages);
           //固定放在某一页
           _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;
+          console.log('after-render', _re_list[wx.getStorageSync('re_mypage') - 1][2].sender)
+          console.log('长度', _re_list[wx.getStorageSync('re_mypage') - 1].length)
+          for (var i = 0; i < _re_list[wx.getStorageSync('re_mypage') - 1].length; i++) {
+            if (_re_list[wx.getStorageSync('re_mypage') - 1][i].sender == null) {
+              _re_list[wx.getStorageSync('re_mypage') - 1][i].sender = '匿名用户'
+              console.log('render1', _re_list[wx.getStorageSync('re_mypage') - 1][0].sender)
+            }
+            if (_re_list[wx.getStorageSync('re_mypage') - 1][i].imgtitle =="") {
+              _re_list[wx.getStorageSync('re_mypage') - 1][i].imgtitle = '暂无标题'
+
+            }
+          }
           wx.setStorageSync('re_list', _re_list);
 
           console.log('总页数pages', pages);
@@ -296,6 +323,16 @@ Page({
           wx.setStorageSync('re_pages', pages);
           //固定放在某一页
           _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;
+          for (var i = 0; i < _re_list[wx.getStorageSync('re_mypage') - 1].length; i++) {
+            if (_re_list[wx.getStorageSync('re_mypage') - 1][i].sender == null) {
+              _re_list[wx.getStorageSync('re_mypage') - 1][i].sender = '匿名用户'
+              console.log('render1', _re_list[wx.getStorageSync('re_mypage') - 1][0].sender)
+            }
+            if (_re_list[wx.getStorageSync('re_mypage') - 1][i].imgtitle =="") {
+              _re_list[wx.getStorageSync('re_mypage') - 1][i].imgtitle = '暂无标题'
+
+            }
+          }
           wx.setStorageSync('re_list', _re_list);
 
           console.log('总页数pages', pages);
@@ -399,8 +436,19 @@ Page({
                 //   remind_List:res.data.list;
                 pages = res.data.pages
                 wx.setStorageSync('re_pages', pages);
+
                 //固定放在某一页
                 _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;
+                for (var i = 0; i < _re_list[wx.getStorageSync('re_mypage') - 1].length; i++) {
+                  if (_re_list[wx.getStorageSync('re_mypage') - 1][i].sender == null) {
+                    _re_list[wx.getStorageSync('re_mypage') - 1][i].sender = '匿名用户'
+                    console.log('render1', _re_list[wx.getStorageSync('re_mypage') - 1][0].sender)
+                  }
+                  if (_re_list[wx.getStorageSync('re_mypage') - 1][i].imgtitle == "") {
+                    _re_list[wx.getStorageSync('re_mypage') - 1][i].imgtitle = '暂无标题'
+
+                  }
+                }
                 wx.setStorageSync('re_list', _re_list);
 
                 console.log('总页数pages', pages);
@@ -569,6 +617,16 @@ Page({
           wx.setStorageSync('re_pages', pages);
           //固定放在某一页
           _re_list[wx.getStorageSync('re_mypage') - 1] = res.data.list;
+          for (var i = 0; i < _re_list[wx.getStorageSync('re_mypage') - 1].length; i++) {
+            if (_re_list[wx.getStorageSync('re_mypage') - 1][i].sender == null) {
+              _re_list[wx.getStorageSync('re_mypage') - 1][i].sender = '匿名用户'
+              console.log('render1', _re_list[wx.getStorageSync('re_mypage') - 1][0].sender)
+            }
+            if (_re_list[wx.getStorageSync('re_mypage') - 1][i].imgtitle == "") {
+              _re_list[wx.getStorageSync('re_mypage') - 1][i].imgtitle = '暂无标题'
+
+            }
+          }
           wx.setStorageSync('re_list', _re_list);
 
           console.log('总页数pages', pages);
