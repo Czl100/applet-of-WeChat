@@ -18,10 +18,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+  
 
     // 查看是否授权
     wx.getSetting({
+      
       success: function (res) {
+        console.log('加载host')
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，说明缓存中已经获取了用户的信息
           wx.hideLoading();
@@ -44,14 +47,14 @@ Page({
                 exp.exception(res.data.errcode);
               }
             },
-            fail: function () {
+            fail: function (res) {
               wx.showToast({
                 title: '获取设备的ID失败',
                 icon: 'none',
                 duration: 2000
               })
             },
-            complete: function () {
+            complete: function (res) {
               wx.hideLoading();
               console.log('获取设备结束')
             }
@@ -127,11 +130,12 @@ Page({
         }
         //如果没有授权的话，提醒用户没有授权，因为本身不能跳转
         else {
+          console.log('加载host')
           wx.navigateTo({
-            url: '/pages/index/index',
-            success: function (res) { },
-            fail: function (res) { },
-            complete: function (res) { },
+            url: '../index/index',
+         //   success: function (res) { },
+          //  fail: function (res) { },
+          //  complete: function (res) { },
           })
         }
       }

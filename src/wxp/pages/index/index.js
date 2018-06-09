@@ -18,17 +18,21 @@ Page({
     })
   },
   onLoad: function () {
+    console.log('加载index')
     console.log(app.globalData.userInfo);
     if (app.globalData.userInfo) {  //如果已经获取了用户的信息
+    
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
 
     } else if (this.data.canIUse) {
+      console.log('加载index1')
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
+        console.log('加载index2')
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
@@ -36,6 +40,7 @@ Page({
 
       }
     } else {
+      console.log('加载index2')
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         success: res => {
@@ -65,6 +70,7 @@ Page({
    * 授权事件
    */
   getUserInfo: function (e) {
+ 
 wx.showLoading({
   title: '正在授权',
   mask:true
@@ -120,7 +126,7 @@ wx.showLoading({
             duration: 2000
           });
         },
-        complete: function () {
+        complete: function (res) {
           console.log('获取设备的did', wx.getStorageSync('did'))
           if (!wx.getStorageSync('did') == "")  //如果已经获取了设备的ID，那么就登录
           {
@@ -146,13 +152,13 @@ wx.showLoading({
                   header: {
                     'content-type': 'application/json' // 默认值
                   },
-                  success: function (res) {
-                    console.log('index.js文件', res.data)
-                    wx.setStorageSync('sessionId', res.data.sessionId);
+                  success: function (res1) {
+                    console.log('index.js文件', res1.data)
+                    wx.setStorageSync('sessionId', res1.data.sessionId);
                     console.log('=================session success=================')
                     // console.log(res.data.fg)
-                    if (res.data.errcode == 0) {  //如果登录成功
-                      console.log(res.data.sessionId);
+                    if (res1.data.errcode == 0) {  //如果登录成功
+                      console.log(res1.data.sessionId);
                       wx.showToast({
                         title: '登录成功',
                         icon: 'success',
@@ -160,7 +166,7 @@ wx.showLoading({
                       })
                       return
                     }
-                    if (res.data.errcode == 1) {
+                    if (res1.data.errcode == 1) {
                       wx.showToast({
                         title: '服务器遇到了异常，请稍后再试',
                         icon: 'none',
@@ -255,9 +261,8 @@ wx.showLoading({
       })
     }
   },
-  onReady:function(res){
-    
-  }
+
+
 
 
 })

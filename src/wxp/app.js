@@ -45,7 +45,7 @@ App({
 
   onLaunch: function () {
     wx.showLoading({
-      title: '正在检验授权情况',
+      title: '正在检验授权',
       mask: true
     })
 
