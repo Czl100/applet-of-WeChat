@@ -14,6 +14,7 @@ def add_message(app, imgtitle, imgurl, nick, senderId, authorId, content):
         dbsession.add(oneMessage)        # 邀请入库
     finally:
         dbsession.commit()
+        dbsession.close()
 
 # 查询邀请页
 def query_messages_page(app, authorId, perpage, page):
@@ -22,6 +23,7 @@ def query_messages_page(app, authorId, perpage, page):
         allItems = dbsession.query(Messages).filter_by(authorId=authorId).order_by(desc(Messages.unread)).order_by(desc(Messages.datetime)).all()
     finally:
         dbsession.commit()
+        dbsession.close()
 
     # 提取出该页数据
     totalpage = math.ceil(len(allItems)/perpage)
@@ -52,6 +54,7 @@ def message_unread_number(app, wxid):
         count = dbsession.query(Messages).filter_by(authorId=wxid).filter_by(unread=1).count()
     finally:
         dbsession.commit()
+        dbsession.close()
     return count
 
 def message_have_read(app, wxid, messageId):
@@ -63,6 +66,7 @@ def message_have_read(app, wxid, messageId):
         messageItem.unread=0
     finally:
         dbsession.commit()
+        dbsession.close()
 
 def messages_all_read(app, wxid):
     dbsession = app.sessionMaker()
@@ -72,4 +76,4 @@ def messages_all_read(app, wxid):
             item.unread = 0
     finally:
         dbsession.commit()
-        
+        dbsession.close()

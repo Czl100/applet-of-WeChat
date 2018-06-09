@@ -16,3 +16,4 @@ def login(app, wxid):
         dbsession.add(newUser)
     finally:
         dbsession.commit()
+        dbsession.close()
