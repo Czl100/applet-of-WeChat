@@ -15,12 +15,12 @@ function timer() {
         data: {
           'sessionId': wx.getStorageSync('sessionId')
         },
-        success: function (res1) {
-          if (res1.data.errcode == 0) {
+        success: function (res) {
+          if (res.data.errcode == 0) {
             console.log('定时器，会话已经存在')
             return
           }
-          if (res1.data.errcode == 1002) {
+          if (res.data.errcode == 1002) {
             wx.showLoading({
               title: '正在连接',
               mask: true
@@ -98,10 +98,10 @@ function timer() {
             exp.exception(res.data.errcode);
           }
         },
-        fail: function (res1) {
+        fail: function (res) {
 
         },
-        complete: function (res1) {
+        complete: function (res) {
 
         }
       })

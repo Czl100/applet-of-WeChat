@@ -92,7 +92,7 @@ return
     })
     return
   }
-  if (res.data.errcode == 1) {
+  if (n == 1) {
     wx.showToast({
       title: '服务器遇到了异常，请稍后再试',
       icon: 'none',

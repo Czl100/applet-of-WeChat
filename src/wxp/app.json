@@ -1,7 +1,6 @@
 {
   "pages":[
     "pages/host/host",
-    "pages/index/index",
     "pages/host_visible/host_visible",
     "pages/logs/logs",
     "pages/history/history",
