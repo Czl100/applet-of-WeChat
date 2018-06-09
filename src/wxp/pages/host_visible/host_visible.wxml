@@ -10,8 +10,8 @@
 <view class='watermark-line-container3'  catchtap='onsure' >
     <text>预览</text>
   </view>
-<view class='watermark-line-container'  catchtap='onsave' >
-    <text>保存图片</text>
+<view class='watermark-line-container'  catchtap='oncancel' >
+    <text>取消</text>
   </view>
 </view>
 </view>

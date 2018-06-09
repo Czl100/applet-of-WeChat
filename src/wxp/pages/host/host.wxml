@@ -25,7 +25,7 @@
     <text>不可见水印</text>
   </view>
   <view wx:if="{{start}}" class='watermark-line-container' catchtap='onJump_host_resign'>
-    <text>图片绑定</text>
+    <text>图片注册</text>
   </view>
   <view wx:if="{{!start}}" class='watermark-line-container2' catchtap='onJump_host_resign'>
     <text>图片注册</text>
