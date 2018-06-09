@@ -18,7 +18,7 @@ Page({
     })
   },
   onLoad: function () {
-  
+    console.log(app.globalData.userInfo);
     if (app.globalData.userInfo) {  //如果已经获取了用户的信息
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -49,9 +49,8 @@ Page({
       })
     }
   },
+
   getUserInfo: function (e) {
-    
-    //  console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     //  console.log(app.globalData.userInfo)
     this.setData({
@@ -66,17 +65,24 @@ Page({
    * 授权事件
    */
   getUserInfo: function (e) {
-  
+wx.showLoading({
+  title: '正在授权',
+  mask:true
+})
     //授权成功
     if (e.detail.errMsg == "getUserInfo:ok") {
+      wx.hideLoading();
       wx.showToast({
         title: '授权成功',
       });
-      console.log('已经授权');
+      console.log('已经授权,(app.globalData.userInfo)是', app.globalData.userInfo);
       //授权成功就是获取设备ID
       wx.request({
         url: 'https://crp.shakeel.cn/did',
         method: 'GET',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded' // 默认值
+        },
         data: {
 
         },
@@ -91,7 +97,7 @@ Page({
             return
           }
 
-          if (res.data.errcode == 0)  {
+          if (res.data.errcode == 0) {
             //这个时候会话创建成功
             console.log('获取设备成功', res.data.did);
             wx.showToast({
@@ -101,8 +107,7 @@ Page({
             });
             wx.setStorageSync('did', res.data.did);//将设备的id存入缓存中
           }
-          else
-          {
+          else {
             exp.exception(errcode);
           }
         },
@@ -116,7 +121,7 @@ Page({
           });
         },
         complete: function () {
-          console.log('获取设备的id', wx.getStorageSync('did'))
+          console.log('获取设备的did', wx.getStorageSync('did'))
           if (!wx.getStorageSync('did') == "")  //如果已经获取了设备的ID，那么就登录
           {
             console.log('index-js登录', wx.getStorageSync('sessionId'))
@@ -142,18 +147,8 @@ Page({
                     'content-type': 'application/json' // 默认值
                   },
                   success: function (res) {
-                    // console.log('登陆返回', res.data)
-                    /*
-                    if (res.data.fg == false) { 
-                      console.log(res.data.msg)
-                      return
-                    }
-                    */
-                    console.log('index.js文件',res.data)
+                    console.log('index.js文件', res.data)
                     wx.setStorageSync('sessionId', res.data.sessionId);
-
-
-                    //   console.log(res.data)
                     console.log('=================session success=================')
                     // console.log(res.data.fg)
                     if (res.data.errcode == 0) {  //如果登录成功
@@ -175,7 +170,7 @@ Page({
                     }
 
                     else {
-                     exp.exception(res.data.errcode)
+                      exp.exception(res.data.errcode)
                     }
 
                   },
@@ -188,7 +183,7 @@ Page({
                     })
                   },
                   complete: function (res) {
-
+                    console.log('index登录完成')
                   }
                 })
               }
@@ -251,6 +246,7 @@ Page({
 
     }
     else {
+      wx.hideLoading();
       wx.showToast({
         title: '授权后才可以使用该小程序',
         icon: 'none',

@@ -142,6 +142,14 @@ return
     })
     return
   }
+  if (res.data.errcode == 1) {
+    wx.showToast({
+      title: '服务器遇到了异常，请稍后再试',
+      icon: 'none',
+      duration: 2000
+    })
+    return
+  }
   if (n == 1002) {
     wx.showModal({
       title: '温馨提示',

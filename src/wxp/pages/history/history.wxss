@@ -7,6 +7,15 @@
  position:fixed;
  text-align: center;
 }
+.post-container{
+  flex-direction: column;
+  display: flex;
+  margin:1rpx 0 10rpx;
+  border-top: 1rpx solid #ededed;
+  border-bottom: 1rpx solid #ededed;
+  padding-bottom: 0rpx;
+  margin-top: 0rpx;
+}
 .a{
   margin-top: 8rpx;
 }

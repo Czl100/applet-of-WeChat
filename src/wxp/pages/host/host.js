@@ -58,7 +58,7 @@ Page({
 
   imageLoad: function (e) {
     wx.setStorageSync('active', true);
-    timer.timer();
+   // timer.timer();
     //获取图片的原始宽度和高度  
     let originalWidth = e.detail.width;
     let originalHeight = e.detail.height;
@@ -82,7 +82,7 @@ Page({
    */
   onShow: function () {
 
-    if (!wx.getStorageSync('sessionId') == "") {
+    if ((!wx.getStorageSync('sessionId') == "")||(!wx.getStorageSync('did'))=="") {
       wx.request({
         url: 'https://crp.shakeel.cn/query-unread-number',
         method: 'GET',
@@ -124,19 +124,7 @@ Page({
           else {
             console.log(res.data.errmsg);
             exp.exception(res.data.errcode);
-            /*
-            wx.showModal({
-              title: '提示',
-              content: res.data.errmsg,
-              success: function (res1) {
-                if (res1.confirm) {
-                  console.log('用户点击确定')
-                } else if (res1.cancel) {
-                  console.log('用户点击取消')
-                }
-              }
-            })
-            */
+      
           }
         },
         fail: function (res) {
@@ -252,50 +240,7 @@ Page({
     timer.timer();
 
     if (this.data.start) {
-      /*
-       wx.showModal({
-         title: '温馨提示',
-         content: '请选择嵌入不可见水印或者提取不可见水印',
-         cancelText: '嵌入水印',
-         confirmText: '提取水印',
-         success: function (res1) {
-           if (res1.cancel) {
-             console.log('用户点击嵌入');
-             wx.navigateTo({
-               url: '../host_invisible/host_invisible',
-               success: function () {
- 
-                 console.log("不可见水印页面", "jump succcess")
-               },
-               fail: function () {
-                 console.log("jump failed")
-               },
-               complete: function () {
-                 console.log("不可见水印页面", "jump complete")
-               }
-             });
-           } 
-           /*
-           else if (res1.confirm) {
-             console.log('用户点击提取')
-             wx.navigateTo({
-               url: '../host_invisible_get/host_invisible_get',
-               success: function () {
- 
-                 console.log("不可见水印页面提取", "jump succcess")
-               },
-               fail: function () {
-                 console.log("jump failed")
-               },
-               complete: function () {
-                 console.log("不可见水印页面提取", "jump complete")
-               }
-             });
-          }
-          
-         }
-       })
-      */
+   
 
       wx.navigateTo({
         url: '../host_invisible/host_invisible',
