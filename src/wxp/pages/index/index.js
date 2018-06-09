@@ -200,6 +200,7 @@ wx.showLoading({
 
                       // 可以将 res 发送给后台解码出 unionId
                       wx.setStorageSync('user', res.userInfo);//存进缓存
+                      console.log('用户信息',app.globalData.userInfo);
                       // this.globalData.userInfo = res.userInfo;
                       //  console.log(res.userInfo)
 
@@ -254,6 +255,9 @@ wx.showLoading({
       })
     }
   },
+  onReady:function(res){
+    
+  }
 
 
 })

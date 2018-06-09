@@ -257,6 +257,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function (e) {
+    
     var w;
     var h;
     //this.data.imgw和imgh分别是图片的宽高
