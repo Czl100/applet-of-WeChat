@@ -1,4 +1,4 @@
-
+<view class='re'>
 <view class='container-d'>
   <button class="weui-btn mini-btn" class='co' size="mini" catchtap='onget'>全部已读</button>
 </view>
@@ -11,26 +11,25 @@
         <view class='img'>
           <image mode='aspectFit' src="{{item.img_small}}" catchtap='onpre' id='{{idx}}'></image>
         </view>
-        <view class='title'>{{item.imgtitle}}</view>
+        <view class='title' ><text class='coclor_'>{{item.imgtitle}}</text></view>
       </view>
       <view class='body'>
         <view class='bodytop'>
-          <view>{{item.sender}}</view>
-          <view>{{item. datetime}}</view>
+          <view class='color_'>{{item.sender}}</view>
+          <view class='t'>{{item. datetime}}</view>
         </view>
         <view class='bodybottom'>
           {{item.content}}
         </view>
       </view>
     </view>
-
   </view>
-
   </view>
 </block>
 </view>
 <view class='container-b'>
   <button class="weui-btn mini-btn" class='before' size="mini" catchtap='onbefore'>上一页</button>
-  <button class="weui-btn mini-btn" type="default" size="mini">{{mypage}}</button>
+  <button class="weui-btn mini-btn"  size="mini">{{mypage}}</button>
   <button class="weui-btn mini-btn" class='after' size="mini" catchtap='onafter'>下一页</button>
+</view>
 </view>

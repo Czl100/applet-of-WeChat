@@ -1,11 +1,11 @@
 .post-container{
   flex-direction: column;
   display: flex;
-  margin:1rpx 0 13rpx;
+  margin:1rpx 0 10rpx;
   border-top: 1rpx solid #ededed;
   border-bottom: 1rpx solid #ededed;
-  padding-bottom: 5rpx;
-  margin-top: 30rpx;
+  padding-bottom: 0rpx;
+  margin-top: 0rpx;
 }
 .color{
    background-color:#E1F5FE;
@@ -16,6 +16,7 @@
 .g{
   margin-top: 60rpx;
   margin-bottom: 60rpx;
+
 }
 .main{
   width: 100%;
@@ -24,18 +25,21 @@
 }
 .container-b{
  width: 100%;
- position: fixed;
+
  bottom: 0rpx;
  text-align: center;
+ margin-block-end: 5rpx;
+ margin-bottom: 5rpx;
+ 
 }
 .container-d{
 width: 100%;
 height: 40rpx;
- position: absolute;
  top: 0rpx;
  text-align: left;
  margin-bottom: 5rpx;
- 
+ margin-left: 5rpx;
+ margin-right: 5rpx;
 }
 .co{
   background-color: #ECEFF1
@@ -56,9 +60,9 @@ height: 40rpx;
 }
 .title{
   width: 100%;
-  height: 40rpx;
+  color: #9E9E9E;
   text-align:center;
-
+font-size: 26rpx;
 }
 
 .body{

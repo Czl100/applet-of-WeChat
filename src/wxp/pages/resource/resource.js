@@ -134,6 +134,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    wx.setStorageSync('active', true);
+    timer.timer();
     wx.request({
       url: 'https://crp.shakeel.cn/query-unread-number',
       header: {

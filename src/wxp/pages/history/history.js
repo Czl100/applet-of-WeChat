@@ -249,7 +249,8 @@ Page({
    */
 
   onShow: function () {
-
+    wx.setStorageSync('active', true);
+    timer.timer();
     var that = this;
 
     var sessionId = wx.getStorageSync('sessionId');

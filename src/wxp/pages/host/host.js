@@ -18,8 +18,128 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  //  wx.setStorageSync('active', true);
-  //  timer.timer();
+  
+
+    // 查看是否授权
+    wx.getSetting({
+      
+      success: function (res) {
+        console.log('加载host')
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，说明缓存中已经获取了用户的信息
+          wx.hideLoading();
+          //获取设备
+          wx.request({
+            url: 'https://crp.shakeel.cn/did',
+            method: 'GET',
+            data: {
+
+            },
+            header: {
+              'content-type': 'application/x-www-form-urlencoded' // 默认值
+            },
+            success: function (res) {
+              if (res.data.errcode == 0) {
+                wx.setStorageSync('did', res.data.did);
+                console.log('hostjs，当进入检验已经授权的时候，获取设备的did', res.data.res);
+              }
+              else {
+                exp.exception(res.data.errcode);
+              }
+            },
+            fail: function (res) {
+              wx.showToast({
+                title: '获取设备的ID失败',
+                icon: 'none',
+                duration: 2000
+              })
+            },
+            complete: function (res) {
+              wx.hideLoading();
+              console.log('获取设备结束')
+            }
+          })  //获取设备结束
+
+          //下面会话
+          // / 获取用户的信息之后，发送给后台，这个时候进行登录：
+          // 登录,直接登录即可
+          wx.login({
+            success: res => {
+              // 发送 res.code 到后台换取 openId, sessionKey, unionId
+              var did = wx.getStorageSync('did');
+              var requrl = 'https://crp.shakeel.cn/session-build?code=' + res.code + "&did=" + did
+              console.log(requrl)
+              wx.request({
+                url: 'https://crp.shakeel.cn/session-build/',
+                url: requrl,
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded' // 默认值
+                },
+                data: {
+                  //将用户信息发送上服务器
+                  'code': res.code,
+                  'did': did
+                },
+                header: {
+                  'content-type': 'application/json' // 默认值
+                },
+                success: function (res) {
+                  console.log('host.js文件', res.data)
+                  wx.setStorageSync('sessionId', res.data.sessionId);
+                  console.log('=================session success=================')
+                  // console.log(res.data.fg)
+                  if (res.data.errcode == 0) {  //如果登录成功
+                    console.log(res.data.sessionId);
+                    wx.showToast({
+                      title: '登录成功',
+                      icon: 'success',
+                      duration: 2000
+                    })
+                    return
+                  }
+                  if (res.data.errcode == 1) {
+                    wx.showToast({
+                      title: '服务器遇到了异常，请稍后再试',
+                      icon: 'none',
+                      duration: 2000
+                    })
+                    return
+                  }
+
+                  else {
+                    exp.exception(res.data.errcode)
+                  }
+
+                },
+                fail: function (res) {
+                  console.log('=================session fail=================')
+                  wx.showToast({
+                    title: '请连接服务器',
+                    icon: 'none',
+                    duration: 2000
+                  })
+                },
+                complete: function (res) {
+                  console.log('在检验出小城授权成功之后，app登录完成')
+                }
+              })
+            }
+
+          })
+
+        }
+        //如果没有授权的话，提醒用户没有授权，因为本身不能跳转
+        else {
+          console.log('加载host')
+          wx.navigateTo({
+            url: '../index/index',
+         //   success: function (res) { },
+          //  fail: function (res) { },
+          //  complete: function (res) { },
+          })
+        }
+      }
+    })
   },
   chooseImage: function (event) {
     wx.setStorageSync('active', true);
@@ -58,7 +178,7 @@ Page({
 
   imageLoad: function (e) {
     wx.setStorageSync('active', true);
-    timer.timer();
+    // timer.timer();
     //获取图片的原始宽度和高度  
     let originalWidth = e.detail.width;
     let originalHeight = e.detail.height;
@@ -81,103 +201,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
-    if (!wx.getStorageSync('sessionId') == "") {
-      wx.request({
-        url: 'https://crp.shakeel.cn/query-unread-number',
-        method: 'GET',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded' // 默认值
-        },
-        data: {
-          'sessionId': wx.getStorageSync('sessionId'),
-        },
-        success: function (res) {
-          console.log('host界面的消息提醒', res.data.errcode, res.data.errmsg);
-          if (res.data.errcode == 0) {
-            console.log('打开的时候消息提醒的个数', res.data.number)
-            wx.setStorageSync('_number', res.data.number);
-            var number = wx.getStorageSync('_number');
-            console.log(number);
-            if (number == 0) {
-              wx.removeTabBarBadge({
-                index: 3
-              });
-            }
-            else {
-              wx.setTabBarBadge({
-                index: 3,
-                text: number + "",
-              })
-            }
-            return
-          }
-
-          if (res.data.errcode == 1) {
-            wx.showToast({
-              title: '服务器遇到了异常，请稍后再试',
-              icon: 'none',
-              duration: 2000
-            })
-            return
-          }
-          else {
-            console.log(res.data.errmsg);
-            exp.exception(res.data.errcode);
-            /*
-            wx.showModal({
-              title: '提示',
-              content: res.data.errmsg,
-              success: function (res1) {
-                if (res1.confirm) {
-                  console.log('用户点击确定')
-                } else if (res1.cancel) {
-                  console.log('用户点击取消')
-                }
-              }
-            })
-            */
-          }
-        },
-        fail: function (res) {
-          //   if (res.data.errcode == 0) {
-          wx.showToast({
-            title: '请保持网络通畅',
-            icon: 'none',
-            duration: 2000
-          })
-          //   }
-        }
-      })
-    } //如果sessionId存在
-    else {
-      wx.showToast({
-        title: '用户正进行登录并授权',
-        icon: 'loading',
-        duration: 3000
-      })
-
-      // 检验是否授权
-      wx.getSetting({
-        success: function (res) {
-          wx.hideToast();
-          if (!res.authSetting['scope.userInfo']) {  //如果还没有授权的话
-            wx.navigateTo({
-              url: '/pages/index/index',
-            })
-          } else {
-
-            wx.getUserInfo({
-              success: function (res) {
-                // console.log(res.userInfo)
-
-              }
-            })
-          }
-        }
-      })
-
-    }
+    wx.setStorageSync('active', true);
+    timer.timer();
   },
 
   /**
@@ -252,50 +277,7 @@ Page({
     timer.timer();
 
     if (this.data.start) {
-      /*
-       wx.showModal({
-         title: '温馨提示',
-         content: '请选择嵌入不可见水印或者提取不可见水印',
-         cancelText: '嵌入水印',
-         confirmText: '提取水印',
-         success: function (res1) {
-           if (res1.cancel) {
-             console.log('用户点击嵌入');
-             wx.navigateTo({
-               url: '../host_invisible/host_invisible',
-               success: function () {
- 
-                 console.log("不可见水印页面", "jump succcess")
-               },
-               fail: function () {
-                 console.log("jump failed")
-               },
-               complete: function () {
-                 console.log("不可见水印页面", "jump complete")
-               }
-             });
-           } 
-           /*
-           else if (res1.confirm) {
-             console.log('用户点击提取')
-             wx.navigateTo({
-               url: '../host_invisible_get/host_invisible_get',
-               success: function () {
- 
-                 console.log("不可见水印页面提取", "jump succcess")
-               },
-               fail: function () {
-                 console.log("jump failed")
-               },
-               complete: function () {
-                 console.log("不可见水印页面提取", "jump complete")
-               }
-             });
-          }
-          
-         }
-       })
-      */
+
 
       wx.navigateTo({
         url: '../host_invisible/host_invisible',

@@ -555,6 +555,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    wx.setStorageSync('active', true);
+    timer.timer();
     var that = this;
     var sessionId = wx.getStorageSync('sessionId');
     wx.setStorageSync('re_mypage', that.data.mypage);
