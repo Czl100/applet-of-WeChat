@@ -62,6 +62,7 @@ Page({
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
           return
@@ -106,6 +107,7 @@ Page({
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
+          mask:true,
           duration: 2000
         })
       },
@@ -115,6 +117,7 @@ Page({
           wx.showToast({
             title: '暂无消息',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
 
@@ -172,6 +175,7 @@ Page({
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
           return
@@ -213,6 +217,7 @@ Page({
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
+          mask:true,
           duration: 2000
         })
       },
@@ -222,6 +227,7 @@ Page({
           wx.showToast({
             title: '暂无消息',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
 
@@ -264,6 +270,7 @@ Page({
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
           return
@@ -291,6 +298,7 @@ Page({
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
+          mask:true,
           duration: 2000
         })
       }
@@ -311,6 +319,7 @@ Page({
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
           return
@@ -350,6 +359,7 @@ Page({
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
+          mask:true,
           duration: 2000
         })
       },
@@ -359,6 +369,7 @@ Page({
           wx.showToast({
             title: '暂无消息',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
 
@@ -395,6 +406,7 @@ Page({
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
           return
@@ -426,6 +438,7 @@ Page({
                 wx.showToast({
                   title: '服务器遇到了异常，请稍后再试',
                   icon: 'none',
+                  mask:true,
                   duration: 2000
                 })
                 return
@@ -466,6 +479,7 @@ Page({
               wx.showToast({
                 title: '请保持网络通畅',
                 icon: 'none',
+                mask:true,
                 duration: 2000
               })
             },
@@ -475,6 +489,7 @@ Page({
                 wx.showToast({
                   title: '暂无消息',
                   icon: 'none',
+                  mask:true,
                   duration: 2000
                 })
 
@@ -502,6 +517,7 @@ Page({
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
+          mask:true,
           duration: 2000
         })
       }, complete: function () {
@@ -509,6 +525,7 @@ Page({
           wx.showToast({
             title: '暂无消息',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
 
@@ -558,6 +575,7 @@ Page({
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
           return
@@ -587,6 +605,7 @@ Page({
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
+          mask:true,
           duration: 2000
         })
       }
@@ -607,6 +626,7 @@ Page({
           wx.showToast({
             title: '服务器遇到了异常，请稍后再试',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
           return
@@ -646,6 +666,7 @@ Page({
         wx.showToast({
           title: '请保持网络通畅',
           icon: 'none',
+          mask:true,
           duration: 2000
         })
       },
@@ -655,6 +676,7 @@ Page({
           wx.showToast({
             title: '暂无消息',
             icon: 'none',
+            mask:true,
             duration: 2000
           })
 

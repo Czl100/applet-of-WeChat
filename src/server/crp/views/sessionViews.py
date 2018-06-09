@@ -51,3 +51,9 @@ def bind_routes(app):
         sp.del_session(sessionId)
         return {}
 
+    @app.route("/session-keep")
+    @request_around(app, request, hasSessionId=True)
+    @app.limiter.limit("20 per minute")
+    def session_keep(sessionId):
+        sp.keep_session(sessionId)
+        return {}

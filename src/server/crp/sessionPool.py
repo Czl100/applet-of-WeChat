@@ -71,6 +71,15 @@ class SessionPool:
             locker.release()
         return sessionId
     
+    def keep_session(self, sessionId):
+        cache = self.__cache__
+        wx2ids = self.__wx2ids__
+        wxid = self.wxid(sessionId)
+        
+        # 刷新超时时间
+        cache.set(sessionId, cache.get(sessionId), addexpires=True)
+        wx2ids.set(wxid, wx2ids.get(wxid))
+
     # 删除指定的会话
     def del_session(self, sessionId):
         self.__lock__.acquire()

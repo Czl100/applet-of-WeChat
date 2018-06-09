@@ -3,6 +3,7 @@ var exp = require('../utils/exception.js')
 function timer() {
 
   setTimeout(function () {
+
     for (var i = 0; i < 5; i++) {
       if (wx.getStorageSync('active')) {
         //如果active是true，那么保持请求
@@ -47,6 +48,7 @@ function timer() {
                     header: {
                       'content-type': 'application/json' // 默认值
                     },
+
                     success: function (res) {
                       console.log('index.js文件', res.data)
                       wx.setStorageSync('sessionId', res.data.sessionId);

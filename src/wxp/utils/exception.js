@@ -3,13 +3,8 @@ function exception(n){
 wx.showModal({
   title: '提醒',
   content: '设置消息为已读时，系统获取不到该消息',
-  success: function (res) {
-    if (res.confirm) {
-      console.log('用户点击确定')
-    } else if (res.cancel) {
-      console.log('用户点击取消')
-    }
-  }
+  showCancel: false,
+  confirmText: "我知道了"
 })
 return
   }
@@ -17,13 +12,8 @@ return
     wx.showModal({
       title: '提醒',
       content: '发送邀请时，找不到该图片',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -31,13 +21,8 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '该图片未曾嵌入过不可见水印',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -45,13 +30,8 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '密码错误',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -59,13 +39,8 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '微信小程序登录时，采用的临时凭证有问题',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -74,13 +49,8 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '内容长度过长',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -89,13 +59,8 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '所采用的图像已经在该平台中嵌入了相关的水印或者已经注册过',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -104,13 +69,8 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '嵌入/提取算法进程运行异常，请联系开发者',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -118,13 +78,8 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '已经有不同的设备用此账号在登录，请检查个人信息',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -132,13 +87,8 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '服务器请求过程中缺少必需的数据',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -154,13 +104,8 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '未登录或登录已经过期，请退出重新登录',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -168,13 +113,8 @@ return
     wx.showModal({
       title: '温馨提示',
       content: '登录过程中出现异常，请退出重新登录',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
+      showCancel: false,
+      confirmText: "我知道了"
     })
     return
   }
@@ -182,14 +122,16 @@ return
     wx.showToast({
       title: '服务器异常，请稍后重试',
       icon:'none',
-duration:2000
+      duration:2000,
+      mask:true
     })
   }
   if (n == 1000) {
     wx.showToast({
       title: '系统出现异常',//出现Crp平台预期的异常
       icon: 'none',
-      duration: 2000
+      duration: 2000,
+      mask:true
     })
     return
   }
@@ -197,7 +139,8 @@ duration:2000
     wx.showToast({
       title: '出现了不可预测的异常，请联系小程序开发者',//出现Crp平台预期的异常
       icon: 'none',
-      duration: 2000
+      duration: 2000,
+      mask:true
     }) 
     return
   }

@@ -119,12 +119,13 @@ Page({
     }
 
   },
-  onsave: function () {
+  oncancel: function () {
     wx.setStorageSync('active', true);
     timer.timer();
   //  if (this.data.start) {
       //点击保存图片的时候
-
+    wx.navigateBack();
+    return ;
       wx.canvasToTempFilePath({
         x: x,
         y: y,

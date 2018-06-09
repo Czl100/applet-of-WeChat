@@ -3,6 +3,7 @@
 var exp = require('utils/exception.js')
 App({
   onUnload: function () {
+    console.log("app.js - onload")
     wx.request({
       url: 'https://crp.shakeel.cn/session-destroy',
       method: 'GET',

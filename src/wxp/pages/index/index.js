@@ -40,7 +40,7 @@ Page({
 
       }
     } else {
-      console.log('加载index2')
+      console.log('加载index3')
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         success: res => {
