@@ -25,11 +25,11 @@
   <view class='container-a'>
 
     <view class='bo'>
-      <view class='watermark-line-container3' catchtap='onsure'>
+      <view class='watermark-line-container3' catchtap='onsure' hover-class='watermark-line-container4'>
         <text>嵌入水印信息</text>
       </view>
 
-      <view class='watermark-line-container3' catchtap='onget'>
+      <view class='watermark-line-container3' catchtap='onget' hover-class='watermark-line-container4'>
         <text>提取水印信息</text>
       </view>
      

@@ -131,6 +131,22 @@ page{
   background-color: #0091EA
 
 }
+.watermark-line-container4 text{
+  font-size: 40rpx;
+  line-height: 80rpx;
+  font-family: Microsoft YaHei;
+  color: #fff;
+}
+.watermark-line-container4{
+  margin-top:40rpx;
+  border:1px solid #0288D1;
+  width: 650rpx;
+  height: 80rpx;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #0288D1
+
+}
 .line_
 {
   width:100%;
@@ -248,4 +264,7 @@ height: 40rpx;
 }
 .color_{
   color: #9E9E9E
+}
+.tab{
+  background-color: #B3E5FC
 }

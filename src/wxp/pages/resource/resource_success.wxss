@@ -12,3 +12,13 @@ page{
 .img{
   height: 150rpx
 }
+.nta{
+  background-color: #0091EA;
+  border:1px solid #0091EA;
+}
+.nta text{
+  color: #fff
+}
+.ta{
+  background-color: #0288D1
+}

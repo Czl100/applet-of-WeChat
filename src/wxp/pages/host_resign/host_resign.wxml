@@ -10,11 +10,13 @@
   <view class='container-a'>
 
     <view class='bo'>
-      <view class='watermark-line-container3' catchtap='onsure'>
+      <view hover-class='watermark-line-container4' class='watermark-line-container3' catchtap='onsure' >
+  
         <text>开始注册</text>
+       
       </view>
       
-      <view class='watermark-line-container' catchtap='oncancel'>
+      <view class='watermark-line-container' catchtap='oncancel' hover-class='watermark-line-container3'>
         <text>取消</text>
       </view>
     </view>

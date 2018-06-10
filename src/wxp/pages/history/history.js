@@ -13,6 +13,7 @@ Page({
     // pages:1,//初始值总页数是1
     mypage: 1,//默认查找第一页
 
+
     img_unfinish: "/pages/icon/unfinished.png",//如果是未完成时的图片
     postList: [{
       datetime: '',
@@ -189,10 +190,18 @@ Page({
           console.log('发送查询历史信息请求', res.data),
             console.log('当前的页数是', wx.getStorageSync('mypage')),
             //固定放在某一页
-            his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
-          for (var i = 0; i < i < his_list[wx.getStorageSync('re_mypage') - 1].length; i++) {
-            if (his_list[wx.getStorageSync('mypage') - 1][i].imgtitle == "") {
-              his_list[wx.getStorageSync('mypage') - 1][i].imgtitle = '暂无标题'
+            his_list[wx.getStorageSync('mypage')] = res.data.list;
+          console.log('当前页面', his_list[wx.getStorageSync('mypage')])
+          var len = his_list[wx.getStorageSync('mypage')].length;
+          var k = wx.getStorageSync('mypage') - 1
+          console.log('下一页的list长度', his_list[wx.getStorageSync('mypage')].length);
+
+          for (var i = 0; i < len; i++) {
+            console.log('k')
+            if ((his_list[k][i].imgtitle == "")) {
+              console.log('his_list[k][i]', his_list[k][i])
+              his_list[k][i].imgtitle = "暂无标题";
+              console.log('k2')
             }
           }
           wx.setStorageSync('history_list', his_list);
@@ -239,6 +248,17 @@ Page({
           postList: wx.getStorageSync('history_list')[p - 1],
         })
         console.log('点击下一页的数据动态渲染结果', wx.getStorageSync('history_list')[p - 1])
+        /*
+        var len = that.data.postList.length;
+        console.log('这个一页的图片长度', len)
+        for (var i = 0; i < len; i++) {
+          if (that.data.postList[i].imgtitle == "") {
+            //     console.log('图片标题空',that.data.postList[0].imgtitle)
+            that.data.postList[i].imgtitle = '暂无标题'
+
+          }
+        }
+        */
       }
       }
     })
@@ -283,13 +303,21 @@ Page({
             console.log('onshow当前的页数是', wx.getStorageSync('mypage')),
             //固定放在某一页
             his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
-          console.log('onshow的list', his_list[wx.getStorageSync('mypage') - 1]);
-          for (var i = 0; i <  his_list[wx.getStorageSync('re_mypage') - 1].length;i++){
-           if (his_list[wx.getStorageSync('mypage') - 1][i].imgtitle=="")
+         var len = his_list[wx.getStorageSync('re_mypage') - 1].length;
+          var k = wx.getStorageSync('mypage') - 1
+          console.log('onshow的list长度', his_list[wx.getStorageSync('re_mypage') - 1].length);
+         
+          for (var i = 0; i < len;i++){
+          console.log('k')
+           if (his_list[k][i].imgtitle=="")
            {
-             his_list[wx.getStorageSync('mypage') - 1][i].imgtitle='暂无标题'
+             console.log('his_list[k][i]', his_list[k][i])
+             his_list[k][i].imgtitle="暂无标题";
+             console.log('k2')
            }
          }
+         
+          console.log('k3',his_list[0][0].imgtitle)
           wx.setStorageSync('history_list', his_list);  //将这个列表存放在缓存中
           console.log('his_list', his_list)  //打印出来看看
           //总页数
@@ -329,7 +357,18 @@ Page({
         that.setData({
           postList: wx.getStorageSync('history_list')[p - 1],
         })
-      }
+        /*
+        var len=that.data.postList.length;
+        console.log('这个一页的图片长度', len)
+        for (var i = 0; i < len; i++) {
+          if (that.data.postList[i].imgtitle == "") {
+            //     console.log('图片标题空',that.data.postList[0].imgtitle)
+       //     that.data.postList[i].imgtitle = '暂无标题'
+       
+          }
+        }
+        */
+        }
       }
     })
     wx.request({

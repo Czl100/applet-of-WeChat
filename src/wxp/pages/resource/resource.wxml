@@ -15,7 +15,7 @@
 <view class='host-container'>
 
 
-  <view wx:if="{{start}}" class='watermark-line-container3' bindtap="onstart">
+  <view wx:if="{{start}}" class='watermark-line-container3' bindtap="onstart" hover-class='watermark-line-container4'>
     <text>开始追溯</text>
   </view>
   <view wx:if="{{!start}}" class='watermark-line-container2' bindtap="onstart">

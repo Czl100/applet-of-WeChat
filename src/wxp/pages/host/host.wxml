@@ -9,22 +9,22 @@
 </view>
 <view class='ba'>
 <view class='host-container'>
-  <view wx:if="{{start}}" class='watermark-line-container' catchtap='onJump_host_visible' bindload="imageLoad">
+  <view wx:if="{{start}}" class='watermark-line-container' catchtap='onJump_host_visible' bindload="imageLoad" hover-class='watermark-line-container3'>
     <text>可见水印-离线支持</text>
   </view>
 
-  <view wx:if="{{!start}}" class='watermark-line-container2' catchtap='onJump_host_visible' bindload="imageLoad">
+  <view wx:if="{{!start}}" class='watermark-line-container2' catchtap='onJump_host_visible' bindload="imageLoad" >
     <text>可见水印-离线支持</text>
   </view>
 
-  <view wx:if="{{start}}" class='watermark-line-container' catchtap='onJump_host_invisible'>
+  <view wx:if="{{start}}" class='watermark-line-container' catchtap='onJump_host_invisible' hover-class='watermark-line-container3'>
     <text>不可见水印</text>
   </view>
 
   <view wx:if="{{!start}}" class='watermark-line-container2' catchtap='onJump_host_invisible'>
     <text>不可见水印</text>
   </view>
-  <view wx:if="{{start}}" class='watermark-line-container' catchtap='onJump_host_resign'>
+  <view wx:if="{{start}}" class='watermark-line-container' catchtap='onJump_host_resign' hover-class='watermark-line-container3'>
     <text>图片注册</text>
   </view>
   <view wx:if="{{!start}}" class='watermark-line-container2' catchtap='onJump_host_resign'>

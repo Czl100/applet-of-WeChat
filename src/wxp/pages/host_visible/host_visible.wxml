@@ -7,10 +7,10 @@
 <input placeholder='请输入水印信息…' hidden='{{!useKeyboardFlag}}'  class='input-box' bindinput='Input'></input>
 </view>
 
-<view class='watermark-line-container3'  catchtap='onsure' >
+<view class='watermark-line-container3'  catchtap='onsure' hover-class='watermark-line-container4'>
     <text>预览</text>
   </view>
-<view class='watermark-line-container'  catchtap='oncancel' >
+<view class='watermark-line-container'  catchtap='oncancel' hover-class='watermark-line-container3'>
     <text>取消</text>
   </view>
 </view>
