@@ -205,8 +205,7 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, ha
                     elif sp.session(sessionId) == None:
                         raise NotExistsSessionException()
                     kws["sessionId"] = sessionId
-                    app.logger.error("request---sessionId:{0}".format(sessionId))
-                    app.logger.error("request---wxId:{0}".format(sp.wxid(sessionId)))
+                    app.logger.error("{0}------{1}".format( sp.wxid(sessionId), sessionId))
                 # 装载kw
                 for arg in args:
                     k = arg.key()
