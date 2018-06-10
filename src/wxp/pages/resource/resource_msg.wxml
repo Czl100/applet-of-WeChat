@@ -19,7 +19,7 @@
     </view>
   </view>
 
-  <view class="weui-btn-area">
+  <view class='center'>
     <view class='watermark-line-container3' bindtap="showTopTips" hover-class='watermark-line-container4'>
       <text>确定</text>
     </view>

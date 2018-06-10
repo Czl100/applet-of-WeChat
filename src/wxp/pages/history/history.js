@@ -85,12 +85,24 @@ Page({
           console.log('发送查询历史信息请求', res.data),
             console.log('当前的页数是', wx.getStorageSync('mypage')),
             //固定放在某一页
-            his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
-          for (var i = 0; i < i < his_list[wx.getStorageSync('re_mypage') - 1].length; i++) {
-            if (his_list[wx.getStorageSync('mypage') - 1][i].imgtitle == "") {
-              his_list[wx.getStorageSync('mypage') - 1][i].imgtitle = '暂无标题'
+            his_list[wx.getStorageSync('mypage')] = res.data.list;
+          console.log('当前页面', his_list[wx.getStorageSync('mypage')-1])
+          console.log('当前页面长度', his_list[wx.getStorageSync('mypage')].length)
+          var len = his_list[wx.getStorageSync('mypage')].length;
+          console.log('len', len)
+          var k = wx.getStorageSync('mypage')
+          console.log('his_list[k]', his_list[k])
+          console.log('上一页的list长度', his_list[wx.getStorageSync('mypage')].length);
+
+          for (var j = 0; j < len; j++) {
+            console.log('k', k)
+            if ((his_list[k][j].imgtitle == "")) {
+              console.log('his_list[k][i]', his_list[k][j])
+              his_list[k][j].imgtitle = "暂无标题";
+              console.log('k2')
             }
           }
+          console.log('his_list', his_list) 
           
           wx.setStorageSync('history_list', his_list);
           
@@ -128,14 +140,10 @@ Page({
         var p = wx.getStorageSync('mypage');
         console.log('上一页的p', p)
         // var that=this;
-        if (!wx.getStorageSync('history_list')[p - 1] == "") {
-          if (wx.getStorageSync('history_list')[p - 1].imgtitle==""){
-            
-          }
-          that.setData({
-            postList: wx.getStorageSync('history_list')[p - 1],
-          })
-        }
+        that.setData({
+          postList: wx.getStorageSync('history_list')[p],
+        })
+        console.log('点击下一页的数据动态渲染结果', wx.getStorageSync('history_list')[p])
         }
       }
     })
@@ -192,19 +200,24 @@ Page({
             //固定放在某一页
             his_list[wx.getStorageSync('mypage')] = res.data.list;
           console.log('当前页面', his_list[wx.getStorageSync('mypage')])
+          console.log('当前页面长度', his_list[wx.getStorageSync('mypage')].length)
           var len = his_list[wx.getStorageSync('mypage')].length;
-          var k = wx.getStorageSync('mypage') - 1
+          console.log('len',len)
+          var k = wx.getStorageSync('mypage')
+          console.log('his_list[k]', his_list[k]) 
           console.log('下一页的list长度', his_list[wx.getStorageSync('mypage')].length);
 
-          for (var i = 0; i < len; i++) {
-            console.log('k')
-            if ((his_list[k][i].imgtitle == "")) {
-              console.log('his_list[k][i]', his_list[k][i])
-              his_list[k][i].imgtitle = "暂无标题";
+          for (var j=0; j < len; j++) {
+            console.log('k',k)
+            if ((his_list[k][j].imgtitle == "")) {
+              console.log('his_list[k][i]', his_list[k][j])
+              his_list[k][j].imgtitle = "暂无标题";
               console.log('k2')
             }
           }
-          wx.setStorageSync('history_list', his_list);
+          console.log('his_list',his_list) 
+         wx.setStorageSync('history_list', his_list);
+          console.log('history_list', wx.getStorageSync('history_list')) 
           //     List_ = res.data.list
           //   console.log(List_)  //打印出来看看
           //总页数
@@ -245,9 +258,9 @@ Page({
         console.log('下一页的p', p)
         // var that=this;
         that.setData({
-          postList: wx.getStorageSync('history_list')[p - 1],
+          postList: wx.getStorageSync('history_list')[p],
         })
-        console.log('点击下一页的数据动态渲染结果', wx.getStorageSync('history_list')[p - 1])
+        console.log('点击下一页的数据动态渲染结果', wx.getStorageSync('history_list')[p ])
         /*
         var len = that.data.postList.length;
         console.log('这个一页的图片长度', len)
@@ -303,9 +316,9 @@ Page({
             console.log('onshow当前的页数是', wx.getStorageSync('mypage')),
             //固定放在某一页
             his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
-         var len = his_list[wx.getStorageSync('re_mypage') - 1].length;
+         var len = his_list[wx.getStorageSync('mypage') - 1].length;
           var k = wx.getStorageSync('mypage') - 1
-          console.log('onshow的list长度', his_list[wx.getStorageSync('re_mypage') - 1].length);
+          console.log('onshow的list长度', his_list[wx.getStorageSync('mypage') - 1].length);
          
           for (var i = 0; i < len;i++){
           console.log('k')

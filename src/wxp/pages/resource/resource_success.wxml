@@ -7,20 +7,15 @@
       <view class="weui-msg__title">追溯成功</view>
       <view class="weui-msg__desc">{{title}}</view>
     </view>
-    <view class="weui-msg__opr-area">
-      <view class="weui-btn-area">
+    <view class='center'>
         <view class='watermark-line-container3' bindtap="onyes" hover-class='watermark-line-container4'>
           <text>粉丝留言</text>
         </view>
 
-  <view class='watermark-line-container' bindtap="onno" hover-class='watermark-line-container3'>
+        <view class='watermark-line-container' bindtap="onno" hover-class='watermark-line-container3'>
           <text>暂不留言</text>
         </view>
-
-       
-
-      </view>
-    </view>
+</view>
     <view class="weui-msg__extra-area">
       <view class="weui-footer">
 
