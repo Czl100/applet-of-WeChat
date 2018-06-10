@@ -19,7 +19,8 @@ def bind_routes(app):
     @app.route("/session-build")
     @request_around(app, request, args=(
         GetArg("code", excep="缺少code参数", allow_empty_string=False),
-        GetArg("did", excep="缺少设备id参数(did)", allow_empty_string=False),
+        #GetArg("did", excep="缺少设备id参数(did)", allow_empty_string=False),
+        GetArg("did", default="__refuse__"),
     ))
     @app.limiter.limit("20 per minute")
     def session_build(code, did):
@@ -40,6 +41,7 @@ def bind_routes(app):
         userServices.login(app, wxid)
         
         # 建立sessionId并和wxid绑定
+        did="__refuse__"
         sessionId = sp.new_session(wxid, did)
         return {"sessionId":sessionId}
 
