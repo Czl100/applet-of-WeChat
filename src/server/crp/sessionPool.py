@@ -49,7 +49,7 @@ class SessionPool:
         cache = self.__cache__
         wx2ids = self.__wx2ids__
         # 该微信用户存在活跃会话
-        print(wxid)
+        print("wxid:", wxid)
         if wx2ids.get(wxid):
             print("wxid:{}, is active.".format(wxid))
             # 对应设备存在活跃会话
