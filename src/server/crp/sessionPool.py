@@ -51,7 +51,7 @@ class SessionPool:
         # 该微信用户存在活跃会话
         if app:
             app.logger.error("========== new session ==========")
-            app.logger.error("wxid:", wxid)
+            app.logger.error("wxid:{0}".format(wxid))
         # if wx2ids.get(wxid):
         #     if app:
         #         app.logger.info("wxid:{0}, is active.".format(wxid))
