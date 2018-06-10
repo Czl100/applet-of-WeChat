@@ -5,6 +5,7 @@ from sqlalchemy import desc
 from crp.exception import NotExistMessageidException
 import datetime
 import math
+import copy
 
 # 添加一条邀请，邀请中需要包含图像相关信息
 def add_message(app, imgtitle, imgurl, nick, senderId, authorId, content):
@@ -15,15 +16,20 @@ def add_message(app, imgtitle, imgurl, nick, senderId, authorId, content):
         dbsession.commit()
     except Exception:
         dbsession.rollback()
+    finally:
+        dbsession.close()
 
 # 查询邀请页
 def query_messages_page(app, authorId, perpage, page):
     dbsession = app.sessionMaker()
     try:
-        allItems = dbsession.query(Messages).filter_by(authorId=authorId).order_by(desc(Messages.unread)).order_by(desc(Messages.datetime)).all()
+        db_allItems = dbsession.query(Messages).filter_by(authorId=authorId).order_by(desc(Messages.unread)).order_by(desc(Messages.datetime)).all()
+        allItems = copy.deepcopy(db_allItems)
         dbsession.commit()
     except Exception:
         dbsession.rollback()
+    finally:
+        dbsession.close()
 
     # 提取出该页数据
     totalpage = math.ceil(len(allItems)/perpage)
@@ -55,6 +61,9 @@ def message_unread_number(app, wxid):
         dbsession.commit()
     except Exception:
         dbsession.rollback()
+    finally:
+        dbsession.close()
+
     return count
 
 def message_have_read(app, wxid, messageId):
@@ -68,6 +77,8 @@ def message_have_read(app, wxid, messageId):
     except Exception as e:
         dbsession.rollback()
         raise e
+    finally:
+        dbsession.close()
 
 def messages_all_read(app, wxid):
     dbsession = app.sessionMaker()
@@ -79,3 +90,5 @@ def messages_all_read(app, wxid):
     except Exception as e:
         dbsession.rollback()
         raise e
+    finally:
+        dbsession.close()

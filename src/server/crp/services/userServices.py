@@ -17,3 +17,5 @@ def login(app, wxid):
         dbsession.commit()
     except Exception:
         dbsession.rollback()
+    finally:
+        dbsession.close()
