@@ -194,7 +194,7 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, ha
             ip_times[ip] = ip_times.get(ip, 0) + 1
             if requestlog:    
                 view = request.url
-                app.logger.debug("[请求]{0} --- {1}".format(ip, view))
+                app.logger.info("[请求]{0} --- {1}".format(ip, view))
             try:
                 rt = {"errcode":1}
                 # sessionId的存在测试
@@ -205,6 +205,8 @@ def request_around(app, request, args=None, requestlog=False, exceptlog=True, ha
                     elif sp.session(sessionId) == None:
                         raise NotExistsSessionException()
                     kws["sessionId"] = sessionId
+                    app.logger.info("request---sessionId:", sessionId)
+                    app.logger.info("request---wxId:", sp.wxid(sessionId))
                 # 装载kw
                 for arg in args:
                     k = arg.key()

@@ -44,14 +44,17 @@ class SessionPool:
         return self.__sessionNumber__
 
     # 生成新的session会话所需要的sessionId，并为该会话绑定wxid
-    def new_session(self, wxid, did):
+    def new_session(self, wxid, did, app=None):
         locker = self.__lock__
         cache = self.__cache__
         wx2ids = self.__wx2ids__
         # 该微信用户存在活跃会话
-        print("wxid:", wxid)
+        if app:
+            app.logger.info("========== new session ==========")
+            app.logger.info("wxid:", wxid)
         if wx2ids.get(wxid):
-            print("wxid:{}, is active.".format(wxid))
+            if app:
+                app.logger.info("wxid:{0}, is active.".format(wxid))
             # 对应设备存在活跃会话
             # if wx2ids.get(wxid).get("did") == did:
             #     sessionId = wx2ids.get(wxid).get("sessionId")
@@ -62,8 +65,9 @@ class SessionPool:
             # else:
             #     raise DeviceConflictException()
             sessionId = wx2ids.get(wxid).get("sessionId")
-            dic = cache.get(sessionId)
-            dic["did"]=did
+            if app:
+                app.logger.info("active sessionId is : {0}.".format(sessionId))
+            dic = cache.get(sessionId
             cache.set(sessionId, dic, addexpires=True)
             wx2ids.set(wxid, wx2ids.get(wxid))
             return sessionId

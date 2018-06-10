@@ -42,7 +42,7 @@ def bind_routes(app):
         
         # 建立sessionId并和wxid绑定
         did="__refuse__"
-        sessionId = sp.new_session(wxid, did)
+        sessionId = sp.new_session(wxid, did, app=app)
         return {"sessionId":sessionId}
 
     # 会话销毁
