@@ -68,7 +68,7 @@ class SessionPool:
             sessionId = wx2ids.get(wxid).get("sessionId")
             if app:
                 app.logger.info("active sessionId is : {0}.".format(sessionId))
-            dic = cache.get(sessionId
+            dic = cache.get(sessionId)
             cache.set(sessionId, dic, addexpires=True)
             wx2ids.set(wxid, wx2ids.get(wxid))
             return sessionId
