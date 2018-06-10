@@ -48,9 +48,10 @@ class SessionPool:
         locker = self.__lock__
         cache = self.__cache__
         wx2ids = self.__wx2ids__
-        did = "__refuse__"
         # 该微信用户存在活跃会话
+        print(wxid)
         if wx2ids.get(wxid):
+            print("wxid:{}, is active.".format(wxid))
             # 对应设备存在活跃会话
             # if wx2ids.get(wxid).get("did") == did:
             #     sessionId = wx2ids.get(wxid).get("sessionId")

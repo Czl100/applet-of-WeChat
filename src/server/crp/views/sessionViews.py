@@ -41,6 +41,7 @@ def bind_routes(app):
         userServices.login(app, wxid)
         
         # 建立sessionId并和wxid绑定
+        did="__refuse__"
         sessionId = sp.new_session(wxid, did)
         return {"sessionId":sessionId}
 
