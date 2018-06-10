@@ -49,29 +49,29 @@ class SessionPool:
         cache = self.__cache__
         wx2ids = self.__wx2ids__
         # 该微信用户存在活跃会话
+        locker.acquire()
         if app:
             app.logger.error("========== new session ==========")
             app.logger.error("wxid:{0}".format(wxid))
-        # if wx2ids.get(wxid):
-        #     if app:
-        #         app.logger.info("wxid:{0}, is active.".format(wxid))
-        #     # 对应设备存在活跃会话
-        #     # if wx2ids.get(wxid).get("did") == did:
-        #     #     sessionId = wx2ids.get(wxid).get("sessionId")
-        #     #     # 刷新超时时间
-        #     #     cache.set(sessionId, cache.get(sessionId), addexpires=True)
-        #     #     wx2ids.set(wxid, wx2ids.get(wxid))
-        #     #     return sessionId
-        #     # else:
-        #     #     raise DeviceConflictException()
-        #     sessionId = wx2ids.get(wxid).get("sessionId")
-        #     if app:
-        #         app.logger.info("active sessionId is : {0}.".format(sessionId))
-        #     dic = cache.get(sessionId
-        #     cache.set(sessionId, dic, addexpires=True)
-        #     wx2ids.set(wxid, wx2ids.get(wxid))
-        #     return sessionId
-        locker.acquire()
+        if wx2ids.get(wxid):
+            if app:
+                app.logger.error("active.....")
+            # 对应设备存在活跃会话
+            # if wx2ids.get(wxid).get("did") == did:
+            #     sessionId = wx2ids.get(wxid).get("sessionId")
+            #     # 刷新超时时间
+            #     cache.set(sessionId, cache.get(sessionId), addexpires=True)
+            #     wx2ids.set(wxid, wx2ids.get(wxid))
+            #     return sessionId
+            # else:
+            #     raise DeviceConflictException()
+            sessionId = wx2ids.get(wxid).get("sessionId")
+            if app:
+                app.logger.info("active sessionId is : {0}.".format(sessionId))
+            dic = cache.get(sessionId
+            cache.set(sessionId, dic, addexpires=True)
+            wx2ids.set(wxid, wx2ids.get(wxid))
+            return sessionId
         try:
             self.__sessionNumber__+=1
             self.__md5__.update(str(self.__sessionNumber__).encode("utf-8"))
