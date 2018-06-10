@@ -85,7 +85,7 @@ Page({
             console.log('当前的页数是', wx.getStorageSync('mypage')),
             //固定放在某一页
             his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
-          for (var i = 0; i < 10; i++) {
+          for (var i = 0; i < i < his_list[wx.getStorageSync('re_mypage') - 1].length; i++) {
             if (his_list[wx.getStorageSync('mypage') - 1][i].imgtitle == "") {
               his_list[wx.getStorageSync('mypage') - 1][i].imgtitle = '暂无标题'
             }
@@ -190,7 +190,7 @@ Page({
             console.log('当前的页数是', wx.getStorageSync('mypage')),
             //固定放在某一页
             his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
-          for (var i = 0; i < 10; i++) {
+          for (var i = 0; i < i < his_list[wx.getStorageSync('re_mypage') - 1].length; i++) {
             if (his_list[wx.getStorageSync('mypage') - 1][i].imgtitle == "") {
               his_list[wx.getStorageSync('mypage') - 1][i].imgtitle = '暂无标题'
             }
@@ -284,7 +284,7 @@ Page({
             //固定放在某一页
             his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
           console.log('onshow的list', his_list[wx.getStorageSync('mypage') - 1]);
-         for(var i=0;i<10;i++){
+          for (var i = 0; i <  his_list[wx.getStorageSync('re_mypage') - 1].length;i++){
            if (his_list[wx.getStorageSync('mypage') - 1][i].imgtitle=="")
            {
              his_list[wx.getStorageSync('mypage') - 1][i].imgtitle='暂无标题'

@@ -123,7 +123,7 @@ function timer() {
       })
     }
     wx.setStorageSync('active', false);
-  }, 10000) //循环时间 这里是1分钟
+  }, 60000) //循环时间 这里是1分钟
 
 
 
