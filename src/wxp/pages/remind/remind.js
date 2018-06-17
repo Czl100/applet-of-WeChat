@@ -195,8 +195,9 @@ Page({
     console.log('re当前的id', e.currentTarget.id)
     console.log('re当前图片的路径', img_);
     var url = [];
-
-    for (var j = 0; j <= 10; j++) {
+    var k = wx.getStorageSync('re_list')[n - 1].length;
+    for (var j = 0; j < k; j++) {
+      console.log('remind图片', wx.getStorageSync('re_list')[n - 1][j].img)
       if (!wx.getStorageSync('re_list')[n - 1][j] == "")  //如果图片存在的话
         url.push(wx.getStorageSync('re_list')[n - 1][j].img)  //把一页中图片放在这个数组中
     };
