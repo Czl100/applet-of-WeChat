@@ -1,19 +1,15 @@
+var app = getApp();
 var timer = require('../../utils/timer.js')
 var exp = require('../../utils/exception.js')
-var app = getApp();
+var inter = require('../../utils/interface.js')
+var Request = require('../../utils/request.js')
+
 var List_;
-var his_list = [];  //生命一个数组用于缓存
-var pages = 1;
+var his_list = [];  //声明一个数组用于缓存
+var pages = 1; //初始值总页数是1
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    // pages:1,//初始值总页数是1
     mypage: 1,//默认查找第一页
-
-
     img_unfinish: "/pages/icon/unfinished.png",//如果是未完成时的图片
     postList: [{
       datetime: '',
@@ -24,26 +20,16 @@ Page({
     }]
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
     wx.setStorageSync('active', true);
-  //  timer.timer();
-    //   timer.timer();
-    //  wx.setStorageSync('history_list', List_);  //将这个列表存放在缓存中
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
   onReady: function () {
 
   },
 
   onbefore: function () { //点击上一页
     wx.setStorageSync('active', true);
-   // timer.timer();
     if (this.data.mypage > 1) {
       this.setData({
         mypage: this.data.mypage - 1
@@ -55,102 +41,12 @@ Page({
         mypage: 1
       })
     }
-    var that = this;
-    wx.setStorageSync('mypage', that.data.mypage);  //当前页数存入缓存
-    console.log('点击上一页', that.data.mypage)
-    wx.request({
-      url: 'https://crp.shakeel.cn/query-history',
-      method: 'GET',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded' // 默认值
-      },
-      data: {
-        'sessionId': wx.getStorageSync('sessionId'),
-        // 'page': that.data.mypage
-        'page': wx.getStorageSync('mypage')
-      },
+    this.his_request();
 
-      success: function (res) {
-        if (res.data.errcode == 1) {
-       //   exp(res.data.errcode);
-          wx.showToast({
-            title: '服务器遇到了异常，请稍后再试',
-            icon: 'none',
-            duration: 2000
-          })
-          return
-        }
-        if (res.data.errcode == 0) {
-         // exp.exception(res.data.errcode);
-          console.log('发送查询历史信息请求', res.data),
-            console.log('当前的页数是', wx.getStorageSync('mypage')),
-            //固定放在某一页
-            his_list[wx.getStorageSync('mypage')] = res.data.list;
-          console.log('当前页面', his_list[wx.getStorageSync('mypage')-1])
-          console.log('当前页面长度', his_list[wx.getStorageSync('mypage')].length)
-          var len = his_list[wx.getStorageSync('mypage')].length;
-          console.log('len', len)
-          var k = wx.getStorageSync('mypage')
-          console.log('his_list[k]', his_list[k])
-          console.log('上一页的list长度', his_list[wx.getStorageSync('mypage')].length);
-
-          for (var j = 0; j < len; j++) {
-            console.log('k', k)
-            if ((his_list[k][j].imgtitle == "")) {
-              console.log('his_list[k][i]', his_list[k][j])
-              his_list[k][j].imgtitle = "暂无标题";
-              console.log('k2')
-            }
-          }
-          console.log('his_list', his_list) 
-          
-          wx.setStorageSync('history_list', his_list);
-          
-          //总页数
-          pages = res.data.pages
-          wx.setStorageSync('history_pages', pages);
-        
-          console.log('总页数pages', pages);
-          console.log('服务器上的总页数', res.data.pages);
-          return
-        }
-        else {
-          exp.exception(res.data.errcode);
-      
-        }
-
-      },
-      fail: function (res) {
-        wx.showToast({
-          title: '请保持网络通畅',
-          icon: 'none',
-          duration: 2000
-        })
-      },
-      complete: function () {
-        if (wx.getStorageSync('history_pages') == 0) {
-          wx.showToast({
-            title: '暂无记录',
-            icon: 'none',
-            duration: 2000
-          })
-        }
-        else{
-         
-        var p = wx.getStorageSync('mypage');
-        console.log('上一页的p', p)
-        // var that=this;
-        that.setData({
-          postList: wx.getStorageSync('history_list')[p],
-        })
-        console.log('点击下一页的数据动态渲染结果', wx.getStorageSync('history_list')[p])
-        }
-      }
-    })
   },
   onafter: function () { //点击下一页
     wx.setStorageSync('active', true);
-  //  timer.timer();
+
     console.log(this.data.mypage, pages);
     pages = wx.getStorageSync('history_pages', pages);
     if (!pages == "") {
@@ -158,285 +54,39 @@ Page({
         this.setData({
           mypage: this.data.mypage + 1
         })
-
-        // wx.setStorageSync('history_mypage', this.data.mypage);  //当前页数存入缓存
       }
       else {
         this.setData({
           mypage: pages
         })
-        //   wx.setStorageSync('history_mypage', this.data.mypage);  //当前页数存入缓存
       }
     }
     else {
       mypage: 1
     }
-    var that = this;
-    wx.setStorageSync('mypage', that.data.mypage);  //当前页数存入缓存
-    console.log('点击下一页', that.data.mypage)
-    wx.request({
-      url: 'https://crp.shakeel.cn/query-history',
-      method: 'GET',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded' // 默认值
-      },
-      data: {
-        'sessionId': wx.getStorageSync('sessionId'),
-        'page': that.data.mypage
-      },
-      success: function (res) {
 
-        if (res.data.errcode == 1) {
-          wx.showToast({
-            title: '服务器遇到了异常，请稍后再试',
-            icon: 'none',
-            duration: 2000
-          })
-          return
-        }
-        if (res.data.errcode == 0) {
-          console.log('发送查询历史信息请求', res.data),
-            console.log('当前的页数是', wx.getStorageSync('mypage')),
-            //固定放在某一页
-            his_list[wx.getStorageSync('mypage')] = res.data.list;
-          console.log('当前页面', his_list[wx.getStorageSync('mypage')])
-          console.log('当前页面长度', his_list[wx.getStorageSync('mypage')].length)
-          var len = his_list[wx.getStorageSync('mypage')].length;
-          console.log('len',len)
-          var k = wx.getStorageSync('mypage')
-          console.log('his_list[k]', his_list[k]) 
-          console.log('下一页的list长度', his_list[wx.getStorageSync('mypage')].length);
+    this.his_request();
 
-          for (var j=0; j < len; j++) {
-            console.log('k',k)
-            if ((his_list[k][j].imgtitle == "")) {
-              console.log('his_list[k][i]', his_list[k][j])
-              his_list[k][j].imgtitle = "暂无标题";
-              console.log('k2')
-            }
-          }
-          console.log('his_list',his_list) 
-         wx.setStorageSync('history_list', his_list);
-          console.log('history_list', wx.getStorageSync('history_list')) 
-          //     List_ = res.data.list
-          //   console.log(List_)  //打印出来看看
-          //总页数
-          pages = res.data.pages;
-          wx.setStorageSync('history_pages', pages);
-          /*
-          that.setData({
-            postList: List_
-          })
-          */
-          console.log('总页数pages', pages);
-          console.log('服务器上的总页数', res.data.pages);
-        }
-        else {
-          console.log('历史记录界面', res.data.errmsg);
-          exp.exception(res.data.errcode);
-       
-        }
-        
-      },
-      fail: function (res) {
-        wx.showToast({
-          title: '请保持网络通畅',
-          icon: 'none',
-          duration: 2000
-        })
-      },
-      complete: function (res) {
-        if (wx.getStorageSync('history_pages') == 0) {
-          wx.showToast({
-            title: '暂无记录',
-            icon: 'none',
-            duration: 2000
-          })
-        }
-        else{
-        var p = wx.getStorageSync('mypage');
-        console.log('下一页的p', p)
-        // var that=this;
-        that.setData({
-          postList: wx.getStorageSync('history_list')[p],
-        })
-        console.log('点击下一页的数据动态渲染结果', wx.getStorageSync('history_list')[p ])
-        /*
-        var len = that.data.postList.length;
-        console.log('这个一页的图片长度', len)
-        for (var i = 0; i < len; i++) {
-          if (that.data.postList[i].imgtitle == "") {
-            //     console.log('图片标题空',that.data.postList[0].imgtitle)
-            that.data.postList[i].imgtitle = '暂无标题'
-
-          }
-        }
-        */
-      }
-      }
+  },
+  onReady: function () {
+    wx.setNavigationBarTitle({
+      title: '历史记录',
     })
   },
-
   /**
    * 生命周期函数--监听页面显示
    */
 
   onShow: function () {
     wx.setStorageSync('active', true);
-  //  timer.timer();
-    var that = this;
 
-    var sessionId = wx.getStorageSync('sessionId');
-    wx.setStorageSync('mypage', that.data.mypage);
-    console.log('发送到服务器的页数', that.data.mypage)
-    wx.request({                                               //发送到服务器获取相关页数的信息
-      url: 'https://crp.shakeel.cn/query-history',
-      method: 'GET',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded' // 默认值
-      },
-      data: {
-        'sessionId': sessionId,
-        'page': wx.getStorageSync('mypage'),
-        // 'page':that.data.mypage
-      },
-      success: function (res) {
+    this.his_request();
 
-
-        if (res.data.errcode == 1) {
-          wx.showToast({
-            title: '服务器遇到了异常，请稍后再试',
-            icon: 'none',
-            duration: 2000
-          })
-          return
-        }
-        if (res.data.errcode == 0) {
-          console.log('发送查询历史信息请求', res.data),
-            console.log('onshow当前的页数是', wx.getStorageSync('mypage')),
-            //固定放在某一页
-            his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
-         var len = his_list[wx.getStorageSync('mypage') - 1].length;
-          var k = wx.getStorageSync('mypage') - 1
-          console.log('onshow的list长度', his_list[wx.getStorageSync('mypage') - 1].length);
-         
-          for (var i = 0; i < len;i++){
-          console.log('k')
-           if (his_list[k][i].imgtitle=="")
-           {
-             console.log('his_list[k][i]', his_list[k][i])
-             his_list[k][i].imgtitle="暂无标题";
-             console.log('k2')
-           }
-         }
-         
-          console.log('k3',his_list[0][0].imgtitle)
-          wx.setStorageSync('history_list', his_list);  //将这个列表存放在缓存中
-          console.log('his_list', his_list)  //打印出来看看
-          //总页数
-          pages = res.data.pages
-          wx.setStorageSync('history_pages', pages);
-
-          console.log('数据缓存', wx.getStorageSync('history_list'))
-          console.log('总页数pages', pages);
-          console.log('服务器上的总页数', res.data.pages);
-        }
-        else {
-          console.log('历史记录界面', res.data.errmsg);
-          exp.exception(res.data.errcode);
-         
-        }
-      }, fail: function (res) {
-        wx.showToast({
-          title: '请保持网络通畅',
-          icon: 'none',
-          duration: 2000
-        })
-
-      },
-      complete: function (res) {
-        if (wx.getStorageSync('history_pages')==0){
-          wx.showToast({
-            title: '暂无记录',
-            icon:'none',
-            duration:2000
-          })
-        }
-        else{
-        var p = wx.getStorageSync('mypage');
-        console.log('p', p)
-       // console.log('历史记录的1', wx.getStorageSync('history_list')[p - 1][1].imgtitle)
-      
-        that.setData({
-          postList: wx.getStorageSync('history_list')[p - 1],
-        })
-        /*
-        var len=that.data.postList.length;
-        console.log('这个一页的图片长度', len)
-        for (var i = 0; i < len; i++) {
-          if (that.data.postList[i].imgtitle == "") {
-            //     console.log('图片标题空',that.data.postList[0].imgtitle)
-       //     that.data.postList[i].imgtitle = '暂无标题'
-       
-          }
-        }
-        */
-        }
-      }
-    })
-    wx.request({
-      url: 'https://crp.shakeel.cn/query-unread-number',
-      method: 'GET',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded' // 默认值
-      },
-      data: {
-        'sessionId': wx.getStorageSync('sessionId'),
-      },
-      success: function (res) {
-
-        if (res.data.errcode == 1) {
-          wx.showToast({
-            title: '服务器遇到了异常，请稍后再试',
-            icon: 'none',
-            duration: 2000
-          })
-          return
-        }
-        if (res.data.errcode == 0) {
-          console.log('打开历史记录时查询未邀请个数', res.data)
-          wx.setStorageSync('_number', res.data.number);
-          var number = wx.getStorageSync('_number');
-          if (number == 0) {
-            wx.removeTabBarBadge({
-              index: 3
-            });
-          }
-          else {
-            wx.setTabBarBadge({
-              index: 3,
-              text: number + "",
-            })
-          }
-          return
-        }
-        else {
-          console.log('历史记录界面', res.data.errmsg);
-          exp.exception(res.data.errcode);
-         
-        }
-      }, fail: function (res) {
-        wx.showToast({
-          title: '请保持网络通畅',
-          icon: 'none',
-          duration: 2000
-        })
-      }
-    })
+    Request.Unread_Number();//历史界面未读个数的请求
   },
   onpre: function (e) {
     wx.setStorageSync('active', true);
-  //  timer.timer();
+
     var n = wx.getStorageSync('mypage');
     var img_ = wx.getStorageSync('history_list')[n - 1][e.currentTarget.id].img;
 
@@ -454,38 +104,75 @@ Page({
       urls: url// 需要预览的图片http链接列表
     })
   },
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
 
-  },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
+  his_request: function () {
+    wx.setStorageSync('active', true);
+    //  timer.timer();
+    var that = this;
 
-  },
+    var sessionId = wx.getStorageSync('sessionId');
+    wx.setStorageSync('mypage', that.data.mypage);  //这个是当前的页数，将这个页数发送给服务器
+    console.log('发送到服务器的页数', that.data.mypage)
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
+    wx.request({                                               //发送到服务器获取相关页数的信息
+      url: 'https://crp.shakeel.cn/query-history',
+      method: 'GET',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      data: {
+        'sessionId': sessionId,
+        'page': wx.getStorageSync('mypage'),
+      },
+      success: function (res) {
+        if (res.data.errcode == 0) {
 
-  },
+          //固定放在某一页
+          his_list[wx.getStorageSync('mypage') - 1] = res.data.list;
+          //因为his_list是一个数组，从0开始，而mypage是从1开始
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
+          //这一页的数组长度
+          var len = his_list[wx.getStorageSync('mypage') - 1].length;
+          var k = wx.getStorageSync('mypage') - 1
 
-  },
+          for (var i = 0; i < len; i++) {
+            if (his_list[k][i].imgtitle == "") {
+              console.log('his_list[k][i]', his_list[k][i])
+              his_list[k][i].imgtitle = "暂无标题";
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
+            }
+          }
 
+
+          wx.setStorageSync('history_list', his_list);  //将这个列表存放在缓存中
+
+          //总页数
+          pages = res.data.pages
+          wx.setStorageSync('history_pages', pages);
+        }
+        else {
+          console.log('历史记录界面', res.data.errmsg);
+          exp.exception(res.data.errcode);
+
+        }
+      }, fail: function (res) {
+        inter.Toast_Remind('请保持网络通畅', 'none')
+
+      },
+      complete: function (res) {
+        if (wx.getStorageSync('history_pages') == 0) {
+          inter.Toast_Remind('暂无记录', 'none')
+        }
+        else {
+          var p = wx.getStorageSync('mypage');
+          console.log('第几页', p)
+
+          that.setData({
+            postList: wx.getStorageSync('history_list')[p - 1],
+          })
+        }
+      }
+    })
   }
 })

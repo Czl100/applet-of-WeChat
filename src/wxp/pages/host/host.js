@@ -1,6 +1,8 @@
 var timer = require('../../utils/timer.js')
 var exp = require('../../utils/exception.js')
+var inter = require('../../utils/interface.js')
 var app = getApp();
+
 Page({
 
   /**
@@ -44,8 +46,6 @@ Page({
               imageWidth: res.width,
               imageHeight: res.height
             })
-            //console.log(res.width)
-            //  console.log(res.height)
           }
         })
       }
@@ -69,59 +69,13 @@ Page({
 
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
+  
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
     console.log('host页面打开')
-    // wx.setStorageSync('active', true);
-    // timer.timer();
-  
-    console.log('未读个数host', wx, wx.getStorageSync('sessionId'))
-
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    // console.log(this.data.imageWidth)
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
   },
 
 
@@ -149,19 +103,13 @@ Page({
     }
     else {
       //如果没有选择
-      wx.showToast({
-        title: '请先选择图片',
-        icon: 'none',
-        duration: 2000
-      })
+      inter.Toast_Remind('请先选择图片','none')
     }
   },
   onJump_host_invisible: function (event) {
     wx.setStorageSync('active', true);
-    // timer.timer();
 
     if (this.data.start) {
-
 
       wx.navigateTo({
         url: '../host_invisible/host_invisible',
@@ -179,11 +127,7 @@ Page({
     }
     else {
       //如果没有选择
-      wx.showToast({
-        title: '请先选择图片',
-        icon: 'none',
-        duration: 2000
-      })
+      inter.Toast_Remind('请先选择图片','none')
     }
   },
   onJump_host_resign: function (event) {
@@ -205,11 +149,7 @@ Page({
     }
     else {
       //如果没有选择
-      wx.showToast({
-        title: '请先选择图片',
-        icon: 'none',
-        duration: 2000
-      })
+      inter.Toast_Remind('请先选择图片', 'none')
     }
   }
 })

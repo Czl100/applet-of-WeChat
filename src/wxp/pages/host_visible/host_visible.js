@@ -241,11 +241,7 @@ Page({
     //  context.drawImage(this.data.visible_chooseFiles, start_x, start_y, w, h);
     }
   },
-  /*
-  oncancel:function(){
-    wx.navigateBack()
-  },
-  */
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成

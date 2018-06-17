@@ -2,6 +2,7 @@ var app = getApp();
 var Jmd5 = require('../../utils/md5.js')
 var timer = require('../../utils/timer.js')
 var exp = require('../../utils/exception.js')
+var inter=require('../../utils/interface.js')
 
 Page({
 
@@ -32,24 +33,15 @@ Page({
     //  {
     if (wx.getStorageSync('save_img') == "")//如果没有图片的话，
     {
-      wx.showModal({
-        title: '温馨提示',
-        mask: true,
-        content: '由于不可抗因素，信息嵌入失败',
-        confirmText: '我知道了',
-        showCancel: false
-      });
+      inter.Know_Modal('由于不可抗因素，信息嵌入失败')
+     
     }
     else {
       console.log('保存到手机的图片路径', wx.getStorageSync('save_img'))
       wx.saveImageToPhotosAlbum({
         filePath: wx.getStorageSync('save_img'),
         success(res) {
-          wx.showToast({
-            title: '已保存至手机相册',
-            icon: 'none',
-            duration: 2000
-          })
+          inter.Toast_Remind('已保存至手机相册','success')
         }
       })
     }
@@ -102,28 +94,12 @@ Page({
       }
     }
     else {
-      wx.showModal({
-        title: '温馨提示',
-        mask: true,
-        content: '请准确嵌入水印',
-        confirmText: '我知道了',
-        showCancel: false
-      });
+      inter.Know_Modal('请准确嵌入水印')
     }
   },
   onget: function () {  //提取水印信息
     if (!wx.getStorageSync('un-line')) {//如果是离线的话
-      wx.showModal({
-        title: '注意',
-        content: '请进行用户登录方可使用',
-        confirmText: '我知道了',
-        showCancel: false,
-        success: function (res) {
-          if (res.confirm) {
-            console.log('我知道了')
-          }
-        }
-      })
+      inter.Know_Modal('请进行用户登录方可使用')
     }
     else{
     wx.setStorageSync('active', true);
@@ -167,15 +143,6 @@ Page({
       success: function (res) {
         wx.hideLoading();
         res.data = JSON.parse(res.data);
-
-        if (res.data.errcode == 1) {
-          wx.showToast({
-            title: '服务器遇到了异常，请稍后再试',
-            icon: 'none',
-            duration: 2000
-          })
-          return
-        }
         if (res.data.errcode == 0) {
           console.log('获取水印信息', res.data);
           console.log('获取水印信息', res.data.secret);
@@ -206,13 +173,7 @@ Page({
       fail: function (res) {
         wx.hideLoading();
         console.log('获取失败，服务器无法进行处理');
-        wx.showModal({
-          title: '温馨提示',
-          mask: true,
-          content: '提取失败',
-          confirmText: '我知道了',
-          showCancel: false
-        });
+        inter.Know_Modal('提取失败')
       },
       complete: function () {
         wx.hideLoading();
@@ -222,17 +183,7 @@ Page({
 
   onsure: function () {
     if (!wx.getStorageSync('un-line')) {//如果是离线的话
-      wx.showModal({
-        title: '注意',
-        content: '请进行用户登录方可使用',
-        showCancel: false,
-        confirmText:'我知道了',
-        success: function (res) {
-          if (res.confirm) {
-            console.log('我知道了')
-          }
-        }
-      })
+      inter.Know_Modal('请进行用户登录方可使用')
     }
     else{
     wx.setStorageSync('active', true);
@@ -256,12 +207,7 @@ Page({
     wx.setStorageSync('active', true);
     // timer.timer();
     if (this.data.dis == "") {
-      wx.showToast({
-        title: '嵌入的水印信息不可为空',
-        icon: 'none',
-        mask: true,
-        duration: 2000
-      })
+      inter.Toast_Remind('嵌入的水印信息不可为空','none')
     }
     else { //如果嵌入的水印信息不是空的话
 
@@ -306,14 +252,7 @@ Page({
           wx.hideToast();
           res.data = JSON.parse(res.data);
           console.log('嵌入的反馈', res.data.errcode);
-          if (res.data.errcode == 1) {
-            wx.showToast({
-              title: '服务器遇到了异常，请稍后再试',
-              icon: 'none',
-              duration: 2000
-            })
-            return
-          }
+        
           if (res.data.errcode == 0) {
             that.setData({
               co_save: true
@@ -386,13 +325,7 @@ Page({
           wx.hideLoading();
           //   wx.hideToast();
           console.log("嵌入水印失败"),
-            wx.showModal({
-              title: '温馨提示',
-              mask: true,
-              content: '嵌入水印失败',
-              confirmText: '我知道了',
-              showCancel: false
-            });
+            inter.Know_Modal('嵌入水印失败')
         },
         complete: function (res) {
           // var that = this;
