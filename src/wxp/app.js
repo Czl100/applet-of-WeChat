@@ -46,7 +46,7 @@ App({
                   })
                   //设备id获取，sessionId获取
                   //获取设备ID并且进行登录
-                  Request.Get_Did();
+                  Request.Get_did();
 
                 } else if (res.cancel) {
                   wx.hideLoading();
