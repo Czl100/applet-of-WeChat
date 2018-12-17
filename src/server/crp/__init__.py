@@ -15,7 +15,7 @@ import os
 def create_app(config):
     
     # 偏函
-    import functools
+        
     global open
     open = functools.partial(open, encoding='utf-8')
 
@@ -38,7 +38,7 @@ def create_app(config):
     import logging
     file_handler = logging.FileHandler('../crp.log', encoding='UTF-8')
     file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s ''[in %(pathname)s:%(lineno)d]'))
+    file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
     app.logger.addHandler(file_handler)
     
     # 限流系统
